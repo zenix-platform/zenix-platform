@@ -45,17 +45,17 @@ if(localStorage.getItem('zx_active')==='true'){
   if(qBtn){ qBtn.disabled=false; qBtn.style.opacity="1"; qBtn.style.cursor="pointer"; }
 }
 
-// بارگذاری تاریخچه ذخیره شده در حافظه مرورگر
+// بارگذاری پایدار تاریخچه معاملات از حافظه
 const hList=document.getElementById('history-list');
 const savedHistory=localStorage.getItem('zx_history');
-if(savedHistory && hList){
+if(savedHistory && savedHistory.trim() !== '' && !savedHistory.includes('هنوز')){
   hList.innerHTML=savedHistory;
 }
 
 document.querySelectorAll('#lang-menu .mi').forEach(el=>{el.onclick=(e)=>{e.stopPropagation();setLang(el.dataset.lang);lMenu.classList.remove('show');}});
 const mBtn=document.getElementById('menu-btn'),nMenu=document.getElementById('nav-menu'),lBtn=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu'),bBtn=document.getElementById('bell-btn'),bMenu=document.getElementById('bell-menu');
 function toggleMenu(o,e){e.stopPropagation();[nMenu,lMenu,bMenu].forEach(m=>{if(m!==o)m.classList.remove('show');});o.classList.toggle('show');}
-if(mBtn)mBtn.onclick=(e)=>toggleMenu(nMenu,e);if(lBtn)lBtn.onclick=(e)=>toggleMenu(lMenu,e);if(bBtn)bBtn.onclick=(e)=>toggleMenu(bMenu,e);
+if(mBtn)mBtn.onclick=(e)=>toggleMenu(nMenu,e);if(lBtn)lBtn.onclick=(e)=>toggleMenu(lBtn,e);if(bBtn)bBtn.onclick=(e)=>toggleMenu(bBtn,e);
 document.onclick=()=>{[nMenu,lMenu,bMenu].forEach(m=>m.classList.remove('show'));};document.querySelectorAll('.menu').forEach(m=>m.onclick=(e)=>e.stopPropagation());
 function updateNYClock(){const t=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());const c=document.getElementById('ny-clock-val');if(c)c.innerText=t;}setInterval(updateNYClock,1000);updateNYClock();
 </script>
@@ -97,14 +97,15 @@ window.checkClickState=function(){
 window.checkClickState();
 
 if(qBtn) {
-  qBtn.onclick=async function(){
+  qBtn.onclick=function(e){
+    e.preventDefault();
     if(cCnt>=4 || !window.isBotActive || !currentUserUid) return;
     cCnt++; 
     localStorage.setItem('zx_cnt', cCnt);
     qBtn.disabled=true; qBtn.style.opacity="0.5";
     const lang=window.currentActiveLang||'fa';
     
-    updateDoc(doc(db,"users",currentUserUid),{quantCount:cCnt}).catch(e=>console.error(e));
+    updateDoc(doc(db,"users",currentUserUid),{quantCount:cCnt}).catch(err=>console.error(err));
 
     const tBox=document.getElementById('trade-box'), tDet=document.getElementById('trade-details'), hList=document.getElementById('history-list');
     tBox.style.display='block';
@@ -112,8 +113,8 @@ if(qBtn) {
     const randomCrypto=cryptoList[Math.floor(Math.random()*cryptoList.length)];
     let timeLeft=10;
     
-    tDet.innerHTML=`<i class="fas fa-spinner fa-spin"></i> ${lang==='fa'?'معامله':'Trading'} ${randomCrypto.name} (${randomCrypto.symbol}) - <span id="countdown-val">10</span>s`;
-    tDet.style.color='#38bdf8';
+    // اصلاح ساختار نمایش برای اینکه ثانیه شمار به درستی آپدیت شود
+    tDet.innerHTML=`<i class="fas fa-spinner fa-spin"></i> ${lang==='fa'?'معامله':'Trading'} ${randomCrypto.name} (${randomCrypto.symbol}) - <span id="countdown-val" style="color:#f59e0b;font-weight:bold;">10</span> ثانیه`;
 
     const timerInterval=setInterval(()=>{
       timeLeft--;
@@ -131,8 +132,7 @@ if(qBtn) {
       localStorage.setItem('zx_prof',tProf);
       if(tpEl) tpEl.innerText='$'+tProf.toFixed(2);
       
-      tDet.innerText=lang==='fa'?`موفق! ${randomCrypto.symbol} | سود: $${p.toFixed(2)}`:`Success! ${randomCrypto.symbol} | Profit: $${p.toFixed(2)}`;
-      tDet.style.color='#22c55e';
+      tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${lang==='fa'?'موفق!':'Success!'} ${randomCrypto.symbol} | ${lang==='fa'?'سود':'Profit'}: <span style="color:#22c55e;">+$${p.toFixed(2)}</span>`;
       
       if(hList.innerHTML.includes('هنوز')||hList.innerHTML.includes('No trades')) hList.innerHTML='';
       
