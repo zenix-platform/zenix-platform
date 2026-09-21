@@ -60,9 +60,7 @@ if(qBtn) {
     const lang=window.currentActiveLang||'fa';
     qBtn.innerHTML=`<i class="fas fa-spinner fa-spin"></i> <span>...</span>`;
     
-    try{
-      await updateDoc(doc(db,"users",currentUserUid),{quantCount:cCnt});
-    }catch(e){console.error(e);}
+    updateDoc(doc(db,"users",currentUserUid),{quantCount:cCnt}).catch(e=>console.error(e));
 
     const tBox=document.getElementById('trade-box'), tDet=document.getElementById('trade-details'), hList=document.getElementById('history-list');
     tBox.style.display='block';
