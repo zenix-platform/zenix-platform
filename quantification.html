@@ -56,14 +56,14 @@ if(qBtn) {
   qBtn.onclick=async function(){
     if(cCnt>=4 || !window.isBotActive || !currentUserUid) return;
     cCnt++; 
-    try{
-      await updateDoc(doc(db,"users",currentUserUid),{quantCount:cCnt});
-    }catch(e){console.error(e);}
-
     qBtn.disabled=true; qBtn.style.opacity="0.5";
     const lang=window.currentActiveLang||'fa';
     qBtn.innerHTML=`<i class="fas fa-spinner fa-spin"></i> <span>...</span>`;
     
+    try{
+      await updateDoc(doc(db,"users",currentUserUid),{quantCount:cCnt});
+    }catch(e){console.error(e);}
+
     const tBox=document.getElementById('trade-box'), tDet=document.getElementById('trade-details'), hList=document.getElementById('history-list');
     tBox.style.display='block';
     tDet.innerText=lang==='fa'?'در حال جستجوی قیمت و معامله (۱۰ ثانیه)...':'Trading in progress (10s)...';
