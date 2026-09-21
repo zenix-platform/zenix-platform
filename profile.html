@@ -7,7 +7,7 @@
 <div class="ibox"><span style="color:#94a3b8;font-size:13px;">وضعیت حساب:</span><span id="account-status" style="font-weight:bold;font-size:13px;">تایید نشده</span></div>
 <div class="ibox" style="flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:0;"><span style="color:#94a3b8;font-size:13px;">شماره تماس:</span><div style="display:flex;align-items:center;gap:6px;direction:ltr;width:100%;"><div class="c-dropdown" id="c-dropdown"><div class="c-select-btn" id="c-select-btn"><span style="color:#94a3b8;font-size:10px;">کد کشور</span> <i class="fas fa-chevron-down" style="font-size:8px;"></i></div><div class="c-list" id="c-list"><input type="text" class="c-search" placeholder="Search..." oninput="filterCountries(this)"><div id="c-options-container"></div></div></div><input type="hidden" id="country-code" value=""><div style="display:flex;flex-direction:column;flex:1;"><input type="text" id="user-phone-input" placeholder="9123456789" maxlength="10" style="background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;padding:6px 10px;font-size:13px;width:100%;outline:none;"><div class="err-msg" id="phone-err-msg" style="font-size:10px;margin-top:2px;">شماره باید ۱۰ رقم و بدون صفر باشد</div></div></div><button type="button" id="save-phone-btn" onclick="savePhone()" class="bs" style="margin-top:4px;">ذخیره</button></div><div class="success-msg" id="phone-success">شماره تماس با موفقیت ذخیره شد</div></div>
 
-<div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-envelope"></i> <span>تغییر جمیل (ایمیل) - مجوز ادمین</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">ایمیل فعلی</label><input type="email" class="fi" id="email-curr"></div><div class="fg"><label class="fl">ایمیل جدید</label><div style="display:flex;gap:8px;"><input type="email" class="fi" id="email-new"><button type="button" class="bs" style="width:160px;font-size:12px;background:#f59e0b;color:#0f172a;" onclick="requestAdminPermission(this)">گرفتن عکس و ارسال مجوز</button></div><input type="file" id="selfie-capture" accept="image/*" capture="user" style="display:none" onchange="handleSelfieCapture(this)"></div><div class="fg"><label class="fl">کد تأیید مجوز ادمین</label><input type="text" class="fi" id="admin-auth-code" placeholder="پس از تایید ادمین، کد را وارد کنید..." maxlength="6" disabled style="opacity:0.6;cursor:not-allowed;"></div><button type="button" class="bs" id="save-email-btn" onclick="validateEmailForm(this)" disabled style="opacity:0.6;cursor:not-allowed;">ذخیره تغییرات</button><div class="success-msg">ایمیل بروز شد</div></div></div>
+<div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-envelope"></i> <span>تغییر جمیل (ایمیل) - تاییدیه ادمین</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">ایمیل فعلی</label><input type="email" class="fi" id="email-curr" readonly></div><div class="fg"><label class="fl">ایمیل جدید</label><div style="display:flex;gap:8px;"><input type="email" class="fi" id="email-new"><button type="button" class="bs" id="req-admin-btn" style="width:190px;font-size:12px;background:#f59e0b;color:#0f172a;" onclick="requestAdminPermission(this)">گرفتن عکس و ارسال به ادمین</button></div><input type="file" id="selfie-capture" accept="image/*" capture="user" style="display:none" onchange="handleSelfieCapture(this)"></div><div id="admin-status-box" style="margin-top:15px;padding:10px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:8px;font-size:13px;color:#f59e0b;display:none;text-align:center;"><i class="fas fa-clock"></i> درخواست تغییر جمیل و تصویر شما برای ادمین ارسال شد. در انتظار تایید مدیریت...</div><div class="success-msg" id="email-success">جمیل شما با تایید ادمین با موفقیت تغییر کرد</div></div></div>
 
 <div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-lock"></i> <span>تغییر رمز ورود</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">رمز فعلی</label><input type="password" class="fi" id="pwd-curr"></div><div class="fg"><label class="fl">رمز جدید</label><input type="password" class="fi" id="pwd-new"></div><div class="fg"><label class="fl">تکرار رمز جدید</label><input type="password" class="fi" id="pwd-conf"></div><button type="button" class="bs" onclick="validatePasswordForm(this)">ذخیره تغییرات</button><div class="success-msg">رمز ورود بروز شد</div></div></div>
 
@@ -42,6 +42,9 @@ const d=await getDoc(doc(db,"users",u.uid));
 if(d.exists()){
 const data=d.data();
 document.getElementById('user-fullname').textContent=data.fullname||"کاربر عزیز";
+if(u.email){
+document.getElementById('email-curr').value=u.email;
+}
 let nums=u.uid.replace(/\D/g,'');if(nums.length<6)nums=(nums+"123456789").padEnd(6,'0');
 window.currentFormattedId=`MS-${nums.substring(0,6)}`;
 document.getElementById('user-id').textContent=`ID: ${window.currentFormattedId}`;
@@ -54,6 +57,12 @@ document.getElementById('c-select-btn').setAttribute('disabled','true');document
 }
 if(data.trxWallet)document.getElementById('trx-in').value=data.trxWallet;
 if(data.bepWallet)document.getElementById('bep-in').value=data.bepWallet;
+if(data.pendingEmail){
+document.getElementById('email-new').value=data.pendingEmail;
+document.getElementById('req-admin-btn').setAttribute('disabled','true');
+document.getElementById('req-admin-btn').style.opacity='0.6';
+document.getElementById('admin-status-box').style.display='block';
+}
 }
 }catch(e){console.error(e);}
 });
@@ -70,6 +79,46 @@ pInput.setAttribute('readonly','true');document.getElementById('c-select-btn').s
 setTimeout(()=>msg.style.display='none',3000);
 }catch(e){alert('خطا در ذخیره شماره');}
 };
+
+window.requestAdminPermission = function(b) {
+    const newEmail = document.getElementById('email-new').value.trim();
+    if(!newEmail || !newEmail.includes('@')) {
+        alert('لطفاً یک جمیل معتبر وارد کنید.');
+        return;
+    }
+    // باز کردن دوربین کاربر برای گرفتن عکس سلفی جهت ارسال به ادمین
+    document.getElementById('selfie-capture').click();
+}
+
+window.handleSelfieCapture = async function(input) {
+    if(input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            const selfieData = e.target.result; // تصویر به صورت Base64
+            const newEmail = document.getElementById('email-new').value.trim();
+            const userId = window.currentFormattedId || 'MS-000000';
+            
+            try {
+                // ثبت درخواست در دیتابیس برای بررسی پنل ادمین (ارسال ID، عکس و جمیل جدید)
+                await updateDoc(doc(db,"users",currentUser.uid), {
+                    pendingEmail: newEmail,
+                    selfieImage: selfieData,
+                    adminApprovalStatus: 'pending'
+                });
+
+                document.getElementById('req-admin-btn').setAttribute('disabled','true');
+                document.getElementById('req-admin-btn').style.opacity='0.6';
+                document.getElementById('admin-status-box').style.display='block';
+                
+                alert(`درخواست تغییر جمیل، تصویر سلفی و شناسه کاربری (${userId}) با موفقیت برای پنل مدیریت ارسال شد.`);
+            } catch(err) {
+                alert('خطا در ارسال درخواست به مدیریت.');
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 window.copyUserId=function(){if(!window.currentFormattedId)return;navigator.clipboard.writeText(window.currentFormattedId).then(()=>{const ic=document.getElementById('copy-id-btn');ic.className="fas fa-check";ic.style.color="#22c55e";setTimeout(()=>{ic.className="fas fa-copy";ic.style.color="#38bdf8";},2000);});};
 const lo=document.getElementById('logout-btn');if(lo)lo.onclick=async e=>{e.preventDefault();await signOut(auth);localStorage.removeItem('zenix_logged_in');window.location.href='index.html';};
 </script>
@@ -93,50 +142,6 @@ window.tc = function(e) {
         bd.style.display = 'block';
     }
 }
-window.requestAdminPermission = function(b) {
-    const newEmail = document.getElementById('email-new').value.trim();
-    if(!newEmail) {
-        alert('لطفاً ابتدا ایمیل جدید را وارد کنید.');
-        return;
-    }
-    // باز کردن دوربین برای گرفتن سلفی
-    document.getElementById('selfie-capture').click();
-}
-window.handleSelfieCapture = function(input) {
-    if(input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const selfieData = e.target.result; // تصویر به صورت Base64
-            const userId = window.currentFormattedId || 'MS-000000';
-            
-            // اینجا شناسه کاربری همراه با تصویر سلفی برای ادمین ارسال شد
-            console.log("Sending ID & Selfie to Admin:", userId);
-            alert(`تصویر سلفی و شناسه کاربری (${userId}) با موفقیت برای ادمین ارسال شد. لطفاً منتظر دریافت کد تأیید باشید.`);
-            
-            // فعال‌سازی فیلد کد تایید ادمین
-            const adminCodeInput = document.getElementById('admin-auth-code');
-            const saveBtn = document.getElementById('save-email-btn');
-            adminCodeInput.removeAttribute('disabled');
-            adminCodeInput.style.opacity = '1';
-            adminCodeInput.style.cursor = 'text';
-            adminCodeInput.focus();
-            
-            adminCodeInput.oninput = function() {
-                if(this.value.length >= 4) {
-                    saveBtn.removeAttribute('disabled');
-                    saveBtn.style.opacity = '1';
-                    saveBtn.style.cursor = 'pointer';
-                } else {
-                    saveBtn.setAttribute('disabled', 'true');
-                    saveBtn.style.opacity = '0.6';
-                    saveBtn.style.cursor = 'not-allowed';
-                }
-            };
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-function validateEmailForm(b){const s=b.closest('.bd').querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
 function validatePasswordForm(b){const s=b.closest('.bd').querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
 function validateTxForm(b){const s=b.closest('.bd').querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
 function verifyWalletCode(b){const d=b.closest('.bd');d.querySelector('#trx-in').removeAttribute('readonly');d.querySelector('#bep-in').removeAttribute('readonly');const s=d.querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
