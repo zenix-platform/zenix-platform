@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Zenix - تراکنش‌ها</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<div class="logo"><h2>ZENIX</h2></div>
+<div class="hr">
+<div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button>
+<div class="menu" id="bell-menu">
+<div style="padding:8px 12px;font-size:13px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold;" data-i18n="adminMsg">پیام مدیریت</div>
+<div style="padding:10px 12px;font-size:13px;color:#cbd5e1;" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div>
+</div></div>
+<a href="support.html" class="lb"><i class="fas fa-headset"></i></a>
+<div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe"></i></button>
+<div class="menu" id="lang-menu">
+<div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div>
+</div></div>
+<div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button>
+<div class="menu" id="nav-menu">
+<a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span data-i18n="home">صفحه اصلی</span></a>
+<a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a>
+<a href="deposit.html" class="mi"><i class="fas fa-arrow-up-right-dots"></i><span data-i18n="deposit">واریز</span></a>
+<a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span data-i18n="receive">برداشت</span></a>
+<a href="team.html" class="mi"><i class="fas fa-users"></i><span data-i18n="team">تیم من</span></a>
+<a href="transactions.html" class="mi" style="color:#38bdf8;"><i class="fas fa-history"></i><span data-i18n="transactions">تراکنش</span></a>
+<a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span data-i18n="profile">پروفایل</span></a>
+<a href="support.html" class="mi"><i class="fas fa-headset"></i><span data-i18n="support">پشتیبانی</span></a>
+<a href="login.html" class="mi" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a>
+</div></div></div>
+</header>
+<div class="c">
+<div class="wel">
+<div><h1 data-i18n="transactionsTitle">تاریخچه تراکنش‌ها</h1><p data-i18n="transactionsSub">مشاهده و بررسی تمامی تراکنش‌های مالی و پاداش‌ها</p></div>
+<div style="font-size:13px;background:rgba(56,189,248,.1);border:1px solid #38bdf8;padding:6px 10px;border-radius:6px;color:#38bdf8;font-weight:600;"><i class="fas fa-wallet"></i> کل موجودی: <span id="total-balance">1,245.50</span> USDT</div>
+</div>
+<div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:16px;margin-top:12px;">
+<div style="display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;">
+<button type="button" class="filter-btn" onclick="filterTx('deposit',this)" style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);color:#cbd5e1;padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;">واریز</button>
+<button type="button" class="filter-btn" onclick="filterTx('withdraw',this)" style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);color:#cbd5e1;padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;">برداشت</button>
+<button type="button" class="filter-btn" onclick="filterTx('commission',this)" style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);color:#cbd5e1;padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;">کمیسیون تیم</button>
+</div>
+<div style="font-size:15px;color:#38bdf8;font-weight:bold;margin-bottom:10px;"><i class="fas fa-list-ul"></i> لیست تراکنش‌ها</div>
+<div id="tx-list" style="display:flex;flex-direction:column;gap:10px;">
+<div class="tx-item" data-type="deposit" style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+<div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;background:rgba(34,197,94,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#22c55e;"><i class="fas fa-arrow-down"></i></div><div><div style="font-weight:bold;color:#f8fafc;">واریز تتر (USDT)</div><div style="font-size:11px;color:#94a3b8;">۱۴۰۵/۰۶/۲۹ - ۱۸:۳۰</div></div></div>
+<div style="text-align:left;"><div style="color:#22c55e;font-weight:bold;">+۵۰۰.۰۰ USDT</div><div style="font-size:11px;color:#22c55e;">موفق</div></div>
+</div>
+<div class="tx-item" data-type="withdraw" style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+<div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;background:rgba(239,68,68,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#ef4444;"><i class="fas fa-arrow-up"></i></div><div><div style="font-weight:bold;color:#f8fafc;">برداشت وجه</div><div style="font-size:11px;color:#94a3b8;">۱۴۰۵/۰۶/۲۸ - ۱۴:۱۰</div></div></div>
+<div style="text-align:left;"><div style="color:#ef4444;font-weight:bold;">-۱۲۰.۰۰ USDT</div><div style="font-size:11px;color:#eab308;">در حال بررسی</div></div>
+</div>
+<div class="tx-item" data-type="commission" style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+<div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;background:rgba(56,189,248,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#38bdf8;"><i class="fas fa-users"></i></div><div><div style="font-weight:bold;color:#f8fafc;">کمیسیون نسل ۱ تیم</div><div style="font-size:11px;color:#94a3b8;">۱۴۰۵/۰۶/۲۷ - ۲۱:۰۰</div></div></div>
+<div style="text-align:left;"><div style="color:#22c55e;font-weight:bold;">+۲۸.۰۰ USDT</div><div style="font-size:11px;color:#22c55e;">موفق</div></div>
+</div>
+</div>
+</div>
+</div>
+<footer><p>&copy; 2026 Zenix</p></footer>
+<script src="script.js"></script>
+<script>
+function filterTx(t,b){
+document.querySelectorAll('.tx-item').forEach(i=>{i.style.display=i.dataset.type===t?'flex':'none';});
+document.querySelectorAll('.filter-btn').forEach(btn=>{btn.style.background='rgba(15,23,42,0.6)';btn.style.color='#cbd5e1';btn.style.fontWeight='normal';btn.style.border='1px solid rgba(255,255,255,0.08)';});
+b.style.background='#38bdf8';b.style.color='#0f172a';b.style.fontWeight='bold';b.style.border='none';
+}
+</script>
+</body>
+</html>
