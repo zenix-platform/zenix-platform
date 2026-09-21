@@ -7,7 +7,7 @@
 <div class="ibox"><span style="color:#94a3b8;font-size:13px;">وضعیت حساب:</span><span id="account-status" style="font-weight:bold;font-size:13px;">تایید نشده</span></div>
 <div class="ibox" style="flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:0;"><span style="color:#94a3b8;font-size:13px;">شماره تماس:</span><div style="display:flex;align-items:center;gap:6px;direction:ltr;width:100%;"><div class="c-dropdown" id="c-dropdown"><div class="c-select-btn" id="c-select-btn"><span style="color:#94a3b8;font-size:10px;">کد کشور</span> <i class="fas fa-chevron-down" style="font-size:8px;"></i></div><div class="c-list" id="c-list"><input type="text" class="c-search" placeholder="Search..." oninput="filterCountries(this)"><div id="c-options-container"></div></div></div><input type="hidden" id="country-code" value=""><div style="display:flex;flex-direction:column;flex:1;"><input type="text" id="user-phone-input" placeholder="9123456789" maxlength="10" style="background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;padding:6px 10px;font-size:13px;width:100%;outline:none;"><div class="err-msg" id="phone-err-msg" style="font-size:10px;margin-top:2px;">شماره باید ۱۰ رقم و بدون صفر باشد</div></div></div><button type="button" id="save-phone-btn" onclick="savePhone()" class="bs" style="margin-top:4px;">ذخیره</button></div><div class="success-msg" id="phone-success">شماره تماس با موفقیت ذخیره شد</div></div>
 
-<div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-envelope"></i> <span>تغییر جمیل (ایمیل)</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">ایمیل فعلی</label><input type="email" class="fi" id="email-curr"><div class="err-msg">ایمیل نامعتبر است</div></div><div class="fg"><label class="fl">ایمیل جدید</label><div style="display:flex;gap:8px;"><input type="email" class="fi" id="email-new"><button type="button" class="bs" style="width:130px;font-size:12px;" onclick="sendEmailCode(this)">ارسال کد</button></div></div><div class="fg"><label class="fl">کد تأیید</label><input type="text" class="fi" id="email-code" maxlength="6"></div><button type="button" class="bs" onclick="validateEmailForm(this)">ذخیره تغییرات</button><div class="success-msg">ایمیل بروز شد</div></div></div>
+<div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-envelope"></i> <span>تغییر جمیل (ایمیل) - نیازمند مجوز ادمین</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">ایمیل فعلی</label><input type="email" class="fi" id="email-curr"></div><div class="fg"><label class="fl">ایمیل جدید</label><div style="display:flex;gap:8px;"><input type="email" class="fi" id="email-new"><button type="button" class="bs" style="width:150px;font-size:12px;background:#f59e0b;color:#0f172a;" onclick="requestAdminPermission(this)">درخواست مجوز ادمین</button></div></div><div class="fg"><label class="fl">کد تایید مجوز ادمین</label><input type="text" class="fi" id="admin-auth-code" placeholder="کد ارسالی برای ادمین را وارد کنید..." maxlength="6" disabled style="opacity:0.6;cursor:not-allowed;"></div><button type="button" class="bs" id="save-email-btn" onclick="validateEmailForm(this)" disabled style="opacity:0.6;cursor:not-allowed;">ذخیره تغییرات</button><div class="success-msg">ایمیل بروز شد</div></div></div>
 
 <div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-lock"></i> <span>تغییر رمز ورود</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">رمز فعلی</label><input type="password" class="fi" id="pwd-curr"></div><div class="fg"><label class="fl">رمز جدید</label><input type="password" class="fi" id="pwd-new"></div><div class="fg"><label class="fl">تکرار رمز جدید</label><input type="password" class="fi" id="pwd-conf"></div><button type="button" class="bs" onclick="validatePasswordForm(this)">ذخیره تغییرات</button><div class="success-msg">رمز ورود بروز شد</div></div></div>
 
@@ -93,7 +93,37 @@ window.tc = function(e) {
         bd.style.display = 'block';
     }
 }
-function sendEmailCode(b){alert('کد تأیید ارسال شد.');}
+window.requestAdminPermission = function(b) {
+    const newEmail = document.getElementById('email-new').value.trim();
+    if(!newEmail) {
+        alert('لطفاً ابتدا ایمیل جدید را وارد کنید.');
+        return;
+    }
+    // ارسال درخواست مجوز به ادمین (شناسه درخواست ارسال شد)
+    const adminCodeInput = document.getElementById('admin-auth-code');
+    const saveBtn = document.getElementById('save-email-btn');
+    
+    alert('شناسه درخواست تغییر ایمیل برای ادمین ارسال شد. پس از تایید ادمین و دریافت کد، آن را وارد کنید.');
+    
+    // فعالسازی فیلد کد تایید ادمین
+    adminCodeInput.removeAttribute('disabled');
+    adminCodeInput.style.opacity = '1';
+    adminCodeInput.style.cursor = 'text';
+    adminCodeInput.focus();
+    
+    // فعال‌سازی دکمه ذخیره پس از وارد کردن کد ادمین
+    adminCodeInput.oninput = function() {
+        if(this.value.length >= 4) {
+            saveBtn.removeAttribute('disabled');
+            saveBtn.style.opacity = '1';
+            saveBtn.style.cursor = 'pointer';
+        } else {
+            saveBtn.setAttribute('disabled', 'true');
+            saveBtn.style.opacity = '0.6';
+            saveBtn.style.cursor = 'not-allowed';
+        }
+    };
+}
 function validateEmailForm(b){const s=b.closest('.bd').querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
 function validatePasswordForm(b){const s=b.closest('.bd').querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
 function validateTxForm(b){const s=b.closest('.bd').querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
@@ -103,6 +133,7 @@ const mBtn=document.getElementById('menu-btn'),nMenu=document.getElementById('na
 if(mBtn)mBtn.onclick=e=>{e.stopPropagation();nMenu.classList.toggle('show');lMenu.classList.remove('show');bMenu.classList.remove('show');};
 if(lBtn)lBtn.onclick=e=>{e.stopPropagation();lMenu.classList.toggle('show');nMenu.classList.remove('show');bMenu.classList.remove('show');};
 if(bBtn)bBtn.onclick=e=>{e.stopPropagation();bMenu.classList.toggle('show');nMenu.classList.remove('show');lMenu.classList.remove('show');};
+document.onclick=()=>{if(nMenu)nMenu.classList.remove('show');if(lMenu)lMenu.classList.remove('show');if(bMenu)bMenu.classList.remove('show');};
 document.querySelectorAll('.menu').forEach(m=>m.onclick=e=>e.stopPropagation());
 </script>
 </body></html>
