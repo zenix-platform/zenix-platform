@@ -20,15 +20,19 @@ async function loadUsers(){
 try{const snap=await getDocs(collection(db,"users"));tb.innerHTML="";usersMap={};
 snap.forEach(d=>{const u=d.data(),uid=d.id;usersMap[uid]=u;renderRow(uid,u);});
 if(snap.empty)tb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:#f59e0b;">کاربری یافت نشد</td></tr>`;
-}catch(e){tb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:#ef4444;">خطا</td></tr>`;}}
+}catch(e){tb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:#ef4444;">خطا در بارگذاری</td></tr>`;}}
 
 function renderRow(uid,u){
 let id=`MS-${(uid.replace(/\D/g,'')+"123456789").substring(0,6)}`;
 let req=u.pendingEmail||u.newEmail||'';
 let selfieBtn=u.selfieImage?`<button class="btn-approve" onclick="openS('${uid}')">مشاهده</button>`:`-`;
 let acts=req?`<button class="btn-approve" onclick="appEmail('${uid}','${req}')">تایید</button><button class="btn-reject" onclick="rejEmail('${uid}')">رد</button>`:`<span class="badge">عادی</span>`;
-tb.innerHTML+=`<tr class="user-row" data-search="${id}${u.fullName||''} ${u.email\vert{}\vert{}''}${req}`.toLowerCase()}">
-<td style="color:#38bdf8;font-weight:bold">${id}</td><td><b>${u.fullName||u.name||'بی‌نام'}</b></td><td>${u.email||'-'}</td><td style="color:#f59e0b">${req||'-'}</td><td>${selfieBtn}</td><td><span class="badge">$${u.balance||0}</span></td><td>${acts} <button class="btn-edit" onclick="openE('${uid}')"><i class="fas fa-edit"></i></button></td></tr>`;}
+let tr=document.createElement('tr');
+tr.className="user-row";
+tr.dataset.search=`${id} ${u.fullName||''} ${u.name||''} ${u.email||''} ${req}`.toLowerCase();
+tr.innerHTML=`<td style="color:#38bdf8;font-weight:bold">${id}</td><td><b>${u.fullName||u.name||'بی‌نام'}</b></td><td>${u.email||'-'}</td><td style="color:#f59e0b">${req||'-'}</td><td>${selfieBtn}</td><td><span class="badge">$${u.balance||0}</span></td><td>${acts} <button class="btn-edit" onclick="openE('${uid}')"><i class="fas fa-edit"></i></button></td>`;
+tb.appendChild(tr);
+}
 
 window.openS=uid=>{let u=usersMap[uid];if(!u)return;activeTargetUid=uid;activePendingEmail=u.pendingEmail||u.newEmail||'';document.getElementById('selfie-img-preview').src=u.selfieImage;selfieM.classList.add('show');};
 document.getElementById('close-selfie').onclick=()=>selfieM.classList.remove('show');
