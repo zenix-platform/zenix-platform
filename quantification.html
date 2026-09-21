@@ -86,8 +86,7 @@ if(qBtn) {
 onAuthStateChanged(auth,async u=>{
 if(!u){window.location.href='index.html';return;}
 currentUserUid=u.uid;
-try{
-const d=await getDoc(doc(db,"users",u.uid));
+getDoc(doc(db,"users",u.uid)).then(d=>{
 if(d.exists()){
 const data=d.data();
 cCnt=Number(data.quantCount||0);
@@ -107,7 +106,7 @@ badge.innerHTML=`<i class="fas fa-lock"></i> <span>${t.inactive}</span>`;
 vipBadge.className="badge-lock";vipBadge.innerHTML='<i class="fas fa-lock"></i>';
 }
 }
-}catch(e){console.error(e);}
+}).catch(e=>console.error(e));
 });
 
 const logoutBtn=document.getElementById('logout-btn');
