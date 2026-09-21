@@ -1,83 +1,133 @@
-<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zenix - مدیریت</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}header{background:rgba(15,23,42,.95);border-bottom:1px solid rgba(255,255,255,.1);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}.logo h2{font-size:15px;color:#38bdf8;font-weight:800}.btn-logout{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer}.c{max-width:1150px;width:100%;margin:12px auto;padding:0 10px;flex:1}.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap}.search-box{position:relative;flex:1;max-width:280px}.search-box input{width:100%;background:rgba(15,23,42,.85);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:6px 10px 6px 28px;color:#fff;font-size:11px;outline:none}.search-box input:focus{border-color:#38bdf8}.search-box i{position:absolute;top:8px;left:8px;color:#94a3b8;font-size:11px}.panel-box{background:rgba(15,23,42,.85);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px;overflow:hidden}.table-responsive{width:100%;overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:right;font-size:11px}th,td{padding:8px 6px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}th{color:#94a3b8;font-weight:600;background:rgba(255,255,255,.02)}td{color:#cbd5e1}.badge{background:rgba(34,197,94,.15);color:#22c55e;padding:2px 5px;border-radius:4px;font-weight:600}.btn-edit,.btn-approve,.btn-reject{padding:3px 6px;border-radius:4px;cursor:pointer;font-size:10px;font-weight:600;margin-left:2px}.btn-edit{background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);color:#38bdf8}.btn-approve{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22c55e}.btn-reject{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center}.modal.show{display:flex}.modal-content{background:#0f172a;border:1px solid rgba(56,189,248,.3);border-radius:10px;width:100%;max-width:380px;padding:14px;max-height:90vh;overflow-y:auto}.form-group{margin-bottom:8px}.form-group label{display:block;font-size:9px;color:#94a3b8;margin-bottom:2px}.form-group input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:6px 8px;color:#fff;font-size:11px;outline:none}.form-group input:focus{border-color:#38bdf8}.btn-save{width:100%;background:#0284c7;color:#fff;border:none;padding:8px;border-radius:5px;font-weight:bold;cursor:pointer;margin-top:6px;font-size:11px}footer{text-align:center;padding:8px;font-size:9px;color:#64748b;border-top:1px solid rgba(255,255,255,.05)}</style></head><body>
-<header><div class="logo"><h2>ZENIX ADMIN</h2></div><button class="btn-logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> خروج</button></header>
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zenix</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}.logo h2{font-size:18px;color:#38bdf8;font-weight:800}.hr{display:flex;align-items:center;gap:8px}.wrap{position:relative!important}.lb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;width:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#38bdf8;text-decoration:none}.badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}.menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:160px;max-height:240px;overflow-y:auto;padding:6px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}[dir="rtl"] .wrap .menu{left:0!important;right:auto!important}.menu.show{display:block}.mi{padding:7px 10px;font-size:12px;color:#cbd5e1;cursor:pointer;border-radius:6px;display:flex;align-items:center;gap:8px;text-decoration:none}.mi:hover{background:rgba(56,189,248,.2);color:#38bdf8}.c{max-width:800px;width:100%;margin:15px auto;padding:0 12px;flex:1}.wel{background:linear-gradient(135deg,rgba(2,132,199,.15),rgba(147,51,234,.15));border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px;margin-bottom:12px}.card{background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:20px;margin-top:12px}.hd{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}.hd i.ch{transition:0.3s;color:#38bdf8}.card.open .hd i.ch{transform:rotate(180deg)}.bd{display:none;margin-top:15px;border-top:1px solid rgba(255,255,255,0.1);padding-top:15px}.fg{margin-bottom:15px}.fl{display:block;font-size:14px;color:#94a3b8;margin-bottom:6px}.fi{width:100%;padding:10px 14px;background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#f8fafc;font-size:14px;outline:none}.fi:focus{border-color:#38bdf8}.fi[readonly],input[readonly]{opacity:0.7;background:rgba(15,23,42,0.4)!important;cursor:not-allowed}.fi.error{border-color:#ef4444!important}.err-msg{color:#ef4444;font-size:12px;margin-top:4px;display:none}.success-msg{color:#22c55e;font-size:13px;margin-top:10px;display:none;text-align:center;font-weight:bold}.bs{display:block;width:100%;background:#38bdf8;color:#0f172a;border:none;padding:10px;font-weight:bold;border-radius:8px;cursor:pointer;font-size:14px;text-align:center}.bs:hover{background:#0ea5e9}.ibox{display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,0.6);padding:12px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);margin-bottom:12px}footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05)}.c-dropdown{position:relative;width:95px}.c-select-btn{background:#0f172a;color:#f8fafc;border:1px solid rgba(255,255,255,0.2);padding:6px;border-radius:6px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;width:100%}.c-list{display:none;position:absolute;top:100%;left:0;background:#0f172a;border:1px solid rgba(255,255,255,0.2);border-radius:6px;width:190px;max-height:180px;overflow-y:auto;z-index:9999;box-shadow:0 10px 25px rgba(0,0,0,.9);margin-top:4px}.c-list.show{display:block}.c-search{width:100%;padding:6px;background:#1e293b;border:none;border-bottom:1px solid rgba(255,255,255,0.1);color:#fff;font-size:11px;outline:none}.c-option{padding:6px 8px;font-size:11px;color:#cbd5e1;cursor:pointer;display:flex;align-items:center;gap:6px}.c-option:hover{background:rgba(56,189,248,.2);color:#38bdf8}</style></head><body>
+<header><div class="logo"><h2>ZENIX</h2></div><div class="hr"><div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button><div class="menu" id="bell-menu"><div style="padding:8px 12px;font-size:14px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold;">پیام مدیریت</div><div style="padding:10px 12px;font-size:13px;color:#cbd5e1;">به پلتفرم زنیکس خوش آمدید.</div></div></div><a href="support.html" class="lb"><i class="fas fa-headset"></i></a><div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe"></i></button><div class="menu" id="lang-menu"><div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div></div></div><div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button><div class="menu" id="nav-menu"><a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span>صفحه اصلی</span></a><a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span>کوانتیفیکیشن</span></a><a href="deposit.html" class="mi"><i class="fas fa-arrow-up-right-dots"></i><span>واریز</span></a><a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span>برداشت</span></a><a href="team.html" class="mi"><i class="fas fa-users"></i><span>تیم من</span></a><a href="transactions.html" class="mi"><i class="fas fa-history"></i><span>تراکنش</span></a><a href="profile.html" class="mi" style="color:#38bdf8;"><i class="fas fa-user-cog"></i><span>پروفایل</span></a><a href="support.html" class="mi"><i class="fas fa-headset"></i><span>پشتیبانی</span></a><a href="#" class="mi" id="logout-btn" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span>خروج</span></a></div></div></div></header>
+
 <div class="c">
-<div class="top-bar">
-<div style="font-size:13px;color:#38bdf8;font-weight:700"><i class="fas fa-users"></i> لیست کاربران و درخواست ها</div>
-<div class="search-box"><input type="text" id="search-input" placeholder="جستجو..."><i class="fas fa-search"></i></div>
-</div>
-<div class="panel-box">
-<div class="table-responsive">
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>نام</th>
-<th>ایمیل فعلی</th>
-<th>ایمیل جدید (درخواستی)</th>
-<th>زمان درخواست</th>
-<th>سلفی احراز</th>
-<th>موجودی</th>
-<th>عملیات</th>
-</tr>
-</thead>
-<tbody id="users-table-body">
-<tr><td colspan="8" style="text-align:center;color:#94a3b8;">در حال بارگذاری...</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
+<div class="wel"><div><h1 id="pt" style="font-size:18px;margin-bottom:3px;">پروفایل کاربر</h1><p id="pd" style="font-size:12px;color:#94a3b8;">مدیریت اطلاعات حساب کاربری و تنظیمات امنیتی</p></div></div>
+<div class="card" style="cursor:default;"><div style="display:flex;align-items:center;gap:15px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:15px;"><div style="width:50px;height:50px;background:rgba(56,189,248,0.2);border:1px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;color:#38bdf8;"><i class="fas fa-user"></i></div><div><div style="font-size:16px;font-weight:bold;color:#f8fafc;" id="user-fullname">Loading...</div><div style="font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:6px;margin-top:2px;"><span id="user-id">ID: MS-000000</span><i class="fas fa-copy" id="copy-id-btn" title="کپی ID" style="cursor:pointer;color:#38bdf8;font-size:13px;" onclick="copyUserId()"></i></div></div></div>
+<div class="ibox"><span style="color:#94a3b8;font-size:13px;">وضعیت حساب:</span><span id="account-status" style="font-weight:bold;font-size:13px;">تایید نشده</span></div>
+<div class="ibox" style="flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:0;"><span style="color:#94a3b8;font-size:13px;">شماره تماس:</span><div style="display:flex;align-items:center;gap:6px;direction:ltr;width:100%;"><div class="c-dropdown" id="c-dropdown"><div class="c-select-btn" id="c-select-btn"><span style="color:#94a3b8;font-size:10px;">کد کشور</span> <i class="fas fa-chevron-down" style="font-size:8px;"></i></div><div class="c-list" id="c-list"><input type="text" class="c-search" placeholder="Search..." oninput="filterCountries(this)"><div id="c-options-container"></div></div></div><input type="hidden" id="country-code" value=""><div style="display:flex;flex-direction:column;flex:1;"><input type="text" id="user-phone-input" placeholder="9123456789" maxlength="10" style="background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;padding:6px 10px;font-size:13px;width:100%;outline:none;"><div class="err-msg" id="phone-err-msg" style="font-size:10px;margin-top:2px;">شماره باید ۱۰ رقم و بدون صفر باشد</div></div></div><button type="button" id="save-phone-btn" onclick="savePhone()" class="bs" style="margin-top:4px;">ذخیره</button></div><div class="success-msg" id="phone-success">شماره تماس با موفقیت ذخیره شد</div></div>
 
-<div class="modal" id="edit-modal"><div class="modal-content"><div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;color:#38bdf8;font-weight:bold"><span>ویرایش کاربر</span><button id="close-modal" style="background:none;border:none;color:#94a3b8;cursor:pointer"><i class="fas fa-times"></i></button></div><form id="edit-form"><input type="hidden" id="edit-uid"><div class="form-group"><label>نام</label><input type="text" id="edit-name"></div><div class="form-group"><label>ایمیل</label><input type="text" id="edit-email"></div><div class="form-group"><label>موبایل</label><input type="text" id="edit-phone"></div><div class="form-group"><label>موجودی ($)</label><input type="number" step="any" id="edit-balance"></div><div class="form-group"><label>واریزی ($)</label><input type="number" step="any" id="edit-deposit"></div><div class="form-group"><label>پاداش ($)</label><input type="number" step="any" id="edit-bonus"></div><div class="form-group"><label>رمز عبور</label><input type="text" id="edit-pass"></div><div class="form-group"><label>رمز تراکنش</label><input type="text" id="edit-txpass"></div><button type="submit" class="btn-save">ذخیره</button></form></div></div></div>
+<div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-envelope"></i> <span>تغییر جمیل (ایمیل)</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">ایمیل فعلی</label><input type="email" class="fi" id="email-curr" readonly></div><div class="fg"><label class="fl">ایمیل جدید</label><div style="display:flex;gap:8px;"><input type="email" class="fi" id="email-new"><button type="button" class="bs" id="req-admin-btn" style="width:190px;font-size:12px;background:#f59e0b;color:#0f172a;" onclick="requestAdminPermission()">گرفتن عکس و ارسال به ادمین</button></div><input type="file" id="selfie-capture" accept="image/*" capture="user" style="display:none" onchange="handleSelfieCapture(this)"></div><div id="admin-status-box" style="margin-top:15px;padding:10px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:8px;font-size:13px;color:#f59e0b;display:none;text-align:center;"><i class="fas fa-clock"></i> در انتظار تایید مدیریت (از ۱ تا ۷۲ ساعت)...</div></div></div>
 
-<div class="modal" id="selfie-modal"><div class="modal-content" style="text-align:center;"><div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;color:#38bdf8;font-weight:bold"><span>تصویر سلفی کاربر</span><button id="close-selfie" style="background:none;border:none;color:#94a3b8;cursor:pointer"><i class="fas fa-times"></i></button></div><img id="selfie-img-preview" src="" style="width:100%;max-height:300px;object-fit:contain;border-radius:6px;border:1px solid rgba(255,255,255,0.1);margin-bottom:8px;"><div style="display:flex;gap:5px"><button type="button" class="btn-approve" style="flex:1;padding:7px;" id="modal-approve-btn">تایید</button><button type="button" class="btn-reject" style="flex:1;padding:7px;" id="modal-reject-btn">رد درخواست</button></div></div></div>
+<div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-lock"></i> <span>تغییر رمز ورود</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">رمز فعلی</label><input type="password" class="fi" id="pwd-curr"></div><div class="fg"><label class="fl">رمز جدید</label><input type="password" class="fi" id="pwd-new"></div><div class="fg"><label class="fl">تکرار رمز جدید</label><input type="password" class="fi" id="pwd-conf"></div><button type="button" class="bs" onclick="validatePasswordForm(this)">ذخیره تغییرات</button><div class="success-msg">رمز ورود بروز شد</div></div></div>
+
+<div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-key"></i> <span>تغییر رمز تراکنش</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">جمیل</label><div style="display:flex;gap:8px;"><input type="email" class="fi" id="tr-email"><button type="button" class="bs" style="width:130px;font-size:12px;">ارسال کد</button></div></div><div class="fg"><label class="fl">کد تأیید</label><input type="text" class="fi" id="tr-code" maxlength="6"></div><div class="fg"><label class="fl">رمز فعلی</label><input type="password" class="fi" id="tr-curr"></div><div class="fg"><label class="fl">رمز جدید (۶ رقم)</label><input type="password" class="fi" id="tr-new" maxlength="6"></div><button type="button" class="bs" onclick="validateTxForm(this)">ذخیره تغییرات</button><div class="success-msg">رمز تراکنش بروز شد</div></div></div>
+
+<div class="card"><div class="hd" onclick="tc(this)"><h3 style="color:#38bdf8;font-size:15px;margin:0;"><i class="fas fa-wallet"></i> <span>آدرس‌های کیف پول</span></h3><i class="fas fa-chevron-down ch"></i></div><div class="bd"><div class="fg"><label class="fl">آدرس TRX</label><input type="text" class="fi" id="trx-in" readonly placeholder="T..."></div><div class="fg"><label class="fl">آدرس BEP20</label><input type="text" class="fi" id="bep-in" readonly placeholder="0x..."></div><div class="fg"><label class="fl">جمیل</label><div style="display:flex;gap:8px;"><input type="email" class="fi" id="wal-email"><button type="button" class="bs" style="width:130px;font-size:12px;">ارسال کد</button></div></div><div class="fg"><label class="fl">کد تأیید</label><div style="display:flex;gap:8px;"><input type="text" class="fi" id="wal-code" maxlength="6"><button type="button" class="bs" style="width:130px;font-size:12px;background:#22c55e;color:#fff;" onclick="verifyWalletCode(this)">تایید کد</button></div></div><button type="button" class="bs" onclick="saveWalletForm(this)">ذخیره تغییرات</button><div class="success-msg">کیف پول بروز شد</div></div></div></div>
 
 <footer><p>&copy; 2026 Zenix</p></footer>
+<script>
+const countries=[{n:"Afghanistan",c:"+93",f:"🇦🇫"},{n:"Albania",c:"+355",f:"🇦🇱"},{n:"Algeria",c:"+213",f:"🇩🇿"},{n:"Argentina",c:"+54",f:"🇦🇷"},{n:"Australia",c:"+61",f:"🇦🇺"},{n:"Austria",c:"+43",f:"🇦🇹"},{n:"Azerbaijan",c:"+994",f:"🇦🇿"},{n:"Bahrain",c:"+973",f:"🇧🇭"},{n:"Bangladesh",c:"+880",f:"🇧🇩"},{n:"Belarus",c:"+375",f:"🇧🇾"},{n:"Belgium",c:"+32",f:"🇧🇪"},{n:"Brazil",c:"+55",f:"🇧🇷"},{n:"Canada",c:"+1",f:"🇨🇦"},{n:"China",c:"+86",f:"🇨🇳"},{n:"Egypt",c:"+20",f:"🇪🇬"},{n:"France",c:"+33",f:"🇫🇷"},{n:"Germany",c:"+49",f:"🇩🇪"},{n:"India",c:"+91",f:"🇮🇳"},{n:"Indonesia",c:"+62",f:"🇮🇩"},{n:"Iran",c:"+98",f:"🇮🇷"},{n:"Iraq",c:"+964",f:"🇮🇶"},{n:"Italy",c:"+39",f:"🇮🇹"},{n:"Japan",c:"+81",f:"🇯🇵"},{n:"Jordan",c:"+962",f:"🇯🇴"},{n:"Kuwait",c:"+965",f:"🇰🇼"},{n:"Lebanon",c:"+961",f:"🇱🇧"},{n:"Malaysia",c:"+60",f:"🇲🇾"},{n:"Netherlands",c:"+31",f:"🇳🇱"},{n:"Oman",c:"+968",f:"🇴🇲"},{n:"Pakistan",c:"+92",f:"🇵🇰"},{n:"Qatar",c:"+974",f:"🇶🇦"},{n:"Russia",c:"+7",f:"🇷🇺"},{n:"Saudi Arabia",c:"+966",f:"🇸🇦"},{n:"Spain",c:"+34",f:"🇪🇸"},{n:"Sweden",c:"+46",f:"🇸🇪"},{n:"Switzerland",c:"+41",f:"🇨🇭"},{n:"Turkey",c:"+90",f:"🇹🇷"},{n:"United Arab Emirates",c:"+971",f:"🇦🇪"},{n:"United Kingdom",c:"+44",f:"🇬🇧"},{n:"United States",c:"+1",f:"🇺🇸"}];
+function renderCountries(l){const c=document.getElementById('c-options-container');if(c)c.innerHTML=l.map(o=>`<div class="c-option" onclick="selectCountry('${o.f}','${o.c}')"><span>${o.f}</span> <span>${o.c}</span> <span style="color:#94a3b8;font-size:10px;">(${o.n})</span></div>`).join('');}
+renderCountries(countries);
+function filterCountries(i){renderCountries(countries.filter(x=>x.n.toLowerCase().includes(i.value.toLowerCase())||x.c.includes(i.value)));}
+function selectCountry(f,c){document.getElementById('country-code').value=c;document.getElementById('c-select-btn').querySelector('span').innerText=`${f} ${c}`;document.getElementById('c-list').classList.remove('show');}
+const sBtn=document.getElementById('c-select-btn'),sList=document.getElementById('c-list');
+if(sBtn)sBtn.onclick=e=>{if(!sBtn.hasAttribute('disabled')){e.stopPropagation();sList.classList.toggle('show');}};
+window.addEventListener('click',e=>{if(sList&&!e.target.closest('#c-dropdown'))sList.classList.remove('show');},true);
+</script>
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";import{getFirestore,collection,getDocs,doc,updateDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
-const tbody=document.getElementById('users-table-body'),editModal=document.getElementById('edit-modal'),closeModal=document.getElementById('close-modal'),editForm=document.getElementById('edit-form'),searchInput=document.getElementById('search-input');
-const selfieModal=document.getElementById('selfie-modal'),closeSelfie=document.getElementById('close-selfie'),selfieImgPreview=document.getElementById('selfie-img-preview'),modalApproveBtn=document.getElementById('modal-approve-btn'),modalRejectBtn=document.getElementById('modal-reject-btn');
-let usersMap={},activeTargetUid=null,activePendingEmail=null;
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import{getFirestore,doc,onSnapshot,updateDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
+window.currentFormattedId="";let currentUser=null;
 
-async function loadUsers(){
-try{const snap=await getDocs(collection(db,"users"));tbody.innerHTML="";usersMap={};
-snap.forEach(d=>{const u=d.data(),uid=d.id;usersMap[uid]=u;renderRow(uid,u);});
-if(snap.empty)tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:#94a3b8;">کاربری یافت نشد.</td></tr>`;
-}catch(e){tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:#ef4444;">خطا در دریافت اطلاعات</td></tr>`;}}
+onAuthStateChanged(auth,u=>{
+if(!u){window.location.href='index.html';return;}
+currentUser=u;
+const stEl=document.getElementById('account-status');
+stEl.textContent="تایید نشده";stEl.style.color="#ef4444";
 
-function renderRow(uid,u){
-let nums=uid.replace(/\D/g,'');if(nums.length<6){nums=(nums+"123456789").padEnd(6,'0');}
-const formattedId=`MS-${nums.substring(0,6)}`;
-const tr=document.createElement('tr');
-tr.className="user-row";
-tr.dataset.search=`${formattedId} ${uid} ${u.fullName||''} ${u.name||''} ${u.email||''} ${u.pendingEmail||''}`.toLowerCase();
+onSnapshot(doc(db,"users",u.uid),d=>{
+if(d.exists()){
+const data=d.data();
+document.getElementById('user-fullname').textContent=data.fullname||"کاربر عزیز";
 
-let selfieBtn=u.selfieImage?`<button class="btn-approve" onclick="openSelfieModal('${uid}')"><i class="fas fa-eye"></i> مشاهده</button>`:`<span style="color:#64748b">-</span>`;
-let reqTime=u.requestTime?new Date(u.requestTime).toLocaleString('fa-IR'):'-';
-let actionBtns=u.pendingEmail?`
-<button class="btn-approve" onclick="approveEmailChange('${uid}','${u.pendingEmail}')" title="تایید"><i class="fas fa-check"></i></button>
-<button class="btn-reject" onclick="rejectEmailChange('${uid}')" title="رد"><i class="fas fa-times"></i></button>
-`:`<span class="badge">عادی</span>`;
+if(data.email) document.getElementById('email-curr').value=data.email;
 
-tr.innerHTML=`<td style="font-family:monospace;color:#38bdf8;font-weight:bold;">${formattedId}</td><td><b>${u.fullName||u.name||'بی‌نام'}</b></td><td>${u.email||'-'}</td><td style="color:#f59e0b;font-weight:bold;">${u.pendingEmail||'-'}</td><td style="font-size:10px;color:#94a3b8">${reqTime}</td><td>${selfieBtn}</td><td><span class="badge">$${u.balance||0}</span></td><td>${actionBtns} <button class="btn-edit" onclick="openModal('${uid}')" title="ویرایش"><i class="fas fa-edit"></i></button></td>`;
-tbody.appendChild(tr);
+let nums=u.uid.replace(/\D/g,'');if(nums.length<6)nums=(nums+"123456789").padEnd(6,'0');
+window.currentFormattedId=`MS-${nums.substring(0,6)}`;
+document.getElementById('user-id').textContent=`ID: ${window.currentFormattedId}`;
+if(data.depositAmount&&Number(data.depositAmount)>=20){stEl.textContent="تایید شد";stEl.style.color="#22c55e";}
+if(data.phone){
+let raw=data.phone.trim();
+for(const item of countries){if(raw.startsWith(item.c)){document.getElementById('country-code').value=item.c;document.getElementById('c-select-btn').querySelector('span').innerText=`${item.f} ${item.c}`;raw=raw.replace(item.c,'').trim();break;}}
+const pInput=document.getElementById('user-phone-input');pInput.value=raw;pInput.setAttribute('readonly','true');
+document.getElementById('c-select-btn').setAttribute('disabled','true');document.getElementById('c-select-btn').style.opacity='0.7';document.getElementById('c-select-btn').style.cursor='not-allowed';document.getElementById('save-phone-btn').style.display='none';
+}
+if(data.trxWallet)document.getElementById('trx-in').value=data.trxWallet;
+if(data.bepWallet)document.getElementById('bep-in').value=data.bepWallet;
+
+const reqBtn=document.getElementById('req-admin-btn');
+const statusBox=document.getElementById('admin-status-box');
+
+if(data.pendingEmail){
+document.getElementById('email-new').value=data.pendingEmail;
+reqBtn.setAttribute('disabled','true');
+reqBtn.style.opacity='0.6';
+statusBox.style.display='block';
+}else{
+document.getElementById('email-new').value='';
+reqBtn.removeAttribute('disabled');
+reqBtn.style.opacity='1';
+statusBox.style.display='none';
+}
+}
+});
+});
+
+window.savePhone=async function(){
+if(!currentUser)return;
+const code=document.getElementById('country-code').value,pInput=document.getElementById('user-phone-input'),number=pInput.value.trim(),errBox=document.getElementById('phone-err-msg');
+if(!code||!/^\d{10}$/.test(number)||number.startsWith('0')){pInput.classList.add('error');errBox.style.display='block';return;}
+pInput.classList.remove('error');errBox.style.display='none';
+try{
+await updateDoc(doc(db,"users",currentUser.uid),{phone:`${code}${number}`});
+const msg=document.getElementById('phone-success');msg.style.display='block';
+pInput.setAttribute('readonly','true');document.getElementById('c-select-btn').setAttribute('disabled','true');document.getElementById('c-select-btn').style.opacity='0.7';document.getElementById('save-phone-btn').style.display='none';
+setTimeout(()=>msg.style.display='none',3000);
+}catch(e){}
+};
+
+window.requestAdminPermission=function(){
+const newEmail=document.getElementById('email-new').value.trim();
+if(!newEmail||!newEmail.includes('@')){alert('ایمیل نامعتبر');return;}
+document.getElementById('selfie-capture').click();
 }
 
-window.openSelfieModal=uid=>{const u=usersMap[uid];if(!u||!u.selfieImage)return;activeTargetUid=uid;activePendingEmail=u.pendingEmail;selfieImgPreview.src=u.selfieImage;selfieModal.classList.add('show');};
-closeSelfie.onclick=()=>selfieModal.classList.remove('show');
+window.handleSelfieCapture=async function(input){
+if(input.files&&input.files[0]){
+const reader=new FileReader();
+reader.onload=async function(e){
+try{
+await updateDoc(doc(db,"users",currentUser.uid),{pendingEmail:document.getElementById('email-new').value.trim(),selfieImage:e.target.result,adminApprovalStatus:'pending'});
+document.getElementById('req-admin-btn').setAttribute('disabled','true');
+document.getElementById('req-admin-btn').style.opacity='0.6';
+document.getElementById('admin-status-box').style.display='block';
+}catch(err){}
+};
+reader.readAsDataURL(input.files[0]);
+}
+}
 
-modalApproveBtn.onclick=async()=>{if(!activeTargetUid||!activePendingEmail)return;await approveEmailChange(activeTargetUid,activePendingEmail);selfieModal.classList.remove('show');};
-modalRejectBtn.onclick=async()=>{if(!activeTargetUid)return;await rejectEmailChange(activeTargetUid);selfieModal.classList.remove('show');};
-
-window.approveEmailChange=async(uid,newEmail)=>{if(!confirm(`تایید تغییر ایمیل به (${newEmail})؟`))return;try{await updateDoc(doc(db,"users",uid),{email:newEmail,pendingEmail:"",selfieImage:"",requestTime:"",adminApprovalStatus:"approved"});alert('تایید شد!');loadUsers();}catch(e){alert('خطا');}};
-window.rejectEmailChange=async(uid)=>{if(!confirm(`آیا از رد درخواست این کاربر اطمینان دارید؟`))return;try{await updateDoc(doc(db,"users",uid),{pendingEmail:"",selfieImage:"",requestTime:"",adminApprovalStatus:"rejected"});alert('درخواست رد شد.');loadUsers();}catch(e){alert('خطا');}};
-
-searchInput.oninput=e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('.user-row').forEach(r=>{r.style.display=r.dataset.search.includes(q)?'':'none'});};
-window.openModal=uid=>{const u=usersMap[uid];if(!u)return;document.getElementById('edit-uid').value=uid;document.getElementById('edit-name').value=u.fullName||u.name||'';document.getElementById('edit-email').value=u.email||'';document.getElementById('edit-phone').value=u.phone||'';document.getElementById('edit-balance').value=u.balance||0;document.getElementById('edit-deposit').value=u.depositAmount||0;document.getElementById('edit-bonus').value=u.bonus||0;document.getElementById('edit-pass').value=u.password||'';document.getElementById('edit-txpass').value=u.txPassword||'';editModal.classList.add('show');};
-closeModal.onclick=()=>editModal.classList.remove('show');
-
-editForm.onsubmit=async e=>{e.preventDefault();const uid=document.getElementById('edit-uid').value;try{await updateDoc(doc(db,"users",uid),{fullName:document.getElementById('edit-name').value,email:document.getElementById('edit-email').value,phone:document.getElementById('edit-phone').value,balance:parseFloat(document.getElementById('edit-balance').value)||0,depositAmount:parseFloat(document.getElementById('edit-deposit').value)||0,bonus:parseFloat(document.getElementById('edit-bonus').value)||0,password:document.getElementById('edit-pass').value,txPassword:document.getElementById('edit-txpass').value});editModal.classList.remove('show');loadUsers();alert('بروزرسانی شد!');}catch(err){alert('خطا');}};
-
-onAuthStateChanged(auth,u=>{if(!u)window.location.href='index.html';else loadUsers();});
-document.getElementById('logout-btn').onclick=async()=>{await signOut(auth);window.location.href='index.html';};
+window.copyUserId=function(){if(!window.currentFormattedId)return;navigator.clipboard.writeText(window.currentFormattedId).then(()=>{const ic=document.getElementById('copy-id-btn');ic.className="fas fa-check";ic.style.color="#22c55e";setTimeout(()=>{ic.className="fas fa-copy";ic.style.color="#38bdf8";},2000);});};
+const lo=document.getElementById('logout-btn');if(lo)lo.onclick=async e=>{e.preventDefault();await signOut(auth);localStorage.removeItem('zenix_logged_in');window.location.href='index.html';};
+</script>
+<script>
+window.tc=function(e){
+const card=e.closest('.card'),bd=card.querySelector('.bd'),isOpen=card.classList.contains('open');
+document.querySelectorAll('.card').forEach(c=>{if(c!==card){c.classList.remove('open');const b=c.querySelector('.bd');if(b)b.style.display='none';}});
+if(isOpen){card.classList.remove('open');bd.style.display='none';}else{card.classList.add('open');bd.style.display='block';}
+}
+function validatePasswordForm(b){const s=b.closest('.bd').querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
+function validateTxForm(b){const s=b.closest('.bd').querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
+function verifyWalletCode(b){const d=b.closest('.bd');d.querySelector('#trx-in').removeAttribute('readonly');d.querySelector('#bep-in').removeAttribute('readonly');const s=d.querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
+function saveWalletForm(b){const s=b.closest('.bd').querySelector('.success-msg');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}
+const mBtn=document.getElementById('menu-btn'),nMenu=document.getElementById('nav-menu'),lBtn=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu'),bBtn=document.getElementById('bell-btn'),bMenu=document.getElementById('bell-menu');
+if(mBtn)mBtn.onclick=e=>{e.stopPropagation();nMenu.classList.toggle('show');lMenu.classList.remove('show');bMenu.classList.remove('show');};
+if(lBtn)lBtn.onclick=e=>{e.stopPropagation();lMenu.classList.toggle('show');nMenu.classList.remove('show');bMenu.classList.remove('show');};
+if(bBtn)bBtn.onclick=e=>{e.stopPropagation();bMenu.classList.toggle('show');nMenu.classList.remove('show');lMenu.classList.remove('show');};
+document.onclick=()=>{if(nMenu)nMenu.classList.remove('show');if(lMenu)lMenu.classList.remove('show');if(bMenu)bMenu.classList.remove('show');};
+document.querySelectorAll('.menu').forEach(m=>m.onclick=e=>e.stopPropagation());
 </script></body></html>
