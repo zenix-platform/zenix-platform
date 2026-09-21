@@ -2,8 +2,8 @@
 <header><div class="logo"><h2>ZENIX</h2></div><div class="hr"><div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button><div class="menu" id="bell-menu"><div style="padding:6px 10px;font-size:11px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold;" data-i18n="adminMsg">پیام مدیریت</div><div style="padding:8px 10px;font-size:11px;color:#cbd5e1;" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div></div></div><a href="support.html" class="lb"><i class="fas fa-headset"></i></a><div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe"></i></button><div class="menu" id="lang-menu"><div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div><div class="mi" data-lang="ru">Русский</div><div class="mi" data-lang="es">Español</div><div class="mi" data-lang="fr">Français</div><div class="mi" data-lang="de">Deutsch</div></div></div><div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button><div class="menu" id="nav-menu"><a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span data-i18n="home">صفحه اصلی</span></a><a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a><a href="deposit.html" class="mi"><i class="fas fa-arrow-up-right-dots"></i><span data-i18n="deposit">واریز</span></a><a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span data-i18n="receive">برداشت</span></a><a href="transactions.html" class="mi"><i class="fas fa-history"></i><span data-i18n="transactions">تراکنش</span></a><a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span data-i18n="profile">پروفایل</span></a><a href="#" class="mi" id="logout-btn" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a></div></div></div></header>
 <div class="c"><div class="wel"><div><h1 data-i18n="tradingLevels">سطوح معاملاتی</h1><p data-i18n="subWel">سطح خود را بررسی و ربات را فعال کنید</p></div><div id="status-badge" style="font-size:11px;background:rgba(239,68,68,.1);border:1px solid #ef4444;padding:4px 8px;border-radius:6px;color:#ef4444;font-weight:600;"><i class="fas fa-lock"></i> <span data-i18n="inactive">غیرفعال (موجودی کمتر از $20)</span></div></div>
 
-<!-- کادر جدید موجودی کل -->
-<div style="background:rgba(30,41,59,0.9);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;"><div style="display:flex;align-items:center;gap:10px;"><div style="background:rgba(56,189,248,0.15);color:#38bdf8;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;"><i class="fas fa-wallet"></i></div><div><div style="font-size:10px;color:#94a3b8;" data-i18n="totalBalance">موجودی کل کل حساب</div><div id="total-balance-val" style="font-size:16px;font-weight:bold;color:#f8fafc;">$0.00</div></div></div><a href="deposit.html" style="background:#38bdf8;color:#030712;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:bold;text-decoration:none;"><i class="fas fa-plus"></i> <span data-i18n="depositBtn">شارژ</span></a></div>
+<!-- کادر جدید موجودی کل (بدون دکمه شارژ) -->
+<div style="background:rgba(30,41,59,0.9);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;"><div style="background:rgba(56,189,248,0.15);color:#38bdf8;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;"><i class="fas fa-wallet"></i></div><div><div style="font-size:10px;color:#94a3b8;" data-i18n="totalBalance">موجودی کل حساب</div><div id="total-balance-val" style="font-size:16px;font-weight:bold;color:#f8fafc;">$0.00</div></div></div>
 
 <div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;"><div style="font-size:11px;color:#94a3b8;margin-bottom:4px;"><i class="fas fa-clock" style="color:#38bdf8;"></i> <span data-i18n="nyTime">ساعت نیویورک</span></div><div id="ny-clock-val" style="font-size:24px;color:#38bdf8;font-weight:bold;letter-spacing:1px;">--:--:--</div></div>
 <div class="quant-grid">
@@ -20,7 +20,7 @@
 <div style="margin-top:16px;background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;"><h3 style="font-size:13px;color:#38bdf8;margin-bottom:10px;"><i class="fas fa-history"></i> <span data-i18n="tradeHistory">تاریخچه معاملات</span></h3><div id="history-list" style="display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;"><div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">هنوز معامله‌ای ثبت نشده است</div></div></div></div>
 <footer><p>&copy; 2026 Zenix</p></footer>
 <script>
-const LD={fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',logout:'خروج',tradingLevels:'سطوح معاملاتی',subWel:'سطح خود را بررسی و ربات را فعال کنید',active:'فعال',inactive:'غیرفعال (موجودی کمتر از $20)',nyTime:'ساعت نیویورک',bal:'موجودی',prof:'سود',usersCount:'نفرات',liveTrade:'وضعیت معامله جاری',todayProfit:'سود امروز',yesterdayProfit:'سود دیروز',tradeHistory:'تاریخچه معاملات',noHistory:'هنوز معامله‌ای ثبت نشده است',totalBalance:'موجودی کل حساب',depositBtn:'شارژ'},en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',logout:'Logout',tradingLevels:'Trading Levels',subWel:'Check your level and activate the bot',active:'Active',inactive:'Inactive (Balance < $20)',nyTime:'New York Time',bal:'Balance',prof:'Profit',usersCount:'Users',liveTrade:'Live Trade Status',todayProfit:'Today Profit',yesterdayProfit:'Yesterday Profit',tradeHistory:'Trade History',noHistory:'No trades recorded yet',totalBalance:'Total Balance',depositBtn:'Deposit'}}; 
+const LD={fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',logout:'خروج',tradingLevels:'سطوح معاملاتی',subWel:'سطح خود را بررسی و ربات را فعال کنید',active:'فعال',inactive:'غیرفعال (موجودی کمتر از $20)',nyTime:'ساعت نیویورک',bal:'موجودی',prof:'سود',usersCount:'نفرات',liveTrade:'وضعیت معامله جاری',todayProfit:'سود امروز',yesterdayProfit:'سود دیروز',tradeHistory:'تاریخچه معاملات',noHistory:'هنوز معامله‌ای ثبت نشده است',totalBalance:'موجودی کل حساب'},en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',logout:'Logout',tradingLevels:'Trading Levels',subWel:'Check your level and activate the bot',active:'Active',inactive:'Inactive (Balance < $20)',nyTime:'New York Time',bal:'Balance',prof:'Profit',usersCount:'Users',liveTrade:'Live Trade Status',todayProfit:'Today Profit',yesterdayProfit:'Yesterday Profit',tradeHistory:'Trade History',noHistory:'No trades recorded yet',totalBalance:'Total Balance'}}; 
 
 function setLang(l){
   const t=LD[l]||LD.fa;
@@ -72,6 +72,7 @@ const qBtn=document.getElementById('quant-btn');
 let currentUserUid=null;
 let cCnt=Number(localStorage.getItem('zx_cnt')||'0');
 let tProf=parseFloat(localStorage.getItem('zx_prof')||'0');
+let baseBalance=parseFloat(localStorage.getItem('zx_base_bal')||'0');
 const tpEl=document.getElementById('today-profit-val');
 if(tpEl) tpEl.innerText='$'+tProf.toFixed(2);
 
@@ -134,12 +135,18 @@ if(qBtn) {
       localStorage.setItem('zx_prof',tProf);
       if(tpEl) tpEl.innerText='$'+tProf.toFixed(2);
       
+      // اضافه شدن سود به موجودی کل
+      baseBalance+=p;
+      localStorage.setItem('zx_base_bal', baseBalance);
+      const tbEl=document.getElementById('total-balance-val');
+      if(tbEl) tbEl.innerText='$'+baseBalance.toFixed(2);
+
       tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${lang==='fa'?'موفق!':'Success!'} ${randomCrypto.symbol} | ${lang==='fa'?'سود':'Profit'}: <span style="color:#22c55e;">+$${p.toFixed(2)}</span>`;
       
       if(hList.innerHTML.includes('هنوز')||hList.innerHTML.includes('No trades')) hList.innerHTML='';
       
-      // تاریخچه اصلاح شده: سمت راست سود، سمت چپ نماد و نام ارز
-      const newHistoryItem=`<div style="background:rgba(255,255,255,0.05);padding:8px;border-radius:6px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;"><span style="color:#22c55e;font-weight:bold;">+$${p.toFixed(2)}</span><span><i class="fas fa-coins" style="color:#38bdf8"></i> ${randomCrypto.name} (${randomCrypto.symbol})</span></div>`;
+      // تاریخچه اصلاح شده: سمت راست نماد اصلی ارز، سمت چپ مبلغ سود
+      const newHistoryItem=`<div style="background:rgba(255,255,255,0.05);padding:8px;border-radius:6px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;"><span><i class="fas fa-coins" style="color:#38bdf8"></i> ${randomCrypto.symbol}</span><span style="color:#22c55e;font-weight:bold;">+$${p.toFixed(2)}</span></div>`;
       
       hList.innerHTML=newHistoryItem+hList.innerHTML;
       localStorage.setItem('zx_history', hList.innerHTML);
@@ -157,14 +164,21 @@ onAuthStateChanged(auth, u => {
       const data=d.data();
       cCnt=Number(data.quantCount||0);
       localStorage.setItem('zx_cnt', cCnt);
-      const totalBalance=Number(data.balance||0)+Number(data.depositAmount||0);
+      
+      let initialTotal=Number(data.balance||0)+Number(data.depositAmount||0);
+      if(!localStorage.getItem('zx_base_bal')){
+        baseBalance=initialTotal;
+        localStorage.setItem('zx_base_bal', baseBalance);
+      } else {
+        baseBalance=parseFloat(localStorage.getItem('zx_base_bal'));
+      }
       
       const tbEl=document.getElementById('total-balance-val');
-      if(tbEl) tbEl.innerText='$'+totalBalance.toFixed(2);
+      if(tbEl) tbEl.innerText='$'+baseBalance.toFixed(2);
 
       const badge=document.getElementById('status-badge'),vipBadge=document.getElementById('vip1-badge');
       const lang=window.currentActiveLang||localStorage.getItem('zenix_lang')||'fa',t=LD[lang]||LD.fa;
-      if(totalBalance>=20){
+      if(baseBalance>=20){
         window.isBotActive=true; 
         localStorage.setItem('zx_active', 'true');
         window.checkClickState();
