@@ -61,14 +61,16 @@ if(data.bepWallet)document.getElementById('bep-in').value=data.bepWallet;
 
 const reqBtn=document.getElementById('req-admin-btn');
 const statusBox=document.getElementById('admin-status-box');
+const newEmailInput=document.getElementById('email-new');
 
 if(data.pendingEmail || data.newEmail){
-document.getElementById('email-new').value=data.pendingEmail || data.newEmail;
+if(!newEmailInput.value){
+newEmailInput.value=data.pendingEmail || data.newEmail;
+}
 reqBtn.setAttribute('disabled','true');
 reqBtn.style.opacity='0.6';
 statusBox.style.display='block';
 }else{
-document.getElementById('email-new').value='';
 reqBtn.removeAttribute('disabled');
 reqBtn.style.opacity='1';
 statusBox.style.display='none';
