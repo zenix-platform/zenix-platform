@@ -22,7 +22,7 @@ setLang(localStorage.getItem('zenix_lang')||'fa');
 document.querySelectorAll('#lang-menu .mi').forEach(el=>{el.onclick=(e)=>{e.stopPropagation();setLang(el.dataset.lang);lMenu.classList.remove('show');}});
 const mBtn=document.getElementById('menu-btn'),nMenu=document.getElementById('nav-menu'),lBtn=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu'),bBtn=document.getElementById('bell-btn'),bMenu=document.getElementById('bell-menu');
 function toggleMenu(o,e){e.stopPropagation();[nMenu,lMenu,bMenu].forEach(m=>{if(m!==o)m.classList.remove('show');});o.classList.toggle('show');}
-if(mBtn)mBtn.onclick=(e)=>toggleMenu(nMenu,e);if(lBtn)lBtn.onclick=(e)=>toggleMenu(lMenu,e);if(bBtn)bBtn.onclick=(e)=>toggleMenu(bMenu,e);
+if(mBtn)mBtn.onclick=(e)=>toggleMenu(nMenu,e);if(lBtn)lBtn.onclick=(e)=>toggleMenu(lBtn,e);if(bBtn)bBtn.onclick=(e)=>toggleMenu(bMenu,e);
 document.onclick=()=>{[nMenu,lMenu,bMenu].forEach(m=>m.classList.remove('show'));};document.querySelectorAll('.menu').forEach(m=>m.onclick=(e)=>e.stopPropagation());
 function updateNYClock(){const t=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());const c=document.getElementById('ny-clock-val');if(c)c.innerText=t;}setInterval(updateNYClock,1000);updateNYClock();
 </script>
