@@ -20,20 +20,61 @@
 </div>
 <footer><p>&copy; 2026 Zenix</p></footer>
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";import{getFirestore,doc,getDoc,updateDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";import{getFirestore,doc,onSnapshot,updateDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}},auth=getAuth(app),db=getFirestore(app);
 let currentUserUid=null;
-onAuthStateChanged(auth,async user=>{if(!user){window.location.href='index.html';return;}
+
+onAuthStateChanged(auth,async user=>{
+if(!user){window.location.href='index.html';return;}
 currentUserUid=user.uid;
-try{const docSnap=await getDoc(doc(db,"users",user.uid));if(docSnap.exists()){const data=docSnap.data();
+
+// استفاده از onSnapshot برای رصد لحظه‌ای تغییرات دیتابیس (مثل تایید ایمیل توسط ادمین)
+onSnapshot(doc(db,"users",user.uid),docSnap=>{
+if(docSnap.exists()){
+const data=docSnap.data();
 let nums=user.uid.replace(/\D/g,'');if(nums.length<6)nums=(nums+"123456789").padEnd(6,'0');
 document.getElementById('view-uid').value=`MS-${nums.substring(0,6)}`;
 document.getElementById('view-name').value=data.fullName||data.name||'بدون نام';
-document.getElementById('view-email').value=data.email||user.email||'';
-if(data.pendingEmail){document.getElementById('pending-status-box').innerHTML=`<i class="fas fa-clock"></i> درخواست تغییر ایمیل به (${data.pendingEmail}) در حال بررسی توسط ادمین است.`;}
-}}catch(e){console.error(e);}});
 
-document.getElementById('email-change-form').onsubmit=async e=>{e.preventDefault();const newEmail=document.getElementById('new-email-input').value;const fileInput=document.getElementById('selfie-file-input');if(!fileInput.files[0])return alert('لطفا عکس سلفی خود را انتخاب کنید.');const file=fileInput.files[0];
+// نمایش ایمیل فعلی و آپدیت خودکار آن در صورت تغییر توسط ادمین
+document.getElementById('view-email').value=data.email||user.email||'';
+
+const statusBox=document.getElementById('pending-status-box');
+if(data.pendingEmail){
+statusBox.innerHTML=`<i class="fas fa-clock"></i> درخواست تغییر ایمیل به (${data.pendingEmail}) در حال بررسی توسط ادمین است.`;
+}else{
+statusBox.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e;"></i> ایمیل شما تایید شده است.`;
+}
+}
+});
+});
+
+document.getElementById('email-change-form').onsubmit=async e=>{
+e.preventDefault();
+const newEmail=document.getElementById('new-email-input').value;
+const fileInput=document.getElementById('selfie-file-input');
+if(!fileInput.files[0])return alert('لطفا عکس سلفی خود را انتخاب کنید.');
+const file=fileInput.files[0];
 if(file.size>800000){alert('حجم عکس بالاست. لطفا عکسی با حجم کمتر از 700 کیلوبایت انتخاب کنید.');return;}
-const reader=new FileReader();reader.onload=async function(event){const base64Image=event.target.result;try{document.getElementById('submit-request-btn').disabled=true;document.getElementById('submit-request-btn').innerText='در حال ارسال...';await updateDoc(doc(db,"users",currentUserUid),{pendingEmail:newEmail,selfieImage:base64Image,adminApprovalStatus:"pending"});alert('درخواست شما با موفقیت ثبت شد و پس از بررسی ادمین اعمال خواهد شد.');location.reload();}catch(err){alert('خطا در ارسال درخواست: '+err.message);document.getElementById('submit-request-btn').disabled=false;document.getElementById('submit-request-btn').innerText='ارسال درخواست تغییر ایمیل';}};reader.readAsDataURL(file);};
+
+const reader=new FileReader();
+reader.onload=async function(event){
+const base64Image=event.target.result;
+try{
+document.getElementById('submit-request-btn').disabled=true;
+document.getElementById('submit-request-btn').innerText='در حال ارسال...';
+await updateDoc(doc(db,"users",currentUserUid),{pendingEmail:newEmail,selfieImage:base64Image,adminApprovalStatus:"pending"});
+alert('درخواست شما با موفقیت ثبت شد و پس از بررسی ادمین اعمال خواهد شد.');
+document.getElementById('email-change-form').reset();
+document.getElementById('submit-request-btn').disabled=false;
+document.getElementById('submit-request-btn').innerText='ارسال درخواست تغییر ایمیل';
+}catch(err){
+alert('خطا در ارسال درخواست: '+err.message);
+document.getElementById('submit-request-btn').disabled=false;
+document.getElementById('submit-request-btn').innerText='ارسال درخواست تغییر ایمیل';
+}
+};
+reader.readAsDataURL(file);
+};
+
 document.getElementById('logout-btn').onclick=async()=>{await signOut(auth);window.location.href='index.html';};
 </script></body></html>
