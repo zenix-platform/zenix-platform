@@ -17,8 +17,35 @@
 <footer><p>&copy; 2026 Zenix</p></footer>
 <script>
 const LD={fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',logout:'خروج',tradingLevels:'سطوح معاملاتی',subWel:'سطح خود را بررسی و ربات را فعال کنید',active:'فعال',inactive:'غیرفعال (موجودی کمتر از $20)',nyTime:'ساعت نیویورک',bal:'موجودی',prof:'سود',usersCount:'نفرات',liveTrade:'وضعیت معامله جاری',todayProfit:'سود امروز',yesterdayProfit:'سود دیروز',tradeHistory:'تاریخچه معاملات',noHistory:'هنوز معامله‌ای ثبت نشده است'},en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',logout:'Logout',tradingLevels:'Trading Levels',subWel:'Check your level and activate the bot',active:'Active',inactive:'Inactive (Balance < $20)',nyTime:'New York Time',bal:'Balance',prof:'Profit',usersCount:'Users',liveTrade:'Live Trade Status',todayProfit:'Today Profit',yesterdayProfit:'Yesterday Profit',tradeHistory:'Trade History',noHistory:'No trades recorded yet'}}; 
-function setLang(l){const t=LD[l]||LD.fa;document.documentElement.dir=t.dir;document.documentElement.lang=l;localStorage.setItem('zenix_lang',l);document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k])el.innerText=t[k];});window.currentActiveLang=l;const vipB=document.getElementById('vip1-badge');if(vipB&&vipB.classList.contains('badge-active'))vipB.innerText=t.active;if(window.checkClickState)window.checkClickState();}
+
+function setLang(l){
+  const t=LD[l]||LD.fa;
+  document.documentElement.dir=t.dir;
+  document.documentElement.lang=l;
+  localStorage.setItem('zenix_lang',l);
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k])el.innerText=t[k];
+  });
+  window.currentActiveLang=l;
+  const vipB=document.getElementById('vip1-badge');
+  if(vipB&&vipB.classList.contains('badge-active')) vipB.innerText=t.active;
+}
 setLang(localStorage.getItem('zenix_lang')||'fa');
+
+// لود آنی وضعیت قبلی از کش مرورگر برای جلوگیری از معطلی بعد از ریفرش
+if(localStorage.getItem('zx_active')==='true'){
+  window.isBotActive=true;
+  const badge=document.getElementById('status-badge'), vipBadge=document.getElementById('vip1-badge'), qBtn=document.getElementById('quant-btn');
+  const t=LD[localStorage.getItem('zenix_lang')||'fa'];
+  if(badge){
+    badge.style.background="rgba(56,189,248,.1)"; badge.style.borderColor="#38bdf8"; badge.style.color="#38bdf8";
+    badge.innerHTML=`<i class="fas fa-robot"></i> <span>${t.active}</span>`;
+  }
+  if(vipBadge){ vipBadge.className="badge-active"; vipBadge.innerText=t.active; }
+  if(qBtn){ qBtn.disabled=false; qBtn.style.opacity="1"; qBtn.style.cursor="pointer"; }
+}
+
 document.querySelectorAll('#lang-menu .mi').forEach(el=>{el.onclick=(e)=>{e.stopPropagation();setLang(el.dataset.lang);lMenu.classList.remove('show');}});
 const mBtn=document.getElementById('menu-btn'),nMenu=document.getElementById('nav-menu'),lBtn=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu'),bBtn=document.getElementById('bell-btn'),bMenu=document.getElementById('bell-menu');
 function toggleMenu(o,e){e.stopPropagation();[nMenu,lMenu,bMenu].forEach(m=>{if(m!==o)m.classList.remove('show');});o.classList.toggle('show');}
@@ -34,7 +61,7 @@ const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDo
 const qBtn=document.getElementById('quant-btn');
 
 let currentUserUid=null;
-let cCnt=0;
+let cCnt=Number(localStorage.getItem('zx_cnt')||'0');
 let tProf=parseFloat(localStorage.getItem('zx_prof')||'0');
 const tpEl=document.getElementById('today-profit-val');
 if(tpEl) tpEl.innerText='$'+tProf.toFixed(2);
@@ -51,11 +78,13 @@ window.checkClickState=function(){
     qBtn.innerHTML=`<i class="fas fa-robot"></i> <span>${txt} (${cCnt}/4)</span>`;
   }
 };
+window.checkClickState();
 
 if(qBtn) {
   qBtn.onclick=async function(){
     if(cCnt>=4 || !window.isBotActive || !currentUserUid) return;
     cCnt++; 
+    localStorage.setItem('zx_cnt', cCnt);
     qBtn.disabled=true; qBtn.style.opacity="0.5";
     const lang=window.currentActiveLang||'fa';
     qBtn.innerHTML=`<i class="fas fa-spinner fa-spin"></i> <span>...</span>`;
@@ -88,16 +117,20 @@ onAuthStateChanged(auth, u => {
     if(d.exists()){
       const data=d.data();
       cCnt=Number(data.quantCount||0);
+      localStorage.setItem('zx_cnt', cCnt);
       const totalBalance=Number(data.balance||0)+Number(data.depositAmount||0);
       const badge=document.getElementById('status-badge'),vipBadge=document.getElementById('vip1-badge');
       const lang=window.currentActiveLang||localStorage.getItem('zenix_lang')||'fa',t=LD[lang]||LD.fa;
       if(totalBalance>=20){
-        window.isBotActive=true; window.checkClickState();
+        window.isBotActive=true; 
+        localStorage.setItem('zx_active', 'true');
+        window.checkClickState();
         badge.style.background="rgba(56,189,248,.1)";badge.style.borderColor="#38bdf8";badge.style.color="#38bdf8";
         badge.innerHTML=`<i class="fas fa-robot"></i> <span>${t.active}</span>`;
         vipBadge.className="badge-active";vipBadge.innerText=t.active;
       }else{
         window.isBotActive=false;
+        localStorage.setItem('zx_active', 'false');
         qBtn.disabled=true;qBtn.style.opacity="0.5";qBtn.style.cursor="not-allowed";
         badge.style.background="rgba(239,68,68,.1)";badge.style.borderColor="#ef4444";badge.style.color="#ef4444";
         badge.innerHTML=`<i class="fas fa-lock"></i> <span>${t.inactive}</span>`;
