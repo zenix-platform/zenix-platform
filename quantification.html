@@ -81,30 +81,30 @@ if(qBtn) {
   };
 }
 
-onAuthStateChanged(auth,async u=>{
-if(!u){window.location.href='index.html';return;}
-currentUserUid=u.uid;
-getDoc(doc(db,"users",u.uid)).then(d=>{
-if(d.exists()){
-const data=d.data();
-cCnt=Number(data.quantCount||0);
-const totalBalance=Number(data.balance||0)+Number(data.depositAmount||0);
-const badge=document.getElementById('status-badge'),vipBadge=document.getElementById('vip1-badge');
-const lang=window.currentActiveLang||localStorage.getItem('zenix_lang')||'fa',t=LD[lang]||LD.fa;
-if(totalBalance>=20){
-window.isBotActive=true; window.checkClickState();
-badge.style.background="rgba(56,189,248,.1)";badge.style.borderColor="#38bdf8";badge.style.color="#38bdf8";
-badge.innerHTML=`<i class="fas fa-robot"></i> <span>${t.active}</span>`;
-vipBadge.className="badge-active";vipBadge.innerText=t.active;
-}else{
-window.isBotActive=false;
-qBtn.disabled=true;qBtn.style.opacity="0.5";qBtn.style.cursor="not-allowed";
-badge.style.background="rgba(239,68,68,.1)";badge.style.borderColor="#ef4444";badge.style.color="#ef4444";
-badge.innerHTML=`<i class="fas fa-lock"></i> <span>${t.inactive}</span>`;
-vipBadge.className="badge-lock";vipBadge.innerHTML='<i class="fas fa-lock"></i>';
-}
-}
-}).catch(e=>console.error(e));
+onAuthStateChanged(auth, u => {
+  if(!u){window.location.href='index.html';return;}
+  currentUserUid=u.uid;
+  getDoc(doc(db,"users",u.uid)).then(d=>{
+    if(d.exists()){
+      const data=d.data();
+      cCnt=Number(data.quantCount||0);
+      const totalBalance=Number(data.balance||0)+Number(data.depositAmount||0);
+      const badge=document.getElementById('status-badge'),vipBadge=document.getElementById('vip1-badge');
+      const lang=window.currentActiveLang||localStorage.getItem('zenix_lang')||'fa',t=LD[lang]||LD.fa;
+      if(totalBalance>=20){
+        window.isBotActive=true; window.checkClickState();
+        badge.style.background="rgba(56,189,248,.1)";badge.style.borderColor="#38bdf8";badge.style.color="#38bdf8";
+        badge.innerHTML=`<i class="fas fa-robot"></i> <span>${t.active}</span>`;
+        vipBadge.className="badge-active";vipBadge.innerText=t.active;
+      }else{
+        window.isBotActive=false;
+        qBtn.disabled=true;qBtn.style.opacity="0.5";qBtn.style.cursor="not-allowed";
+        badge.style.background="rgba(239,68,68,.1)";badge.style.borderColor="#ef4444";badge.style.color="#ef4444";
+        badge.innerHTML=`<i class="fas fa-lock"></i> <span>${t.inactive}</span>`;
+        vipBadge.className="badge-lock";vipBadge.innerHTML='<i class="fas fa-lock"></i>';
+      }
+    }
+  }).catch(e=>console.error(e));
 });
 
 const logoutBtn=document.getElementById('logout-btn');
