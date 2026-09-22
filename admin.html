@@ -43,7 +43,6 @@
         .en-font{font-family:ui-monospace,monospace;direction:ltr;display:inline-block}
         .badge-id{color:#38bdf8;font-weight:700;font-family:monospace;cursor:pointer;padding:4px 8px;background:rgba(56,189,248,.1);border-radius:6px;border:1px solid rgba(56,189,248,.2);display:inline-block}
         .badge-id:hover{background:rgba(56,189,248,.2);text-decoration:underline}
-        .badge-inactive{color:#ef4444;font-weight:600}
         .btn-action{padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;margin-left:4px;border:none;display:inline-flex;align-items:center;gap:4px}
         .btn-edit{background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);color:#38bdf8}
         .btn-approve{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22c55e}
@@ -101,9 +100,9 @@
             <div class="panel-box">
                 <div class="panel-header">
                     <div class="panel-title"><i class="fas fa-user-check"></i> کاربران فعال سیستم</div>
-                    <div class="search-box"><input type="text" id="s-act" placeholder="جستجوی شناسه..."><i class="fas fa-search"></i></div>
+                    <div class="search-box"><input type="text" id="s-act" placeholder="جستجوی شناسه یا تاریخ..."><i class="fas fa-search"></i></div>
                 </div>
-                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر (کلیک برای جزئیات)</th><th>عملیات</th></tr></thead><tbody id="tb-act"></tbody></table></div>
+                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر (کلیک برای جزئیات)</th><th>تاریخ و ساعت ثبت‌نام</th><th>عملیات</th></tr></thead><tbody id="tb-act"></tbody></table></div>
             </div>
         </div>
 
@@ -112,9 +111,9 @@
             <div class="panel-box">
                 <div class="panel-header">
                     <div class="panel-title"><i class="fas fa-user-clock"></i> کاربران با درخواست‌های در انتظار</div>
-                    <div class="search-box"><input type="text" id="s-pend" placeholder="جستجوی شناسه..."><i class="fas fa-search"></i></div>
+                    <div class="search-box"><input type="text" id="s-pend" placeholder="جستجوی شناسه یا تاریخ..."><i class="fas fa-search"></i></div>
                 </div>
-                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر (کلیک برای جزئیات)</th><th>عملیات</th></tr></thead><tbody id="tb-pend"></tbody></table></div>
+                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر (کلیک برای جزئیات)</th><th>تاریخ و ساعت ثبت‌نام</th><th>عملیات</th></tr></thead><tbody id="tb-pend"></tbody></table></div>
             </div>
         </div>
 
@@ -123,9 +122,9 @@
             <div class="panel-box">
                 <div class="panel-header">
                     <div class="panel-title"><i class="fas fa-user-slash"></i> حساب‌های لغو شده به دلیل تخلف</div>
-                    <div class="search-box"><input type="text" id="s-ban" placeholder="جستجوی شناسه..."><i class="fas fa-search"></i></div>
+                    <div class="search-box"><input type="text" id="s-ban" placeholder="جستجوی شناسه یا تاریخ..."><i class="fas fa-search"></i></div>
                 </div>
-                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر (کلیک برای جزئیات)</th><th>عملیات</th></tr></thead><tbody id="tb-ban"></tbody></table></div>
+                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر (کلیک برای جزئیات)</th><th>تاریخ و ساعت ثبت‌نام</th><th>عملیات</th></tr></thead><tbody id="tb-ban"></tbody></table></div>
             </div>
         </div>
 
@@ -141,8 +140,9 @@
     <!-- Modals -->
     <div class="modal" id="m-details">
         <div class="modal-content">
-            <div class="modal-header"><span>اطلاعات کامل کاربر</span><button class="modal-close" onclick="closeModal('m-details')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-header"><span>اطلاعات کامل و تاریخچه کاربر</span><button class="modal-close" onclick="closeModal('m-details')"><i class="fas fa-times"></i></button></div>
             <div id="user-details-body"></div>
+            <div id="modal-action-btn" style="margin-top:15px"></div>
         </div>
     </div>
 
@@ -157,17 +157,6 @@
                 <div class="form-group"><label>سود ($)</label><input type="number" step="any" id="e-profit"></div>
                 <button type="submit" class="btn-save">ذخیره تغییرات</button>
             </form>
-        </div>
-    </div>
-
-    <div class="modal" id="m-selfie">
-        <div class="modal-content" style="text-align:center">
-            <div class="modal-header"><span>احراز هویت سلفی</span><button class="modal-close" onclick="closeModal('m-selfie')"><i class="fas fa-times"></i></button></div>
-            <img id="img-selfie" src="" style="width:100%;max-height:300px;object-fit:contain;border-radius:8px;margin-bottom:12px;background:#030712">
-            <div style="display:flex;gap:8px">
-                <button class="btn-action btn-approve" style="flex:1;padding:10px;justify-content:center" id="btn-app-s"><i class="fas fa-check"></i> تایید</button>
-                <button class="btn-action btn-reject" style="flex:1;padding:10px;justify-content:center" id="btn-rej-s"><i class="fas fa-ban"></i> رد</button>
-            </div>
         </div>
     </div>
 
@@ -191,6 +180,12 @@
 
         window.closeModal=id=>document.getElementById(id).classList.remove('show');
         const getName=u=>u.fullName||u.name||(u.firstName?`${u.firstName} ${u.lastName||''}`:'بدون نام');
+        
+        const formatDate=ts=>{
+            if(!ts)return '-';
+            let d=typeof ts==='number'||!isNaN(Number(ts))?new Date(Number(ts)):new Date(ts);
+            return isNaN(d.getTime())?'-':d.toLocaleString('fa-IR');
+        };
 
         async function loadData(){
             const snap=await getDocs(collection(db,"users"));
@@ -202,20 +197,21 @@
             snap.forEach(d=>{
                 let u=d.data(),uid=d.id;uMap[uid]=u;totU++;totB+=Number(u.balance||0);
                 let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
-                let search=`${idCode} ${getName(u)} ${u.email||''}`.toLowerCase();
+                let regStr=formatData(u.createdAt||u.registeredAt);
+                let search=`${idCode} ${getName(u)} ${u.email||''} ${regStr}`.toLowerCase();
                 let isBanned=(u.status==='cancelled'||u.status==='banned'||u.isBanned===true);
                 let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage);
 
                 if(isBanned){
                     cBan++;
-                    tbBan.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><button class="btn-action btn-approve" onclick="toggleBan('${uid}',false)"><i class="fas fa-undo"></i> فعال‌سازی</button><button class="btn-action btn-edit" onclick="openE('${uid}')"><i class="fas fa-edit"></i></button></td></tr>`;
+                    tbBan.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td class="en-font">${regStr}</td><td><button class="btn-action btn-approve" onclick="toggleBan('${uid}',false)"><i class="fas fa-undo"></i> فعال‌سازی</button></td></tr>`;
                 }else if(hasPend){
                     cPend++;totR++;
                     reqList.push({uid,u,time:u.requestTimestamp||u.updatedAt||Date.now()});
-                    tbPend.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')"><i class="fas fa-check"></i> تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')"><i class="fas fa-times"></i> رد</button><button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-ban"></i> لغو</button></td></tr>`;
+                    tbPend.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td class="en-font">${regStr}</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')"><i class="fas fa-check"></i> تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')"><i class="fas fa-times"></i> رد</button><button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-ban"></i> لغو</button></td></tr>`;
                 }else{
                     cAct++;
-                    tbAct.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><button class="btn-action btn-edit" onclick="openE('${uid}')"><i class="fas fa-edit"></i> ویرایش</button><button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-ban"></i> لغو حساب</button></td></tr>`;
+                    tbAct.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td class="en-font">${regStr}</td><td><button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-ban"></i> لغو حساب</button></td></tr>`;
                 }
             });
 
@@ -225,35 +221,37 @@
             let badge=document.getElementById('req-badge');
             badge.innerText=totR; badge.className=totR>0?'tab-badge':'tab-badge zero';
 
-            if(cAct===0)tbAct.innerHTML=`<tr><td colspan="2" style="text-align:center;padding:15px;color:#94a3b8">کاربری یافت نشد</td></tr>`;
-            if(cPend===0)tbPend.innerHTML=`<tr><td colspan="2" style="text-align:center;padding:15px;color:#94a3b8">کاربری یافت نشد</td></tr>`;
-            if(cBan===0)tbBan.innerHTML=`<tr><td colspan="2" style="text-align:center;padding:15px;color:#94a3b8">کاربر لغو شده‌ای وجود ندارد</td></tr>`;
+            if(cAct===0)tbAct.innerHTML=`<tr><td colspan="3" style="text-align:center;padding:15px;color:#94a3b8">کاربری یافت نشد</td></tr>`;
+            if(cPend===0)tbPend.innerHTML=`<tr><td colspan="3" style="text-align:center;padding:15px;color:#94a3b8">کاربری یافت نشد</td></tr>`;
+            if(cBan===0)tbBan.innerHTML=`<tr><td colspan="3" style="text-align:center;padding:15px;color:#94a3b8">کاربر لغو شده‌ای وجود ندارد</td></tr>`;
 
             renderReqs(reqList);
         }
 
         window.openDetails=uid=>{
             let u=uMap[uid],idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
-            let regDate=u.createdAt?new Date(u.createdAt).toISOString().split('T')[0]:'-';
+            let regDate=formatData(u.createdAt||u.registeredAt);
             document.getElementById('user-details-body').innerHTML=`
                 <div class="detail-row"><span>شناسه:</span><span class="en-font">${idCode}</span></div>
                 <div class="detail-row"><span>نام و نام خانوادگی:</span><span>${getName(u)}</span></div>
                 <div class="detail-row"><span>ایمیل:</span><span class="en-font">${u.email||'-'}</span></div>
                 <div class="detail-row"><span>موجودی:</span><span>$${Number(u.balance||0).toLocaleString()}</span></div>
                 <div class="detail-row"><span>سود پلتفرم:</span><span>$${Number(u.profit||u.totalProfit||0).toLocaleString()}</span></div>
-                <div class="detail-row"><span>تاریخ ثبت‌نام:</span><span class="en-font">${regDate}</span></div>
+                <div class="detail-row"><span>تاریخ و ساعت ثبت‌نام:</span><span class="en-font">${regDate}</span></div>
                 <div class="detail-row"><span>وضعیت حساب:</span><span>${u.status||'فعال'}</span></div>
             `;
+            document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:10px;font-size:13px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش اطلاعات این کاربر</button>`;
             document.getElementById('m-details').classList.add('show');
         };
 
         function renderReqs(list){
             let box=document.getElementById('req-container');
             if(list.length===0){box.innerHTML=`<div style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواستی نیست.</div>`;return;}
-            let html=`<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام</th><th>ایمیل جدید</th><th>عملیات</th></tr></thead><tbody>`;
+            let html=`<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام</th><th>ایمیل جدید</th><th>تاریخ ثبت‌نام</th><th>عملیات</th></tr></thead><tbody>`;
             list.forEach(i=>{
                 let u=i.u,uid=i.uid,idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
-                html+=`<tr><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${getName(u)}</b></td><td style="color:#f59e0b" class="en-font">${u.pendingEmail||u.newEmail||'-'}</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button></td></tr>`;
+                let regStr=formatData(u.createdAt||u.registeredAt);
+                html+=`<tr><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${getName(u)}</b></td><td style="color:#f59e0b" class="en-font">${u.pendingEmail||u.newEmail||'-'}</td><td class="en-font">${regStr}</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button></td></tr>`;
             });
             box.innerHTML=html+`</tbody></table></div>`;
         }
