@@ -110,8 +110,8 @@
 
         <!-- Navigation Tabs -->
         <div class="admin-tabs">
-            <button class="tab-btn active" onclick="switchTab('t-active', this)"><i class="fas fa-user-check"></i> کاربران فعال (+$20)</button>
-            <button class="tab-btn" onclick="switchTab('t-pending', this)"><i class="fas fa-user-clock"></i> غیرفعال / در انتظار</button>
+            <button class="tab-btn active" onclick="switchTab('t-active', this)"><i class="fas fa-user-check"></i> کاربران سیستم</button>
+            <button class="tab-btn" onclick="switchTab('t-pending', this)"><i class="fas fa-user-clock"></i> در انتظار / تغییرات</button>
             <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> لغو شده (تخلف)</button>
             <button class="tab-btn" onclick="switchTab('t-withdraw', this)"><i class="fas fa-money-bill-transfer"></i> درخواست برداشت <span class="tab-badge zero" id="w-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-reqs', this)"><i class="fas fa-bell"></i> صندوق درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
@@ -121,7 +121,7 @@
         <div id="t-active" class="tab-content active">
             <div class="panel-box">
                 <div class="toolbar">
-                    <div class="search-box"><input type="text" id="s-act" placeholder="جستجو..." oninput="renderTable('active')"><i class="fas fa-search"></i></div>
+                    <div class="search-box"><input type="text" id="s-act" placeholder="جستجوی شناسه، نام یا ایمیل..." oninput="renderTable('active')"><i class="fas fa-search"></i></div>
                     <select class="filter-select" id="sort-act" onchange="renderTable('active')">
                         <option value="newest">جدیدترین</option>
                         <option value="oldest">قدیمی‌ترین</option>
@@ -137,7 +137,7 @@
         <div id="t-pending" class="tab-content">
             <div class="panel-box">
                 <div class="toolbar"><div class="search-box"><input type="text" id="s-pend" placeholder="جستجو..." oninput="renderTable('pending')"><i class="fas fa-search"></i></div></div>
-                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر</th><th>نام کاربر</th><th>تاریخ ثبت‌نام</th><th>موجودی فعلی</th><th>علت / ایمیل درخواستی</th><th>عملیات</th></tr></thead><tbody id="tb-pend"></tbody></table></div>
+                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر</th><th>نام کاربر</th><th>تاریخ ثبت‌نام</th><th>موجودی فعلی</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="tb-pend"></tbody></table></div>
                 <div class="pagination" id="pag-pend"></div>
             </div>
         </div>
@@ -252,13 +252,10 @@
                         totR++;
                         reqList.push({uid, u, time: dt.timeMs});
                         pendList.push(item);
-                    } else if(balance >= 20){
-                        // کاربر فعال: حداقل 20 دلار واریزی/موجودی دارد
-                        actList.push(item);
-                    } else {
-                        // کاربر غیرفعال: موجودی کمتر از 20 دلار دارد
-                        pendList.push(item);
                     }
+                    
+                    // همه کاربران در تب اصلی فعال نمایش داده شوند تا لیست خالی نماند
+                    actList.push(item);
                 });
 
                 allUsersData.active = actList;
@@ -322,7 +319,7 @@
                         </td>
                     </tr>`;
                 }else if(type==='pending'){
-                    let reason = i.u.pendingEmail || i.u.newEmail ? 'درخواست تغییر ایمیل' : (i.balance < 20 ? `موجودی ناکافی ($${i.balance})` : 'در انتظار تایید');
+                    let reason = i.u.pendingEmail || i.u.newEmail ? 'درخواست تغییر ایمیل' : 'در انتظار بررسی';
                     tb.innerHTML+=`<tr>
                         <td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td>
                         <td><b>${i.nameStr}</b></td>
@@ -367,7 +364,7 @@
                 <div class="detail-row"><span>موجودی:</span><span class="en-font">$${Number(u.balance||0).toLocaleString()}</span></div>
                 <div class="detail-row"><span>سود پلتفرم:</span><span class="en-font">$${Number(u.profit||u.totalProfit||0).toLocaleString()}</span></div>
                 <div class="detail-row"><span>تاریخ ثبت‌نام:</span><span class="en-font">${dt.str}</span></div>
-                <div class="detail-row"><span>وضعیت حساب:</span><span>${u.status||(Number(u.balance||0)>=20?'فعال':'غیرفعال (موجودی کمتر از $20)')}</span></div>
+                <div class="detail-row"><span>وضعیت حساب:</span><span>${u.status||'فعال'}</span></div>
             `;
             document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:12px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات کاربر</button>`;
             document.getElementById('m-details').classList.add('show');
