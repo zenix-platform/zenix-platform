@@ -44,7 +44,20 @@ const cList=[{name:'Bitcoin',symbol:'BTC',cls:'fab fa-bitcoin',color:'#f7931a'},
 window.checkClickState=function(){if(!window.isBotActive)return;const l=window.currentActiveLang||'fa',txt=l==='fa'?'کوانتیفیکیشن':(LD[l]?.quantification||'Quantification');if(cCnt>=4){qB.disabled=true;qB.style.opacity="0.5";qB.style.cursor="not-allowed";qB.innerHTML=`<i class="fas fa-ban"></i> <span>${l==='fa'?'پایان ظرفیت امروز':'Daily Limit'}</span>`;}else{qB.disabled=false;qB.style.opacity="1";qB.style.cursor="pointer";qB.innerHTML=`<i class="fas fa-robot"></i> <span>${txt} (${cCnt}/4)</span>`;}};
 
 if(qB){qB.onclick=function(e){e.preventDefault();if(cCnt>=4||!window.isBotActive||!uUid)return;cCnt++;qB.disabled=true;qB.style.opacity="0.5";const l=window.currentActiveLang||'fa';
-const p=(Math.random()*1+0.5);tProf+=p;bBal=initialBalance+tProf;
+
+// تعیین دقیق درصد سود روزانه بر اساس سطح VIP کاربر
+let dailyRate = 0.015; // پیش‌فرض سطح 1 (1.5%)
+if(initialBalance >= 10000) dailyRate = 0.04;       // VIP 6: 4.0%
+else if(initialBalance >= 5000) dailyRate = 0.035;  // VIP 5: 3.5%
+else if(initialBalance >= 2500) dailyRate = 0.03;   // VIP 4: 3.0%
+else if(initialBalance >= 1000) dailyRate = 0.025;  // VIP 3: 2.5%
+else if(initialBalance >= 300) dailyRate = 0.02;    // VIP 2: 2.0%
+
+// تقسیم سود کل روزانه آن سطح به 4 بخش مساوی برای هر کلیک
+const p = (initialBalance * dailyRate) / 4;
+tProf += p;
+bBal = initialBalance + tProf;
+
 if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
 
 const tBox=document.getElementById('trade-box'),tDet=document.getElementById('trade-details');tBox.style.display='block';const rc=cList[Math.floor(Math.random()*cList.length)];let tLeft=10;tDet.innerHTML=`<i class="fas fa-spinner fa-spin"></i> ${l==='fa'?'معامله':'Trading'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> <b>${rc.name} (${rc.symbol})</b> - <span id="cd-v" style="color:#f59e0b;font-weight:bold;">10</span> ثانیه`;
