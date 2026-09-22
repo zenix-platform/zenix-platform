@@ -3,78 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zenix - Admin Dashboard</title>
+    <title>Zenix - Next-Gen Admin Dashboard</title>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <style>
-        *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif}
-        body{background:#020617;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}
-        header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(56,189,248,.2);padding:16px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(16px)}
+        *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+        body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}
+        header{background:rgba(15,23,42,.85);border-bottom:1px solid rgba(255,255,255,.08);padding:16px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
         .logo{display:flex;align-items:center;gap:12px}
-        .logo h2{font-size:18px;color:#38bdf8;font-weight:900}
-        .admin-badge{background:rgba(56,189,248,.12);color:#38bdf8;font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid rgba(56,189,248,.3);font-weight:700}
-        .btn-logout{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:600}
-        .c{max-width:1450px;width:100%;margin:20px auto;padding:0 20px;flex:1}
+        .logo h2{font-size:18px;color:#38bdf8;font-weight:800;letter-spacing:1px}
+        .admin-badge{background:rgba(56,189,248,.12);color:#38bdf8;font-size:11px;padding:4px 10px;border-radius:8px;border:1px solid rgba(56,189,248,.25);font-weight:600}
+        .btn-logout{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#ef4444;padding:8px 16px;border-radius:10px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:600;transition:all .2s}
+        .btn-logout:hover{background:rgba(239,68,68,.25)}
+        .c{max-width:1450px;width:100%;margin:24px auto;padding:0 20px;flex:1}
         
-        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px}
-        .stat-card{background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px}
-        .stat-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-        .stat-info span{font-size:11px;color:#94a3b8;display:block;margin-bottom:2px}
-        .stat-info h3{font-size:18px;font-weight:800;color:#f8fafc}
+        /* Stats Grid */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+        .stat-card{background:linear-gradient(135deg,rgba(15,23,42,.9),rgba(30,41,59,.6));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;display:flex;align-items:center;gap:16px;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+        .stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+        .stat-info span{font-size:12px;color:#94a3b8;display:block;margin-bottom:4px}
+        .stat-info h3{font-size:22px;font-weight:800;color:#f8fafc}
 
-        .admin-tabs{display:flex;gap:8px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:10px;flex-wrap:wrap}
-        .tab-btn{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#94a3b8;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px}
-        .tab-btn.active{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.4);color:#38bdf8}
-        .tab-badge{background:#ef4444;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;font-weight:700}
+        /* Tabs */
+        .admin-tabs{display:flex;gap:10px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:12px;flex-wrap:wrap}
+        .tab-btn{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#94a3b8;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .25s}
+        .tab-btn.active{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.4);color:#38bdf8;box-shadow:0 0 20px rgba(56,189,248,.15)}
+        .tab-badge{background:#ef4444;color:#fff;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:700}
         .tab-badge.zero{background:rgba(255,255,255,.08);color:#94a3b8}
 
         .tab-content{display:none}
         .tab-content.active{display:block}
 
-        .panel-box{background:rgba(15,23,42,.8);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.5);margin-bottom:20px}
-        .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
-        .panel-title{font-size:15px;color:#38bdf8;font-weight:700;display:flex;align-items:center;gap:8px}
-        .search-box{position:relative;flex:1;max-width:300px}
-        .search-box input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:9px 12px 9px 36px;color:#fff;font-size:12px;outline:none}
-        .search-box input:focus{border-color:#38bdf8}
-        .search-box i{position:absolute;top:11px;left:12px;color:#94a3b8;font-size:13px}
+        /* Panel Box & Grid Cards */
+        .panel-box{background:rgba(15,23,42,.75);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:24px;box-shadow:0 12px 40px rgba(0,0,0,.6);margin-bottom:24px;backdrop-filter:blur(10px)}
+        .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:16px}
+        .panel-title{font-size:16px;color:#38bdf8;font-weight:700;display:flex;align-items:center;gap:10px}
+        .search-box{position:relative;flex:1;max-width:360px}
+        .search-box input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px 10px 40px;color:#fff;font-size:13px;outline:none;transition:border-color .2s}
+        .search-box input:focus{border-color:#38bdf8;box-shadow:0 0 10px rgba(56,189,248,.2)}
+        .search-box i{position:absolute;top:12px;left:14px;color:#94a3b8;font-size:14px}
 
+        /* User Grid Cards Layout */
+        .users-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+        .user-card{background:rgba(30,41,59,.5);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,border-color .2s}
+        .user-card:hover{transform:translateY(-3px);border-color:rgba(56,189,248,.3)}
+        .user-card-top{display:flex;justify-content:space-between;align-items:center}
+        .badge-id{color:#38bdf8;font-weight:700;font-family:monospace;cursor:pointer;padding:4px 10px;background:rgba(56,189,248,.1);border-radius:8px;border:1px solid rgba(56,189,248,.25);font-size:12px}
+        .user-card-body{font-size:13px;color:#cbd5e1;display:flex;flex-direction:column;gap:6px}
+        .user-card-footer{display:flex;gap:8px;margin-top:4px}
+
+        /* Table fallback for requests & withdrawals */
         .table-responsive{width:100%;overflow-x:auto}
-        table{width:100%;border-collapse:collapse;text-align:right;font-size:12px}
-        th,td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}
-        th{color:#94a3b8;font-weight:600;background:rgba(255,255,255,.02);font-size:11px}
+        table{width:100%;border-collapse:collapse;text-align:right;font-size:13px}
+        th,td{padding:14px 12px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}
+        th{color:#94a3b8;font-weight:600;background:rgba(255,255,255,.02);font-size:12px}
         td{color:#cbd5e1}
         tbody tr:hover{background:rgba(255,255,255,.02)}
 
         .en-font{font-family:ui-monospace,monospace;direction:ltr;display:inline-block}
-        .badge-id{color:#38bdf8;font-weight:700;font-family:monospace;cursor:pointer;padding:3px 8px;background:rgba(56,189,248,.1);border-radius:6px;border:1px solid rgba(56,189,248,.2);display:inline-block}
         
-        .btn-action{padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;margin-left:4px;border:none;display:inline-flex;align-items:center;gap:4px}
+        /* Buttons & Actions */
+        .btn-action{padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;border:none;display:inline-flex;align-items:center;gap:6px;transition:opacity .2s}
+        .btn-action:hover{opacity:.85}
         .btn-edit{background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);color:#38bdf8}
         .btn-approve{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22c55e}
         .btn-reject{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444}
         .btn-ban{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.4);color:#f87171}
 
-        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
+        /* Modals */
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
         .modal.show{display:flex}
-        .modal-content{background:#0f172a;border:1px solid rgba(56,189,248,.3);border-radius:14px;width:100%;max-width:440px;padding:20px;max-height:90vh;overflow-y:auto}
-        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:#38bdf8;font-weight:700;font-size:14px}
-        .modal-close{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:16px}
-        .form-group{margin-bottom:12px}
-        .form-group label{display:block;font-size:11px;color:#94a3b8;margin-bottom:4px}
-        .form-group input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 12px;color:#fff;font-size:12px;outline:none}
-        .btn-save{width:100%;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;border:none;padding:10px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:10px;font-size:13px}
-        .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px}
+        .modal-content{background:#0f172a;border:1px solid rgba(56,189,248,.3);border-radius:18px;width:100%;max-width:460px;padding:24px;max-height:90vh;overflow-y:auto;box-shadow:0 25px 50px rgba(0,0,0,.9)}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;color:#38bdf8;font-weight:700;font-size:15px}
+        .modal-close{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:18px}
+        .form-group{margin-bottom:14px}
+        .form-group label{display:block;font-size:11px;color:#94a3b8;margin-bottom:6px}
+        .form-group input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 14px;color:#fff;font-size:13px;outline:none}
+        .btn-save{width:100%;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:12px;font-size:14px}
+        .detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}
         .detail-row span:first-child{color:#94a3b8}
         .detail-row span:last-child{color:#f8fafc;font-weight:600}
-        footer{text-align:center;padding:15px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);margin-top:auto}
+        footer{text-align:center;padding:20px;font-size:12px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);margin-top:auto}
     </style>
 </head>
 <body>
     <header>
         <div class="logo">
             <h2>ZENIX ADMIN</h2>
-            <span class="admin-badge"><i class="fas fa-shield-alt"></i> مدیریت کل</span>
+            <span class="admin-badge"><i class="fas fa-shield-alt"></i> مدیریت کل پلتفرم</span>
         </div>
         <button class="btn-logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> خروج</button>
     </header>
@@ -84,72 +100,89 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon" style="background:rgba(56,189,248,.15);color:#38bdf8"><i class="fas fa-users"></i></div>
-                <div class="stat-info"><span>کل کاربران</span><h3 id="st-users">0</h3></div>
+                <div class="stat-info"><span>کل کاربران پلتفرم</span><h3 id="st-users">0</h3></div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-wallet"></i></div>
-                <div class="stat-info"><span>موجودی کل</span><h3 id="st-bal">$0.00</h3></div>
+                <div class="stat-info"><span>موجودی کل حساب‌ها</span><h3 id="st-bal">$0.00</h3></div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background:rgba(245,158,11,.15);color:#f59e0b"><i class="fas fa-clock"></i></div>
                 <div class="stat-info"><span>درخواست‌های معلق</span><h3 id="st-req">0</h3></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(239,68,68,.15);color:#ef4444"><i class="fas fa-money-bill-transfer"></i></div>
+                <div class="stat-info"><span>برداشت‌های معلق</span><h3 id="st-w-req">0</h3></div>
             </div>
         </div>
 
         <!-- Navigation Tabs -->
         <div class="admin-tabs">
             <button class="tab-btn active" onclick="switchTab('t-active', this)"><i class="fas fa-user-check"></i> کاربران فعال</button>
-            <button class="tab-btn" onclick="switchTab('t-pending', this)"><i class="fas fa-user-clock"></i> در انتظار / تغییرات</button>
+            <button class="tab-btn" onclick="switchTab('t-pending', this)"><i class="fas fa-user-clock"></i> در انتظار احراز</button>
             <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> لغو شده (تخلف)</button>
             <button class="tab-btn" onclick="switchTab('t-withdraw', this)"><i class="fas fa-money-bill-transfer"></i> درخواست برداشت <span class="tab-badge zero" id="w-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-reqs', this)"><i class="fas fa-bell"></i> صندوق درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
         </div>
 
-        <!-- Tab 1: Active Users -->
+        <!-- Tab 1: Active Users Grid -->
         <div id="t-active" class="tab-content active">
             <div class="panel-box">
                 <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-check"></i> لیست کاربران سیستم</div>
-                    <div class="search-box"><input type="text" id="s-act" placeholder="جستجو..."><i class="fas fa-search"></i></div>
+                    <div class="panel-title"><i class="fas fa-user-check"></i> لیست کاربران فعال سیستم</div>
+                    <div class="search-box"><input type="text" id="s-act" placeholder="جستجوی شناسه، نام یا تاریخ..."><i class="fas fa-search"></i></div>
                 </div>
-                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر</th><th>نام و نام خانوادگی</th><th>ایمیل</th><th>تاریخ ثبت‌نام</th><th>موجودی</th><th>عملیات</th></tr></thead><tbody id="tb-act"></tbody></table></div>
+                <div class="users-grid" id="grid-act"></div>
             </div>
         </div>
 
-        <!-- Tab 2: Pending Users -->
+        <!-- Tab 2: Pending Users Grid -->
         <div id="t-pending" class="tab-content">
             <div class="panel-box">
                 <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-clock"></i> کاربران معلق یا در انتظار</div>
-                    <div class="search-box"><input type="text" id="s-pend" placeholder="جستجو..."><i class="fas fa-search"></i></div>
+                    <div class="panel-title"><i class="fas fa-user-clock"></i> کاربران با درخواست‌های در انتظار</div>
+                    <div class="search-box"><input type="text" id="s-pend" placeholder="جستجوی شناسه، نام یا تاریخ..."><i class="fas fa-search"></i></div>
                 </div>
-                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر</th><th>نام کاربر</th><th>ایمیل</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="tb-pend"></tbody></table></div>
+                <div class="users-grid" id="grid-pend"></div>
             </div>
         </div>
 
-        <!-- Tab 3: Banned Users -->
+        <!-- Tab 3: Banned Users Grid -->
         <div id="t-banned" class="tab-content">
             <div class="panel-box">
                 <div class="panel-header">
                     <div class="panel-title"><i class="fas fa-user-slash"></i> حساب‌های لغو شده به دلیل تخلف</div>
-                    <div class="search-box"><input type="text" id="s-ban" placeholder="جستجو..."><i class="fas fa-search"></i></div>
+                    <div class="search-box"><input type="text" id="s-ban" placeholder="جستجوی شناسه، نام یا تاریخ..."><i class="fas fa-search"></i></div>
                 </div>
-                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر</th><th>نام کاربر</th><th>ایمیل</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="tb-ban"></tbody></table></div>
+                <div class="users-grid" id="grid-ban"></div>
             </div>
         </div>
 
-        <!-- Tab 4: Withdrawals -->
+        <!-- Tab 4: Withdrawals Requests -->
         <div id="t-withdraw" class="tab-content">
             <div class="panel-box">
                 <div class="panel-header"><div class="panel-title"><i class="fas fa-wallet"></i> مدیریت درخواست‌های برداشت وجه</div></div>
-                <div class="table-responsive"><table><thead><tr><th>شناسه کاربر</th><th>نام کاربر</th><th>مبلغ ($)</th><th>کیف پول / آدرس</th><th>عملیات</th></tr></thead><tbody id="tb-withdraw"></tbody></table></div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شناسه کاربر</th>
+                                <th>نام کاربر</th>
+                                <th>مبلغ ($)</th>
+                                <th>آدرس کیف پول</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-withdraw"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
         <!-- Tab 5: Requests Box -->
         <div id="t-reqs" class="tab-content">
             <div class="panel-box">
-                <div class="panel-header"><div class="panel-title"><i class="fas fa-inbox"></i> صندوق درخواست‌ها و مدارک</div></div>
+                <div class="panel-header"><div class="panel-title"><i class="fas fa-inbox"></i> صندوق پیام‌ها و درخواست‌های تایید</div></div>
                 <div id="req-container"></div>
             </div>
         </div>
@@ -158,27 +191,27 @@
     <!-- Modals -->
     <div class="modal" id="m-details">
         <div class="modal-content">
-            <div class="modal-header"><span>اطلاعات جامع کاربر</span><button class="modal-close" onclick="closeModal('m-details')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-header"><span>اطلاعات کامل و تاریخچه کاربر</span><button class="modal-close" onclick="closeModal('m-details')"><i class="fas fa-times"></i></button></div>
             <div id="user-details-body"></div>
-            <div id="modal-action-btn" style="margin-top:14px"></div>
+            <div id="modal-action-btn" style="margin-top:16px"></div>
         </div>
     </div>
 
     <div class="modal" id="m-edit">
         <div class="modal-content">
-            <div class="modal-header"><span>ویرایش حساب کاربری</span><button class="modal-close" onclick="closeModal('m-edit')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-header"><span>ویرایش مشخصات کاربر</span><button class="modal-close" onclick="closeModal('m-edit')"><i class="fas fa-times"></i></button></div>
             <form id="f-edit">
                 <input type="hidden" id="e-uid">
-                <div class="form-group"><label>نام</label><input type="text" id="e-name"></div>
+                <div class="form-group"><label>نام و نام خانوادگی</label><input type="text" id="e-name"></div>
                 <div class="form-group"><label>ایمیل</label><input type="text" id="e-email"></div>
-                <div class="form-group"><label>موجودی ($)</label><input type="number" step="any" id="e-bal"></div>
-                <div class="form-group"><label>سود ($)</label><input type="number" step="any" id="e-profit"></div>
+                <div class="form-group"><label>موجودی حساب ($)</label><input type="number" step="any" id="e-bal"></div>
+                <div class="form-group"><label>سود پلتفرم ($)</label><input type="number" step="any" id="e-profit"></div>
                 <button type="submit" class="btn-save">ذخیره تغییرات</button>
             </form>
         </div>
     </div>
 
-    <footer><p>&copy; 2026 Zenix Platform - Admin Dashboard</p></footer>
+    <footer><p>&copy; 2026 Zenix Platform - Enterprise Admin Dashboard</p></footer>
 
     <script type="module">
         import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -187,7 +220,7 @@
         
         const db=getFirestore(initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"}));
         const auth=getAuth();
-        let uMap={};
+        let uMap={},tUid=null;
 
         window.switchTab=(id,btn)=>{
             document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
@@ -197,117 +230,152 @@
         };
 
         window.closeModal=id=>document.getElementById(id).classList.remove('show');
-        const getName=u=>u.fullName||u.name||u.displayName||(u.firstName?`${u.firstName} ${u.lastName||''}`:null)||u.email?.split('@')[0]||'بدون نام';
+        const getName=u=>u.fullName||u.name||(u.firstName?`${u.firstName} ${u.lastName||''}`:null)||u.email?.split('@')[0]||'کاربر بدون نام';
+        
+        const formatDate=ts=>{
+            if(!ts)return 'نامشخص';
+            let d=typeof ts==='number'||!isNaN(Number(ts))?new Date(Number(ts)):new Date(ts);
+            return isNaN(d.getTime())?'نامشخص':`<span class="en-font">${d.toISOString().split('T')[0]} | ${d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span>`;
+        };
 
         async function loadData(){
             try {
                 const snap=await getDocs(collection(db,"users"));
-                let tbAct=document.getElementById('tb-act'), tbPend=document.getElementById('tb-pend'), tbBan=document.getElementById('tb-ban'), tbW=document.getElementById('tb-withdraw');
-                tbAct.innerHTML=""; tbPend.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML="";
-                uMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[];
-
-                if(snap.empty){
-                    tbAct.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">هیچ کاربری در دیتابیس یافت نشد!</td></tr>`;
-                    return;
-                }
+                let gAct=document.getElementById('grid-act'), gPend=document.getElementById('grid-pend'), gBan=document.getElementById('grid-ban'), tbW=document.getElementById('tb-withdraw');
+                gAct.innerHTML=""; gPend.innerHTML=""; gBan.innerHTML=""; tbW.innerHTML="";
+                uMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[], withdrawList=[];
+                let cAct=0, cPend=0, cBan=0;
 
                 snap.forEach(d=>{
                     let u=d.data(), uid=d.id; uMap[uid]=u; totU++; totB+=Number(u.balance||0);
                     let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
                     let nameStr=getName(u);
-                    let regDate=u.createdAt?new Date(u.createdAt).toISOString().split('T')[0]:'عادی';
-                    let search=`${idCode} ${nameStr} ${u.email||''}`.toLowerCase();
+                    let regStr=formatDate(u.createdAt||u.registeredAt);
+                    let search=`${idCode} ${nameStr} ${u.email||''} ${regStr}`.toLowerCase();
                     let isBanned=(u.status==='cancelled'||u.status==='banned'||u.isBanned===true);
                     let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage);
 
+                    // بررسی درخواست برداشت
                     if(u.pendingWithdrawal && u.pendingWithdrawal.status === 'pending'){
                         totW++;
-                        tbW.innerHTML+=`<tr>
-                            <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
-                            <td><b>${nameStr}</b></td>
-                            <td style="color:#22c55e" class="en-font">$${Number(u.pendingWithdrawal.amount||0).toLocaleString()}</td>
-                            <td class="en-font">${u.pendingWithdrawal.address||'-'}</td>
-                            <td>
-                                <button class="btn-action btn-approve" onclick="handleW('${uid}', true, ${Number(u.pendingWithdrawal.amount||0)})">تایید</button>
-                                <button class="btn-action btn-reject" onclick="handleW('${uid}', false, ${Number(u.pendingWithdrawal.amount||0)})">لغو و عودت</button>
-                            </td>
-                        </tr>`;
+                        withdrawList.push({ uid, u, idCode, nameStr, data: u.pendingWithdrawal });
                     }
 
+                    let cardHtml=`<div class="user-card" data-s="${search}">
+                        <div class="user-card-top">
+                            <span class="badge-id" onclick="openDetails('${uid}')"><i class="fas id-badge"></i> ${idCode}</span>
+                            <span style="font-size:11px;color:#94a3b8">${regStr}</span>
+                        </div>
+                        <div class="user-card-body">
+                            <b style="color:#f8fafc;font-size:14px">${nameStr}</b>
+                            <span class="en-font" style="font-size:11px;color:#94a3b8">${u.email||'بدون ایمیل'}</span>
+                        </div>
+                        <div class="user-card-footer">`;
+
                     if(isBanned){
-                        tbBan.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${nameStr}</b></td><td>${u.email||'-'}</td><td><span style="color:#ef4444">لغو شده</span></td><td><button class="btn-action btn-approve" onclick="toggleBan('${uid}',false)">فعال‌سازی</button></td></tr>`;
-                    } else if(hasPend){
-                        totR++;
-                        reqList.push({uid, u});
-                        tbPend.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${nameStr}</b></td><td>${u.email||'-'}</td><td style="color:#f59e0b">در انتظار تایید</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button></td></tr>`;
-                    } else {
-                        tbAct.innerHTML+=`<tr data-s="${search}">
-                            <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
-                            <td><b>${nameStr}</b></td>
-                            <td class="en-font">${u.email||'-'}</td>
-                            <td class="en-font">${regDate}</td>
-                            <td class="en-font">$${Number(u.balance||0).toLocaleString()}</td>
-                            <td>
-                                <button class="btn-action btn-edit" onclick="openDetails('${uid}')">جزئیات</button>
-                                <button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)">لغو حساب</button>
-                            </td>
-                        </tr>`;
+                        cBan++;
+                        cardHtml+=`<button class="btn-action btn-approve" style="width:100%;justify-content:center" onclick="toggleBan('${uid}',false)"><i class="fas fa-undo"></i> فعال‌سازی مجدد</button></div></div>`;
+                        gBan.innerHTML+=cardHtml;
+                    }else if(hasPend){
+                        cPend++; totR++;
+                        reqList.push({uid, u, time: u.requestTimestamp||u.updatedAt||Date.now()});
+                        cardHtml+=`<button class="btn-action btn-approve" style="flex:1;justify-content:center" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button>
+                                   <button class="btn-action btn-reject" style="flex:1;justify-content:center" onclick="rejEm('${uid}')">رد</button></div></div>`;
+                        gPend.innerHTML+=cardHtml;
+                    }else{
+                        cAct++;
+                        cardHtml+=`<button class="btn-action btn-edit" style="flex:1;justify-content:center" onclick="openDetails('${uid}')"><i class="fas fa-info-circle"></i> جزئیات</button>
+                                   <button class="btn-action btn-ban" style="flex:1;justify-content:center" onclick="toggleBan('${uid}',true)"><i class="fas fa-ban"></i> لغو حساب</button></div></div>`;
+                        gAct.innerHTML+=cardHtml;
                     }
                 });
 
                 document.getElementById('st-users').innerText=totU;
                 document.getElementById('st-bal').innerText='$'+totB.toLocaleString('en-US',{minimumFractionDigits:2});
                 document.getElementById('st-req').innerText=totR;
-                document.getElementById('req-badge').innerText=totR;
-                document.getElementById('w-badge').innerText=totW;
+                document.getElementById('st-w-req').innerText=totW;
+                
+                let badge=document.getElementById('req-badge');
+                badge.innerText=totR; badge.className=totR>0?'tab-badge':'tab-badge zero';
 
-                if(totW===0) tbW.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:20px;color:#94a3b8">درخواست برداشتی نیست</td></tr>`;
+                let wBadge=document.getElementById('w-badge');
+                wBadge.innerText=totW; wBadge.className=totW>0?'tab-badge':'tab-badge zero';
+
+                if(cAct===0) gAct.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:30px;color:#94a3b8">هیچ کاربر فعالی یافت نشد</div>`;
+                if(cPend===0) gPend.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:30px;color:#94a3b8">هیچ کاربر معلقی یافت نشد</div>`;
+                if(cBan===0) gBan.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:30px;color:#94a3b8">هیچ کاربر لغو شده‌ای وجود ندارد</div>`;
+
+                renderWithdrawals(withdrawList);
                 renderReqs(reqList);
-            } catch(e) {
-                console.error("Firebase Error:", e);
-                document.getElementById('tb-act').innerHTML=`<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">خطا در دریافت اطلاعات: ${e.message}</td></tr>`;
+            } catch(err) {
+                console.error("Error loading users:", err);
             }
         }
 
         window.openDetails=uid=>{
             let u=uMap[uid], idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
+            let regDate=formatDate(u.createdAt||u.registeredAt);
             document.getElementById('user-details-body').innerHTML=`
                 <div class="detail-row"><span>شناسه:</span><span class="en-font">${idCode}</span></div>
-                <div class="detail-row"><span>نام:</span><span>${getName(u)}</span></div>
+                <div class="detail-row"><span>نام و نام خانوادگی:</span><span>${getName(u)}</span></div>
                 <div class="detail-row"><span>ایمیل:</span><span class="en-font">${u.email||'-'}</span></div>
-                <div class="detail-row"><span>موجودی:</span><span class="en-font">$${Number(u.balance||0).toLocaleString()}</span></div>
-                <div class="detail-row"><span>سود پلتفرم:</span><span class="en-font">$${Number(u.profit||u.totalProfit||0).toLocaleString()}</span></div>
-                <div class="detail-row"><span>وضعیت:</span><span>${u.status||'فعال'}</span></div>
+                <div class="detail-row"><span>موجودی:</span><span>$${Number(u.balance||0).toLocaleString()}</span></div>
+                <div class="detail-row"><span>سود پلتفرم:</span><span>$${Number(u.profit||u.totalProfit||0).toLocaleString()}</span></div>
+                <div class="detail-row"><span>تاریخ و ساعت ثبت‌نام:</span><span>${regDate}</span></div>
+                <div class="detail-row"><span>وضعیت حساب:</span><span>${u.status||'فعال'}</span></div>
             `;
-            document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:10px" onclick="closeModal('m-details');openE('${uid}')">ویرایش مشخصات</button>`;
+            document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:12px;font-size:13px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات این کاربر</button>`;
             document.getElementById('m-details').classList.add('show');
         };
 
-        window.handleW=async(uid, app, amt)=>{
-            let u=uMap[uid];
-            if(app){
-                await updateDoc(doc(db,"users",uid),{pendingWithdrawal:null});
-                alert('برداشت تایید شد.');
-            }else{
-                await updateDoc(doc(db,"users",uid),{balance:Number(u.balance||0)+amt, pendingWithdrawal:null});
-                alert('برداشت لغو و مبلغ عودت داده شد.');
+        function renderWithdrawals(list){
+            let box=document.getElementById('tb-withdraw');
+            if(list.length===0){box.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:30px;color:#94a3b8">هیچ درخواست برداشتی وجود ندارد.</td></tr>`;return;}
+            let html='';
+            list.forEach(i=>{
+                let amt = Number(i.data.amount||0);
+                html+=`<tr>
+                    <td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td>
+                    <td><b>${i.nameStr}</b></td>
+                    <td style="color:#22c55e;font-weight:bold" class="en-font">$${amt.toLocaleString()}</td>
+                    <td class="en-font">${i.data.address||i.data.wallet||'-'}</td>
+                    <td>
+                        <button class="btn-action btn-approve" onclick="handleWithdraw('${i.uid}', true, ${amt})"><i class="fas fa-check"></i> تایید</button>
+                        <button class="btn-action btn-reject" onclick="handleWithdraw('${i.uid}', false, ${amt})"><i class="fas fa-times"></i> لغو و عودت</button>
+                    </td>
+                </tr>`;
+            });
+            box.innerHTML=html;
+        }
+
+        window.handleWithdraw=async(uid, approve, amount)=>{
+            let u = uMap[uid];
+            if(approve){
+                if(!confirm(`تایید برداشت به مبلغ $${amount}؟`)) return;
+                await updateDoc(doc(db,"users",uid), { pendingWithdrawal: null });
+                alert('درخواست برداشت تایید شد.');
+            } else {
+                if(!confirm(`لغو برداشت و بازگشت مبلغ $${amount} به موجودی کاربر؟`)) return;
+                await updateDoc(doc(db,"users",uid), { balance: Number(u.balance || 0) + amount, pendingWithdrawal: null });
+                alert('برداشت لغو و مبلغ به کاربر عودت داده شد.');
             }
             loadData();
         };
 
         function renderReqs(list){
             let box=document.getElementById('req-container');
-            if(list.length===0){box.innerHTML=`<div style="text-align:center;padding:20px;color:#94a3b8">درخواستی موجود نیست.</div>`;return;}
-            let html=`<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام</th><th>ایمیل جدید</th><th>عملیات</th></tr></thead><tbody>`;
+            if(list.length===0){box.innerHTML=`<div style="text-align:center;padding:30px;color:#94a3b8">هیچ درخواست معلقی وجود ندارد.</div>`;return;}
+            let html=`<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام کاربر</th><th>ایمیل جدید درخواستی</th><th>تاریخ ثبت‌نام</th><th>عملیات</th></tr></thead><tbody>`;
             list.forEach(i=>{
                 let u=i.u, uid=i.uid, idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
-                html+=`<tr><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${getName(u)}</b></td><td style="color:#f59e0b" class="en-font">${u.pendingEmail||u.newEmail||'-'}</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button></td></tr>`;
+                let regStr=formatDate(u.createdAt||u.registeredAt);
+                html+=`<tr><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${getName(u)}</b></td><td style="color:#f59e0b" class="en-font">${u.pendingEmail||u.newEmail||'-'}</td><td>${regStr}</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button></td></tr>`;
             });
             box.innerHTML=html+`</tbody></table></div>`;
         }
 
         window.toggleBan=async(uid,ban)=>{
-            if(!confirm(ban?'لغو حساب کاربر به دلیل تخلف؟':'فعال‌سازی مجدد حساب؟'))return;
+            if(!confirm(ban?'آیا از لغو و مسدودسازی حساب این کاربر اطمینان دارید؟':'آیا می‌خواهید حساب این کاربر را فعال کنید؟'))return;
             await updateDoc(doc(db,"users",uid),{status:ban?"cancelled":"active",isBanned:ban});
             loadData();
         };
@@ -337,8 +405,8 @@
         };
 
         ['act','pend','ban'].forEach(k=>{
-            let inp=document.getElementById(`s-${k}`);
-            if(inp) inp.oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll(`#tb-${k} tr`).forEach(r=>r.style.display=r.dataset.s?.includes(q)?'':'none');};
+            let inp = document.getElementById(`s-${k}`);
+            if(inp) inp.oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll(`#grid-${k} .user-card`).forEach(r=>r.style.display=r.dataset.s.includes(q)?'flex':'none');};
         });
 
         onAuthStateChanged(auth,u=>{if(!u)window.location.href='index.html';else loadData();});
