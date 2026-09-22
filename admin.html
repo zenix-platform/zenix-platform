@@ -206,6 +206,11 @@
                 tbAct.innerHTML=""; tbPend.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML="";
                 uMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[];
 
+                if(snap.empty){
+                    tbAct.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">هیچ کاربری در دیتابیس یافت نشد!</td></tr>`;
+                    return;
+                }
+
                 snap.forEach(d=>{
                     let u=d.data(), uid=d.id; uMap[uid]=u; totU++; totB+=Number(u.balance||0);
                     let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
@@ -215,7 +220,6 @@
                     let isBanned=(u.status==='cancelled'||u.status==='banned'||u.isBanned===true);
                     let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage);
 
-                    // رندر برداشت‌های معلق
                     if(u.pendingWithdrawal && u.pendingWithdrawal.status === 'pending'){
                         totW++;
                         tbW.innerHTML+=`<tr>
@@ -257,12 +261,11 @@
                 document.getElementById('req-badge').innerText=totR;
                 document.getElementById('w-badge').innerText=totW;
 
-                if(totU===0) tbAct.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربری یافت نشد</td></tr>`;
                 if(totW===0) tbW.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:20px;color:#94a3b8">درخواست برداشتی نیست</td></tr>`;
-
                 renderReqs(reqList);
             } catch(e) {
-                console.error("Error:", e);
+                console.error("Firebase Error:", e);
+                document.getElementById('tb-act').innerHTML=`<tr><td colspan="6" style="text-align:center;padding:20px;color:#ef4444">خطا در دریافت اطلاعات: ${e.message}</td></tr>`;
             }
         }
 
