@@ -266,14 +266,12 @@
         
         const getName=u=>u.fullname||u.fullName||u.name||(u.firstName?`${u.firstName} ${u.lastName||''}`:null)||u.email?.split('@')[0]||'کاربر بدون نام';
         
-        // اصلاح کامل تابع تاریخ برای خواندن درست رشته‌های متنی فایربیس
         const formatDate=ts=>{
             if(!ts)return 'نامشخص';
             let d;
             if(typeof ts.toDate==='function'){
                 d=ts.toDate();
             } else if(typeof ts==='string'){
-                // حذف بخش متن اضافی UTC اگر وجود داشته باشد تا درست پارس شود
                 let cleanStr = ts.replace(/at\s.*UTC.*/i, '').trim();
                 d=new Date(cleanStr);
                 if(isNaN(d.getTime())) d=new Date(ts);
@@ -312,7 +310,7 @@
                         <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
                         <td><b>${nameStr}</b></td>
                         <td>${emailStr}</td>
-                        <td>${phoneStr}</td>
+                        <td dir="ltr" style="text-align:right">${phoneStr}</td>
                         <td style="color:#22c55e;font-weight:bold">$${Number(u.balance||0).toLocaleString()}</td>`;
 
                     if(isBanned){
@@ -332,7 +330,7 @@
                         rowHtml+=`<td>${regStr}</td>
                         <td>
                             <button class="btn-action btn-edit" onclick="openDetails('${uid}')"><i class="fas fa-info"></i></button>
-                            <button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-ban"></i></button>
+                            <button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)">لغو کاربر</button>
                         </td></tr>`;
                         tbAct.innerHTML+=rowHtml;
                     }
@@ -367,7 +365,7 @@
                 <div class="detail-row"><span>شناسه:</span><span>${idCode}</span></div>
                 <div class="detail-row"><span>نام و نام خانوادگی:</span><span>${getName(u)}</span></div>
                 <div class="detail-row"><span>ایمیل:</span><span>${u.email||'-'}</span></div>
-                <div class="detail-row"><span>تلفن:</span><span>${u.phone||'-'}</span></div>
+                <div class="detail-row"><span>تلفن:</span><span dir="ltr">${u.phone||'-'}</span></div>
                 <div class="detail-row"><span>موجودی:</span><span>$${Number(u.balance||0).toLocaleString()}</span></div>
                 <div class="detail-row"><span>وضعیت تایید:</span><span>${u.adminApprovalStatus||'نامشخص'}</span></div>
                 <div class="detail-row"><span>تاریخ ثبت‌نام:</span><span>${regDate}</span></div>
@@ -386,7 +384,7 @@
                     <td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td>
                     <td><b>${i.nameStr}</b></td>
                     <td style="color:#22c55e;font-weight:bold">$${amt.toLocaleString()}</td>
-                    <td>${i.data.address||i.data.wallet||'-'}</td>
+                    <td dir="ltr">${i.data.address||i.data.wallet||'-'}</td>
                     <td>
                         <button class="btn-action btn-approve" onclick="handleWithdraw('${i.uid}', true, ${amt})"><i class="fas fa-check"></i></button>
                         <button class="btn-action btn-reject" onclick="handleWithdraw('${i.uid}', false, ${amt})"><i class="fas fa-times"></i></button>
