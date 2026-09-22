@@ -15,7 +15,7 @@
         .admin-badge{background:rgba(56,189,248,.15);color:#38bdf8;font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid rgba(56,189,248,.3);font-weight:600}
         .btn-logout{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:7px 14px;border-radius:8px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:600;transition:all 0.2s}
         .btn-logout:hover{background:rgba(239,68,68,.25)}
-        .c{max-width:1300px;width:100%;margin:20px auto;padding:0 16px;flex:1}
+        .c{max-width:1350px;width:100%;margin:20px auto;padding:0 16px;flex:1}
         
         /* Stats Grid */
         .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px}
@@ -58,14 +58,18 @@
         /* Badges & Buttons */
         .badge{background:rgba(34,197,94,.15);color:#22c55e;padding:3px 8px;border-radius:6px;font-weight:600;font-size:11px;border:1px solid rgba(34,197,94,.3)}
         .badge-inactive{background:rgba(239,68,68,.15);color:#ef4444;padding:3px 8px;border-radius:6px;font-weight:600;font-size:11px;border:1px solid rgba(239,68,68,.3)}
+        .badge-profit{background:rgba(56,189,248,.15);color:#38bdf8;padding:3px 8px;border-radius:6px;font-weight:600;font-size:11px;border:1px solid rgba(56,189,248,.3)}
         .badge-id{color:#38bdf8;font-weight:700;font-family:monospace}
-        .btn-action{padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;margin-left:5px;border:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:4px}
+        
+        .btn-action{padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;margin-left:4px;border:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:4px}
         .btn-edit{background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);color:#38bdf8}
         .btn-edit:hover{background:rgba(56,189,248,.3)}
         .btn-approve{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22c55e}
         .btn-approve:hover{background:rgba(34,197,94,.3)}
         .btn-reject{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444}
         .btn-reject:hover{background:rgba(239,68,68,.3)}
+        .btn-ban{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.4);color:#f87171}
+        .btn-ban:hover{background:rgba(220,38,38,.35)}
 
         /* Date Section Dividers for Requests */
         .date-section-title{font-size:12px;color:#38bdf8;background:rgba(56,189,248,.08);padding:6px 12px;border-radius:6px;margin:14px 0 8px 0;font-weight:700;display:flex;align-items:center;gap:6px}
@@ -146,24 +150,25 @@
                                 <th>شناسه (ID)</th>
                                 <th>نام کاربر</th>
                                 <th>ایمیل</th>
-                                <th>وضعیت</th>
                                 <th>موجودی</th>
+                                <th>سود پلتفرم</th>
+                                <th>تاریخ ثبت‌نام</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
                         <tbody id="active-users-table-body">
-                            <tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px;">در حال بارگذاری...</td></tr>
+                            <tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">در حال بارگذاری...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- Tab 2: Inactive / Pending Users -->
+        <!-- Tab 2: Inactive / Pending / Banned Users -->
         <div id="inactive-users-tab" class="tab-content">
             <div class="panel-box">
                 <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-slash"></i> لیست کاربران غیرفعال یا در انتظار تایید</div>
+                    <div class="panel-title"><i class="fas fa-user-slash"></i> لیست کاربران غیرفعال، معلق یا لغو شده (تخلف)</div>
                     <div class="search-box">
                         <input type="text" id="search-inactive-input" placeholder="جستجو در کاربران غیرفعال...">
                         <i class="fas fa-search"></i>
@@ -179,11 +184,12 @@
                                 <th>ایمیل درخواستی</th>
                                 <th>مدارک (سلفی)</th>
                                 <th>وضعیت</th>
+                                <th>تاریخ ثبت‌نام</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
                         <tbody id="inactive-users-table-body">
-                            <tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">در حال بارگذاری...</td></tr>
+                            <tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:20px;">در حال بارگذاری...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -227,6 +233,10 @@
                 <div class="form-group">
                     <label>موجودی حساب ($)</label>
                     <input type="number" step="any" id="edit-balance">
+                </div>
+                <div class="form-group">
+                    <label>سود کسب‌شده ($)</label>
+                    <input type="number" step="any" id="edit-profit">
                 </div>
                 <button type="submit" class="btn-save"><i class="fas fa-save"></i> ذخیره تغییرات</button>
             </form>
@@ -297,11 +307,11 @@
                     totalBal+=Number(u.balance||0);
                     
                     let hasPending = (u.pendingEmail || u.newEmail || u.selfieImage);
-                    // بررسی فعال یا غیرفعال بودن کاربر
-                    // اگر وضعیت فعال بودن صراحتاً false باشد یا درخواست معلق/سلفی تایید نشده داشته باشد غیرفعال محسوب می‌شود
-                    let isInactive = (u.status === 'inactive' || u.isActive === false || hasPending);
+                    // بررسی وضعیت لغو حساب بخاطر تخلف یا غیرفعال بودن
+                    let isBannedOrCancelled = (u.status === 'banned' || u.status === 'cancelled' || u.isBanned === true);
+                    let isInactive = (isBannedOrCancelled || u.status === 'inactive' || u.isActive === false || hasPending);
 
-                    if(hasPending) {
+                    if(hasPending && !isBannedOrCancelled) {
                         pendingReqs++;
                         requestsList.push({ uid, u, timestamp: u.requestTimestamp || u.updatedAt || Date.now() });
                     }
@@ -328,27 +338,42 @@
 
                 renderRequests(requestsList);
 
-                if(activeCount === 0) activeTb.innerHTML=`<tr><td colspan="6" style="text-align:center;color:#94a3b8;padding:20px;">کاربر فعالی یافت نشد</td></tr>`;
-                if(inactiveCount === 0) inactiveTb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">کاربر غیرفعال یا معلقی یافت نشد</td></tr>`;
+                if(activeCount === 0) activeTb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">کاربر فعالی یافت نشد</td></tr>`;
+                if(inactiveCount === 0) inactiveTb.innerHTML=`<tr><td colspan="8" style="text-align:center;color:#94a3b8;padding:20px;">کاربر غیرفعال یا لغو شده‌ای یافت نشد</td></tr>`;
 
             }catch(e){
                 console.error(e);
-                activeTb.innerHTML=`<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:20px;">خطا در دریافت اطلاعات</td></tr>`;
-                inactiveTb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:20px;">خطا در دریافت اطلاعات</td></tr>`;
+                activeTb.innerHTML=`<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:20px;">خطا در دریافت اطلاعات</td></tr>`;
+                inactiveTb.innerHTML=`<tr><td colspan="8" style="text-align:center;color:#ef4444;padding:20px;">خطا در دریافت اطلاعات</td></tr>`;
             }
+        }
+
+        function formatDateTime(timestamp) {
+            if(!timestamp) return '<span style="color:#64748b">نامشخص</span>';
+            let d = new Date(timestamp);
+            if(isNaN(d.getTime())) return '<span style="color:#64748b">نامشخص</span>';
+            let dateStr = d.toISOString().split('T')[0];
+            let timeStr = d.toLocaleTimeString('en-GB', {hour: '2-digit', minute:'2-digit'});
+            return `<span class="en-font">${dateStr} | ${timeStr}</span>`;
         }
 
         function renderActiveRow(uid,u){
             let id=`MS-${(uid.replace(/\D/g,'')+"123456789").substring(0,6)}`;
             let searchString = `${id} ${u.fullName||u.name||''} ${u.email||''}`.toLowerCase();
+            let regTime = formatDateTime(u.createdAt || u.registeredAt || u.joinedAt);
+            let profit = Number(u.profit || u.totalProfit || 0);
 
             activeTb.innerHTML+=`<tr class="user-row-active" data-search="${searchString}">
                 <td><span class="badge-id">${id}</span></td>
                 <td><b>${u.fullName||u.name||'بی‌نام'}</b></td>
                 <td>${u.email||'-'}</td>
-                <td><span class="badge">فعال</span></td>
                 <td><span class="badge">$${Number(u.balance||0).toLocaleString('en-US')}</span></td>
-                <td><button class="btn-action btn-edit" onclick="openE('${uid}')"><i class="fas fa-edit"></i> ویرایش</button></td>
+                <td><span class="badge-profit">+$${profit.toLocaleString('en-US')}</span></td>
+                <td style="color:#38bdf8">${regTime}</td>
+                <td>
+                    <button class="btn-action btn-edit" onclick="openE('${uid}')"><i class="fas fa-edit"></i> ویرایش</button>
+                    <button class="btn-action btn-ban" onclick="cancelAccount('${uid}')" title="لغو حساب به دلیل تخلف"><i class="fas fa-ban"></i> لغو حساب</button>
+                </td>
             </tr>`;
         }
 
@@ -356,7 +381,14 @@
             let id=`MS-${(uid.replace(/\D/g,'')+"123456789").substring(0,6)}`;
             let req=u.pendingEmail||u.newEmail||'';
             let selfieBtn=u.selfieImage?`<button class="btn-action btn-approve" onclick="openS('${uid}')"><i class="fas fa-eye"></i> مشاهده</button>`:`<span style="color:#64748b">-</span>`;
-            let acts=req?`<button class="btn-action btn-approve" onclick="appEmail('${uid}','${req}')"><i class="fas fa-check"></i></button><button class="btn-action btn-reject" onclick="rejEmail('${uid}')"><i class="fas fa-times"></i></button>`:`-`;
+            let acts=req?`<button class="btn-action btn-approve" onclick="appEmail('${uid}','${req}')"><i class="fas fa-check"></i> تایید</button><button class="btn-action btn-reject" onclick="rejEmail('${uid}')"><i class="fas fa-times"></i> رد</button>`:`-`;
+            let regTime = formatDateTime(u.createdAt || u.registeredAt || u.joinedAt);
+            
+            let statusText = "غیرفعال / معلق";
+            if(u.status === 'banned' || u.status === 'cancelled' || u.isBanned === true) {
+                statusText = "لغو شده (تخلف)";
+            }
+
             let searchString = `${id} ${u.fullName||u.name||''} ${u.email||''} ${req}`.toLowerCase();
 
             inactiveTb.innerHTML+=`<tr class="user-row-inactive" data-search="${searchString}">
@@ -365,8 +397,13 @@
                 <td>${u.email||'-'}</td>
                 <td style="color:${req?'#f59e0b':'inherit'}">${req||'-'}</td>
                 <td>${selfieBtn}</td>
-                <td><span class="badge-inactive">غیرفعال / معلق</span></td>
-                <td>${acts} <button class="btn-action btn-edit" onclick="openE('${uid}')"><i class="fas fa-edit"></i> ویرایش</button></td>
+                <td><span class="badge-inactive">${statusText}</span></td>
+                <td style="color:#38bdf8">${regTime}</td>
+                <td>
+                    ${acts} 
+                    <button class="btn-action btn-edit" onclick="openE('${uid}')"><i class="fas fa-edit"></i> ویرایش</button>
+                    ${statusText.includes('لغو شده') ? `<button class="btn-action btn-approve" onclick="restoreAccount('${uid}')"><i class="fas fa-undo"></i> فعال‌سازی مجدد</button>` : `<button class="btn-action btn-ban" onclick="cancelAccount('${uid}')"><i class="fas fa-ban"></i> لغو حساب</button>`}
+                </td>
             </tr>`;
         }
 
@@ -396,7 +433,7 @@
             let html = '';
 
             const buildListHtml = (items) => {
-                let inner = `<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام کاربر</th><th>ایمیل جدید درخواستی</th><th>سلفی</th><th>تاریخ و ساعت ثبت (English Font)</th><th>عملیات</th></tr></thead><tbody>`;
+                let inner = `<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام کاربر</th><th>ایمیل جدید درخواستی</th><th>سلفی</th><th>تاریخ و ساعت ثبت درخواست</th><th>عملیات</th></tr></thead><tbody>`;
                 items.forEach(({item, d}) => {
                     let u = item.u;
                     let uid = item.uid;
@@ -446,13 +483,51 @@
         window.appEmail=async(uid,newEmail)=>{if(!confirm(`آیا از تایید تغییر ایمیل به ${newEmail} اطمینان دارید؟`))return;await updateDoc(doc(db,"users",uid),{email:newEmail,pendingEmail:"",newEmail:"",selfieImage:"",status:"active",adminApprovalStatus:"approved"});alert('درخواست با موفقیت تایید شد');loadUsers();};
         window.rejectEmailChange=window.rejEmail=async(uid)=>{if(!confirm('آیا از رد این درخواست اطمینان دارید؟'))return;await updateDoc(doc(db,"users",uid),{pendingEmail:"",newEmail:"",selfieImage:"",adminApprovalStatus:"rejected"});alert('درخواست رد شد');loadUsers();};
 
+        // لغو حساب کاربری به دلیل تخلف
+        window.cancelAccount=async(uid)=>{
+            if(!confirm('هشدار: آیا از لغو حساب کاربری این شخص به دلیل تخلف اطمینان دارید؟ حساب کاربری غیرفعال خواهد شد.'))return;
+            await updateDoc(doc(db,"users",uid),{status:"cancelled",isBanned:true});
+            alert('حساب کاربری کاربر به دلیل تخلف لغو و مسدود شد.');
+            loadUsers();
+        };
+
+        // فعال‌سازی مجدد حساب
+        window.restoreAccount=async(uid)=>{
+            if(!confirm('آیا می‌خواهید حساب کاربری این کاربر را مجدداً فعال کنید؟'))return;
+            await updateDoc(doc(db,"users",uid),{status:"active",isBanned:false});
+            alert('حساب کاربری مجدداً فعال شد.');
+            loadUsers();
+        };
+
         document.getElementById('search-active-input').oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll('.user-row-active').forEach(r=>r.style.display=r.dataset.search.includes(q)?'':'none');};
         document.getElementById('search-inactive-input').oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll('.user-row-inactive').forEach(r=>r.style.display=r.dataset.search.includes(q)?'':'none');};
 
-        window.openE=uid=>{let u=usersMap[uid];if(!u)return;document.getElementById('edit-uid').value=uid;document.getElementById('edit-name').value=u.fullName||u.name||'';document.getElementById('edit-email').value=u.email||'';document.getElementById('edit-phone').value=u.phone||'';document.getElementById('edit-balance').value=u.balance||0;editM.classList.add('show');};
+        window.openE=uid=>{
+            let u=usersMap[uid];if(!u)return;
+            document.getElementById('edit-uid').value=uid;
+            document.getElementById('edit-name').value=u.fullName||u.name||'';
+            document.getElementById('edit-email').value=u.email||'';
+            document.getElementById('edit-phone').value=u.phone||'';
+            document.getElementById('edit-balance').value=u.balance||0;
+            document.getElementById('edit-profit').value=u.profit||u.totalProfit||0;
+            editM.classList.add('show');
+        };
         document.getElementById('close-modal').onclick=()=>editM.classList.remove('show');
 
-        document.getElementById('edit-form').onsubmit=async e=>{e.preventDefault();let uid=document.getElementById('edit-uid').value;await updateDoc(doc(db,"users",uid),{fullName:document.getElementById('edit-name').value,email:document.getElementById('edit-email').value,phone:document.getElementById('edit-phone').value,balance:parseFloat(document.getElementById('edit-balance').value)||0});editM.classList.remove('show');loadUsers();alert('اطلاعات کاربر با موفقیت بروزرسانی شد');};
+        document.getElementById('edit-form').onsubmit=async e=>{
+            e.preventDefault();
+            let uid=document.getElementById('edit-uid').value;
+            await updateDoc(doc(db,"users",uid),{
+                fullName:document.getElementById('edit-name').value,
+                email:document.getElementById('edit-email').value,
+                phone:document.getElementById('edit-phone').value,
+                balance:parseFloat(document.getElementById('edit-balance').value)||0,
+                profit:parseFloat(document.getElementById('edit-profit').value)||0
+            });
+            editM.classList.remove('show');
+            loadUsers();
+            alert('اطلاعات کاربر با موفقیت بروزرسانی شد');
+        };
         
         onAuthStateChanged(auth,u=>{if(!u)window.location.href='index.html';else loadUsers();});
         document.getElementById('logout-btn').onclick=async()=>{await signOut(auth);window.location.href='index.html';};
