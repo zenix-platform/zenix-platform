@@ -162,7 +162,6 @@
                     <div class="panel-title"><i class="fas fa-inbox"></i> صندوق درخواست‌ها و تغییرات (تفکیک زمانی)</div>
                 </div>
                 <div id="requests-container">
-                    <!-- Dynamic Requests grouped by date will load here -->
                     <div style="text-align:center;color:#94a3b8;padding:20px;">در حال بارگذاری درخواست‌ها...</div>
                 </div>
             </div>
@@ -268,7 +267,6 @@
                 statTotalBalance.innerText='$'+totalBal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
                 statPendingRequests.innerText=pendingReqs;
                 
-                // Update Badge Counter on Tab
                 reqBadge.innerText = pendingReqs;
                 if(pendingReqs > 0) {
                     reqBadge.classList.remove('zero');
@@ -291,7 +289,9 @@
             let selfieBtn=u.selfieImage?`<button class="btn-action btn-approve" onclick="openS('${uid}')"><i class="fas fa-eye"></i> مشاهده</button>`:`<span style="color:#64748b">-</span>`;
             let acts=req?`<button class="btn-action btn-approve" onclick="appEmail('${uid}','${req}')"><i class="fas fa-check"></i></button><button class="btn-action btn-reject" onclick="rejEmail('${uid}')"><i class="fas fa-times"></i></button>`:`<span class="badge">عادی</span>`;
             
-            tb.innerHTML+=`<tr class="user-row" data-search="${id}${u.fullName||''} ${u.email\vert{}\vert{}''}${req}`.toLowerCase()}">
+            let searchString = `${id} ${u.fullName||u.name||''} ${u.email||''} ${req}`.toLowerCase();
+
+            tb.innerHTML+=`<tr class="user-row" data-search="${searchString}">
                 <td><span class="badge-id">${id}</span></td>
                 <td><b>${u.fullName||u.name||'بی‌نام'}</b></td>
                 <td>${u.email||'-'}</td>
@@ -308,7 +308,6 @@
                 return;
             }
 
-            // Categorize by Date (Today, Yesterday, Older)
             let todayStr = new Date().toDateString();
             let yesterdayDate = new Date();
             yesterdayDate.setDate(yesterdayDate.getDate() - 1);
@@ -328,7 +327,6 @@
 
             let html = '';
 
-            // Helper to build rows
             const buildListHtml = (items) => {
                 let inner = `<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام کاربر</th><th>ایمیل جدید درخواستی</th><th>سلفی</th><th>تاریخ و ساعت ثبت</th><th>عملیات</th></tr></thead><tbody>`;
                 items.forEach(({item, d}) => {
