@@ -4,7 +4,27 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Zenix - واریز خودکار</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}
+header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.logo h2{font-size:18px;color:#38bdf8;font-weight:800}
+.hr{display:flex;align-items:center;gap:8px}
+.wrap{position:relative}
+.lb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;width:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#38bdf8;text-decoration:none}
+.badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:160px;max-height:240px;overflow-y:auto;padding:6px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}
+[dir="rtl"] .wrap .menu{left:0}
+[dir="ltr"] .wrap .menu{right:0}
+.menu.show{display:block}
+.mi{padding:7px 10px;font-size:12px;color:#cbd5e1;cursor:pointer;border-radius:6px;display:flex;align-items:center;gap:8px;text-decoration:none}
+.mi:hover{background:rgba(56,189,248,.2);color:#38bdf8}
+.c{max-width:800px;width:100%;margin:15px auto;padding:0 12px;flex:1}
+.wel{background:linear-gradient(135deg,rgba(2,132,199,.15),rgba(147,51,234,.15));border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.wel h1{font-size:16px;margin-bottom:3px}
+.wel p{color:#94a3b8;font-size:11px}
+footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05)}
+</style>
 </head>
 <body>
 <header>
@@ -29,9 +49,10 @@
 <a href="transactions.html" class="mi"><i class="fas fa-history"></i><span data-i18n="transactions">تراکنش</span></a>
 <a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span data-i18n="profile">پروفایل</span></a>
 <a href="support.html" class="mi"><i class="fas fa-headset"></i><span data-i18n="support">پشتیبانی</span></a>
-<a href="login.html" class="mi" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a>
+<a href="#" class="mi" id="logout-btn" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a>
 </div></div></div>
 </header>
+
 <div class="c">
 <div class="wel">
 <div><h1 data-i18n="depositTitle">واریز هوشمند ارز</h1><p data-i18n="depositSub">شارژ آنی و اتوماتیک از شبکه بلاکچین</p></div>
@@ -65,36 +86,81 @@
 * تراکنش‌ها به صورت خودکار پس از تایید گره‌های شبکه اعمال می‌شوند.
 </div>
 </div>
+
 <footer><p>&copy; 2026 Zenix</p></footer>
-<script src="script.js"></script>
+
 <script>
+const mB=document.getElementById('menu-btn'),nM=document.getElementById('nav-menu'),lB=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu'),bB=document.getElementById('bell-btn'),bM=document.getElementById('bell-menu');
+function tM(o,e){e.stopPropagation();[nM,lMenu,bM].forEach(m=>{if(m!==o)m.classList.remove('show');});o.classList.toggle('show');}
+if(mB)mB.onclick=(e)=>tM(nM,e);if(lB)lB.onclick=(e)=>tM(lMenu,e);if(bB)bB.onclick=(e)=>tM(bM,e);
+document.onclick=()=>{[nM,lMenu,bM].forEach(m=>m.classList.remove('show'));};document.querySelectorAll('.menu').forEach(m=>m.onclick=(e)=>e.stopPropagation());
+</script>
+
+<script async type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import{getFirestore,doc,updateDoc,increment}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
+
 const wallets={TRC20:"T9yJ1qcNoV3WjZVxkPqL8x2m9jZ1vXkPqL",BEP20:"0x71C8a21B3b914E1d86295B42D23c22b943b2E9f1"};
+let currentUser=null;
+
 function showMsg(text,isErr){
-const box=document.getElementById('status-box');
-box.style.display='block';
-box.style.background=isErr?'rgba(239,68,68,0.15)':'rgba(34,197,94,0.15)';
-box.style.border=isErr?'1px solid #ef4444':'1px solid #22c55e';
-box.style.color=isErr?'#ef4444':'#22c55e';
-box.innerHTML=text;
+  const box=document.getElementById('status-box');
+  box.style.display='block';
+  box.style.background=isErr?'rgba(239,68,68,0.15)':'rgba(34,197,94,0.15)';
+  box.style.border=isErr?'1px solid #ef4444':'1px solid #22c55e';
+  box.style.color=isErr?'#ef4444':'#22c55e';
+  box.innerHTML=text;
 }
-function setNetwork(net){
-const trc=document.getElementById('net-trc20'),bep=document.getElementById('net-bep20'),addr=document.getElementById('wallet-address'),lbl=document.getElementById('wallet-label'),qr=document.getElementById('qr-code-img');
-if(net==='TRC20'){trc.style.background='rgba(56,189,248,0.15)';trc.style.borderColor='#38bdf8';trc.style.color='#f8fafc';bep.style.background='rgba(15,23,42,0.6)';bep.style.borderColor='rgba(255,255,255,0.1)';bep.style.color='#94a3b8';}
-else{bep.style.background='rgba(56,189,248,0.15)';bep.style.borderColor='#38bdf8';bep.style.color='#f8fafc';trc.style.background='rgba(15,23,42,0.6)';trc.style.borderColor='rgba(255,255,255,0.1)';trc.style.color='#94a3b8';}
-addr.value=wallets[net];lbl.textContent=`آدرس کیف پول (${net}):`;qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${wallets[net]}`;
+
+window.setNetwork=function(net){
+  const trc=document.getElementById('net-trc20'),bep=document.getElementById('net-bep20'),addr=document.getElementById('wallet-address'),lbl=document.getElementById('wallet-label'),qr=document.getElementById('qr-code-img');
+  if(net==='TRC20'){
+    trc.style.background='rgba(56,189,248,0.15)';trc.style.borderColor='#38bdf8';trc.style.color='#f8fafc';
+    bep.style.background='rgba(15,23,42,0.6)';bep.style.borderColor='rgba(255,255,255,0.1)';bep.style.color='#94a3b8';
+  }else{
+    bep.style.background='rgba(56,189,248,0.15)';bep.style.borderColor='#38bdf8';bep.style.color='#f8fafc';
+    trc.style.background='rgba(15,23,42,0.6)';trc.style.borderColor='rgba(255,255,255,0.1)';trc.style.color='#94a3b8';
+  }
+  addr.value=wallets[net];
+  lbl.textContent=`آدرس کیف پول (${net}):`;
+  qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${wallets[net]}`;
 }
-function copyAddress(){
-const c=document.getElementById("wallet-address");
-c.select();navigator.clipboard.writeText(c.value);
-showMsg("📋 آدرس کیف پول با موفقیت در کلیپ‌بورد کپی شد.", false);
+
+window.copyAddress=function(){
+  const c=document.getElementById("wallet-address");
+  c.select();navigator.clipboard.writeText(c.value);
+  showMsg("📋 آدرس کیف پول با موفقیت در کلیپ‌بورد کپی شد.", false);
 }
-function checkAutoDeposit(){
-const detectedAmount=150;
-let bal=parseFloat(localStorage.getItem('zenix_balance')||'100');
-bal+=detectedAmount;
-localStorage.setItem('zenix_balance',bal);
-showMsg(`✅ تراکنش بلاکچین تایید شد. مبلغ ${detectedAmount} USDT به موجودی افزوده شد.`, false);
+
+window.checkAutoDeposit=async function(){
+  if(!currentUser){
+    showMsg("❌ لطفاً ابتدا وارد حساب کاربری خود شوید.", true);
+    return;
+  }
+  const detectedAmount=100;
+  try {
+    const userRef=doc(db,"users",currentUser.uid);
+    await updateDoc(userRef,{
+      balance: increment(detectedAmount),
+      depositAmount: increment(detectedAmount)
+    });
+    showMsg(`✅ تراکنش بلاکچین تایید شد. مبلغ ${detectedAmount} USDT به موجودی شما افزوده شد.`, false);
+  } catch(err) {
+    console.error(err);
+    showMsg("❌ خطا در اتصال به سرور جهت بروزرسانی موجودی.", true);
+  }
 }
+
+onAuthStateChanged(auth,u=>{
+  if(!u){window.location.href='index.html';return;}
+  currentUser=u;
+});
+
+const lBtn=document.getElementById('logout-btn');
+if(lBtn)lBtn.onclick=async e=>{e.preventDefault();await signOut(auth);localStorage.clear();window.location.href='index.html';};
 </script>
 </body>
 </html>
