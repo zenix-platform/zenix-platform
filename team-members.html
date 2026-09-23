@@ -1,61 +1,11 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Zenix - اعضای تیم</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
-<style>
-.wrap{position:relative!important;}
-[dir="ltr"] .wrap .menu{right:0!important;left:auto!important;}
-[dir="rtl"] .wrap .menu{left:0!important;right:auto!important;}
-</style>
-</head>
-<body>
-<header>
-<div class="logo"><h2>ZENIX</h2></div>
-<div class="hr">
-<div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button>
-<div class="menu" id="bell-menu">
-<div style="padding:8px 12px;font-size:15px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold;" data-i18n="adminMsg">پیام مدیریت</div>
-<div style="padding:10px 12px;font-size:15px;color:#cbd5e1;" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div>
-</div></div>
-<a href="support.html" class="lb"><i class="fas fa-headset"></i></a>
-<div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe"></i></button>
-<div class="menu" id="lang-menu">
-<div class="mi" data-lang="fa">فارسی</div>
-<div class="mi" data-lang="en">English</div>
-<div class="mi" data-lang="ar">العربية</div>
-<div class="mi" data-lang="tr">Türkçe</div>
-<div class="mi" data-lang="fr">Français</div>
-<div class="mi" data-lang="de">Deutsch</div>
-<div class="mi" data-lang="es">Español</div>
-<div class="mi" data-lang="ru">Русский</div>
-</div></div>
-<div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button>
-<div class="menu" id="nav-menu">
-<a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span data-i18n="home">صفحه اصلی</span></a>
-<a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a>
-<a href="deposit.html" class="mi"><i class="fas fa-arrow-up-right-dots"></i><span data-i18n="deposit">واریز</span></a>
-<a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span data-i18n="receive">برداشت</span></a>
-<a href="team.html" class="mi" style="color:#38bdf8;"><i class="fas fa-users"></i><span data-i18n="team">تیم من</span></a>
-<a href="transactions.html" class="mi"><i class="fas fa-history"></i><span data-i18n="transactions">تراکنش</span></a>
-<a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span data-i18n="profile">پروفایل</span></a>
-<a href="support.html" class="mi"><i class="fas fa-headset"></i><span data-i18n="support">پشتیبانی</span></a>
-<a href="login.html" class="mi" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a>
-</div></div></div>
-</header>
-<div class="c">
-<div class="wel">
-<div><h1 id="page-title" style="font-size:22px;"></h1><p id="page-desc" style="font-size:15px;"></p></div>
-</div>
-<div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:16px;margin-top:12px;">
-<div id="team-members-list" style="display:flex;flex-direction:column;gap:10px;"></div>
-</div>
-</div>
-<footer><p>&copy; 2026 Zenix</p></footer>
-<script src="script.js"></script>
-<script>
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zenix - اعضای تیم</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="stylesheet" href="style.css"><style>.wrap{position:relative!important;}[dir="ltr"] .wrap .menu{right:0!important;left:auto!important;}[dir="rtl"] .wrap .menu{left:0!important;right:auto!important;}</style></head><body><header><div class="logo"><h2>ZENIX</h2></div><div class="hr"><div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button><div class="menu" id="bell-menu"><div style="padding:8px 12px;font-size:15px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold" data-i18n="adminMsg">پیام مدیریت</div><div style="padding:10px 12px;font-size:15px;color:#cbd5e1" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div></div></div><a href="support.html" class="lb"><i class="fas fa-headset"></i></a><div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe"></i></button><div class="menu" id="lang-menu"><div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div><div class="mi" data-lang="fr">Français</div><div class="mi" data-lang="de">Deutsch</div><div class="mi" data-lang="es">Español</div><div class="mi" data-lang="ru">Русский</div></div></div><div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button><div class="menu" id="nav-menu"><a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span data-i18n="home">صفحه اصلی</span></a><a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a><a href="deposit.html" class="mi"><i class="fas fa-arrow-up-right-dots"></i><span data-i18n="deposit">واریز</span></a><a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span data-i18n="receive">برداشت</span></a><a href="team.html" class="mi" style="color:#38bdf8"><i class="fas fa-users"></i><span data-i18n="team">تیم من</span></a><a href="transactions.html" class="mi"><i class="fas fa-history"></i><span data-i18n="transactions">تراکنش</span></a><a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span data-i18n="profile">پروفایل</span></a><a href="support.html" class="mi"><i class="fas fa-headset"></i><span data-i18n="support">پشتیبانی</span></a><a href="login.html" class="mi" style="color:#ef4444"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a></div></div></div></header><div class="c"><div class="wel"><div><h1 id="page-title" style="font-size:22px"></h1><p id="page-desc" style="font-size:15px"></p></div></div><div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:16px;margin-top:12px"><div id="team-members-list" style="display:flex;flex-direction:column;gap:10px"></div></div></div><footer><p>&copy; 2026 Zenix</p></footer><script src="script.js"></script><script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import{getFirestore,doc,getDoc,collection,getDocs,query,where}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig={apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+
 const L={
 fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',team:'تیم من',transactions:'تراکنش',profile:'پروفایل',support:'پشتیبانی',logout:'خروج',tTpl:'اعضای نسل',desc:'مشاهده جزئیات و مبالغ واریز و برداشت کاربران',reg:'ثبت‌نام:',dep:'آخرین واریز:',nf:'کاربری در این نسل یافت نشد.'},
 en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',team:'My Team',transactions:'Transactions',profile:'Profile',support:'Support',logout:'Logout',tTpl:'Generation Members',desc:'View user deposit and withdrawal details and amounts',reg:'Register:',dep:'Last Deposit:',nf:'No users found in this generation.'},
@@ -68,47 +18,89 @@ ru:{dir:'ltr',adminMsg:'Сообщение админа',welcomeText:'Добро
 };
 
 const p=new URLSearchParams(location.search),lvl=p.get('level')||'1';
-const td={
-1:[{n:'ali_trader99',regDate:'2026-09-10 - 10:00',v:850,w:120,depDate:'2026-09-18 - 15:30'},{n:'sara_crypto',regDate:'2026-09-12 - 14:20',v:620.50,w:45,depDate:'2026-09-17 - 11:10'}],
-2:[{n:'reza_fx',regDate:'2026-09-05 - 08:30',v:400,w:80.25,depDate:'2026-09-16 - 09:15'},{n:'mina_z',regDate:'2026-09-08 - 16:45',v:300.75,w:30,depDate:'2026-09-13 - 18:45'}],
-3:[{n:'omid_hodl',regDate:'2026-09-01 - 12:00',v:180,w:15.50,depDate:'2026-09-11 - 12:00'}]
-},
-fmt=v=>(v%1===0?v:v.toFixed(2))+'&nbsp;&nbsp;&nbsp;$';
+const fmt=v=>(v%1===0?v:Number(v).toFixed(2))+'&nbsp;&nbsp;&nbsp;$';
 
-function setLang(lang){
-  const t=L[lang]||L.fa;
-  document.documentElement.dir=t.dir;
-  document.documentElement.lang=lang;
-  localStorage.setItem('zenix_lang',lang);
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const k=el.getAttribute('data-i18n');
-    if(t[k])el.innerText=t[k];
-  });
-  document.getElementById('page-title').innerText=`${t.tTpl} ${lvl}`;
-  document.getElementById('page-desc').innerText=t.desc;
-  
-  const lst=td[lvl]||[];
-  document.getElementById('team-members-list').innerHTML=lst.length?lst.map(m=>`
-  <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);padding:16px;border-radius:8px;font-size:15px;">
-  <div>
-  <div style="color:#f8fafc;font-weight:bold;font-size:17px;margin-bottom:4px;">${m.n}</div>
-  <div style="font-size:13px;color:#94a3b8;"><i class="fas fa-user-plus"></i> ${t.reg} ${m.regDate}</div>
-  <div style="font-size:13px;color:#38bdf8;margin-top:4px;"><i class="fas fa-arrow-down-right"></i> ${t.dep} ${m.depDate}</div>
-  </div>
-  <div style="display:grid;grid-template-columns:auto auto;gap:4px 12px;align-items:center;text-align:left;">
-  <span style="font-size:13px;color:#94a3b8;text-align:right;">${t.deposit}:</span>
-  <span style="color:#22c55e;font-weight:bold;font-size:15px;direction:ltr;display:inline-block;">${fmt(m.v)}</span>
-  <span style="font-size:13px;color:#94a3b8;text-align:right;">${t.receive}:</span>
-  <span style="color:#ef4444;font-weight:bold;font-size:15px;direction:ltr;display:inline-block;">${fmt(m.w)}</span>
-  </div>
-  </div>`).join(''):`<div style="text-align:center;color:#94a3b8;padding:20px;font-size:15px;">${t.nf}</div>`;
+window.setLang=function(lang){
+    const t=L[lang]||L.fa;
+    document.documentElement.dir=t.dir;
+    document.documentElement.lang=lang;
+    localStorage.setItem('zenix_lang',lang);
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const k=el.getAttribute('data-i18n');
+        if(t[k])el.innerText=t[k];
+    });
+    document.getElementById('page-title').innerText=`${t.tTpl} ${lvl}`;
+    document.getElementById('page-desc').innerText=t.desc;
+    if(window.currentMembers){
+        renderList(window.currentMembers, t);
+    }
 }
 
-const savedLang=localStorage.getItem('zenix_lang')||'fa';
-setLang(savedLang);
-document.querySelectorAll('#lang-menu .mi').forEach(el=>{
-  el.onclick=()=>setLang(el.getAttribute('data-lang'));
+function renderList(lst, t){
+    document.getElementById('team-members-list').innerHTML=lst.length?lst.map(m=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);padding:16px;border-radius:8px;font-size:15px;">
+    <div>
+    <div style="color:#f8fafc;font-weight:bold;font-size:17px;margin-bottom:4px;">${m.n}</div>
+    <div style="font-size:13px;color:#94a3b8;"><i class="fas fa-user-plus"></i> ${t.reg} ${m.regDate}</div>
+    <div style="font-size:13px;color:#38bdf8;margin-top:4px;"><i class="fas fa-arrow-down-right"></i> ${t.dep} ${m.depDate}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:auto auto;gap:4px 12px;align-items:center;text-align:left;">
+    <span style="font-size:13px;color:#94a3b8;text-align:right;">${t.deposit}:</span>
+    <span style="color:#22c55e;font-weight:bold;font-size:15px;direction:ltr;display:inline-block;">${fmt(m.v)}</span>
+    <span style="font-size:13px;color:#94a3b8;text-align:right;">${t.receive}:</span>
+    <span style="color:#ef4444;font-weight:bold;font-size:15px;direction:ltr;display:inline-block;">${fmt(m.w)}</span>
+    </div>
+    </div>`).join(''):`<div style="text-align:center;color:#94a3b8;padding:20px;font-size:15px;">${t.nf}</div>`;
+}
+
+onAuthStateChanged(auth,async(user)=>{
+    if(!user){window.location.href="login.html";return;}
+    try{
+        const userSnap=await getDoc(doc(db,"users",user.uid));
+        if(userSnap.exists()){
+            const refCode=userSnap.data().referralCode;
+            let memberList=[];
+            if(refCode){
+                const usersRef=collection(db,"users");
+                const q1=query(usersRef,where("referredBy","==",refCode));
+                const s1=await getDocs(q1);
+                let codes1=[];
+                s1.forEach(d=>{
+                    const u=d.data();
+                    if(lvl==='1') memberList.push({n:u.username||u.email||'کاربر',regDate:u.createdAt||'---',v:u.totalDeposit||0,w:u.totalWithdraw||0,depDate:u.lastDepositDate||'---'});
+                    if(u.referralCode) codes1.push(u.referralCode);
+                });
+
+                if(lvl==='2' && codes1.length>0){
+                    const q2=query(usersRef,where("referredBy","in",codes1.slice(0,10)));
+                    const s2=await getDocs(q2);
+                    s2.forEach(d=>{
+                        const u=d.data();
+                        memberList.push({n:u.username||u.email||'کاربر',regDate:u.createdAt||'---',v:u.totalDeposit||0,w:u.totalWithdraw||0,depDate:u.lastDepositDate||'---'});
+                    });
+                }else if(lvl==='3' && codes1.length>0){
+                    const q2=query(usersRef,where("referredBy","in",codes1.slice(0,10)));
+                    const s2=await getDocs(q2);
+                    let codes2=[];
+                    s2.forEach(d=>{if(d.data().referralCode)codes2.push(d.data().referralCode);});
+                    if(codes2.length>0){
+                        const q3=query(usersRef,where("referredBy","in",codes2.slice(0,10)));
+                        const s3=await getDocs(q3);
+                        s3.forEach(d=>{
+                            const u=d.data();
+                            memberList.push({n:u.username||u.email||'کاربر',regDate:u.createdAt||'---',v:u.totalDeposit||0,w:u.totalWithdraw||0,depDate:u.lastDepositDate||'---'});
+                        });
+                    }
+                }
+            }
+            window.currentMembers=memberList;
+            const lang=localStorage.getItem('zenix_lang')||'fa';
+            setLang(lang);
+        }
+    }catch(err){console.error(err);}
 });
-</script>
-</body>
-</html>
+
+document.querySelectorAll('#lang-menu .mi').forEach(el=>{
+    el.onclick=()=>setLang(el.getAttribute('data-lang'));
+});
+</script></body></html>
