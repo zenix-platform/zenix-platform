@@ -1,92 +1,101 @@
-<script async type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import{getFirestore,doc,getDoc,updateDoc,setDoc,onSnapshot}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
-const qB=document.getElementById('quant-btn');let uUid=null,tProf=0,bBal=0,tpEl=document.getElementById('today-profit-val'),tbEl=document.getElementById('total-balance-val'),hList=document.getElementById('history-list');
+const app = initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"});
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-function getNYDateStr(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York'}).format(new Date());}
-let todayNY=getNYDateStr();
-let cCnt=0;
-let allTradesArray=[];
+const qB = document.getElementById('quant-btn');
+let uUid = null, tProf = 0, bBal = 0;
+const tpEl = document.getElementById('today-profit-val');
+const tbEl = document.getElementById('total-balance-val');
+const hList = document.getElementById('history-list');
+
+function getNYDateStr() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
+}
+let todayNY = getNYDateStr();
+let cCnt = 0;
+let allTradesArray = [];
 let isExecutingTrade = false;
 
-function uC(){
-  const dateStr=getNYDateStr();
-  if(dateStr!==todayNY){
-    todayNY=dateStr;
-    cCnt=0;
-    tProf=0;
-    if(uUid)updateDoc(doc(db,"users",uUid),{quantCount:0,quantDate:todayNY,todayProfit:0});
-    if(tpEl)tpEl.innerText='$0.00';
-    window.checkClickState();
+function uC() {
+  const dateStr = getNYDateStr();
+  if (dateStr !== todayNY) {
+    todayNY = dateStr;
+    cCnt = 0;
+    tProf = 0;
+    if (uUid) updateDoc(doc(db, "users", uUid), { quantCount: 0, quantDate: todayNY, todayProfit: 0 });
+    if (tpEl) tpEl.innerText = '$0.00';
+    if (window.checkClickState) window.checkClickState();
   }
-  const t=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());
-  const c=document.getElementById('ny-clock-val');
-  if(c)c.innerText=t;
+  const t = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date());
+  const c = document.getElementById('ny-clock-val');
+  if (c) c.innerText = t;
 }
-setInterval(uC,1000);uC();
+setInterval(uC, 1000);
+uC();
 
-const cList=[
-  {name:'Bitcoin',symbol:'BTC',cls:'fab fa-bitcoin',color:'#f7931a'},
-  {name:'Ethereum',symbol:'ETH',cls:'fab fa-ethereum',color:'#627eea'},
-  {name:'Solana',symbol:'SOL',cls:'fas fa-coins',color:'#14f195'},
-  {name:'Ripple',symbol:'XRP',cls:'fas fa-water',color:'#23292f'},
-  {name:'Cardano',symbol:'ADA',cls:'fas fa-circle-dot',color:'#0033ad'},
-  {name:'Dogecoin',symbol:'DOGE',cls:'fas fa-dog',color:'#c2a633'},
-  {name:'Binance Coin',symbol:'BNB',cls:'fas fa-cube',color:'#f3ba2f'}
+const cList = [
+  { name: 'Bitcoin', symbol: 'BTC', cls: 'fab fa-bitcoin', color: '#f7931a' },
+  { name: 'Ethereum', symbol: 'ETH', cls: 'fab fa-ethereum', color: '#627eea' },
+  { name: 'Solana', symbol: 'SOL', cls: 'fas fa-coins', color: '#14f195' },
+  { name: 'Ripple', symbol: 'XRP', cls: 'fas fa-water', color: '#23292f' },
+  { name: 'Cardano', symbol: 'ADA', cls: 'fas fa-circle-dot', color: '#0033ad' },
+  { name: 'Dogecoin', symbol: 'DOGE', cls: 'fas fa-dog', color: '#c2a633' },
+  { name: 'Binance Coin', symbol: 'BNB', cls: 'fas fa-cube', color: '#f3ba2f' }
 ];
 
-window.checkClickState=function(){
-  if(!window.isBotActive || isExecutingTrade)return;
-  const l=window.currentActiveLang||'fa',txt=l==='fa'?'کوانتیفیکیشن':(LD[l]?.quantification||'Quantification');
-  qB.disabled=false;qB.style.opacity="1";qB.style.cursor="pointer";
-  qB.innerHTML=`<i class="fas fa-robot"></i> <span>${txt} (${cCnt})</span>`;
+window.checkClickState = function() {
+  if (!window.isBotActive || isExecutingTrade) return;
+  const l = window.currentActiveLang || 'fa';
+  const txt = l === 'fa' ? 'کوانتیفیکیشن' : (LD[l]?.quantification || 'Quantification');
+  if (qB) {
+    qB.disabled = false;
+    qB.style.opacity = "1";
+    qB.style.cursor = "pointer";
+    qB.innerHTML = `<i class="fas fa-robot"></i> <span>${txt} (${cCnt})</span>`;
+  }
 };
 
-function renderHistory(){
-  if(!allTradesArray||allTradesArray.length===0){
-    hList.innerHTML=`<div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">هنوز معامله‌ای ثبت نشده است</div>`;
+function renderHistory() {
+  if (!allTradesArray || allTradesArray.length === 0) {
+    hList.innerHTML = `<div style="font-size:12px;color:#94a3b8;text-align:center;">هنوز معامله‌ای ثبت نشده است</div>`;
     return;
   }
-  const nowTime=new Date().getTime();
-  const thirtyDaysMs=30*24*60*60*1000;
-  const filtered=allTradesArray.filter(item=>nowTime-item.timestamp<=thirtyDaysMs);
-  if(filtered.length===0){
-    hList.innerHTML=`<div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">هنوز مع량이 ثبت نشده است</div>`;
-    return;
-  }
-  let htmlStr='';
-  filtered.forEach(item=>{
-    const pColor=item.profit>=0?'#22c55e':'#ef4444';
-    const pSign=item.profit>=0?'+':'';
-    htmlStr+=`<div style="background:rgba(255,255,255,0.05);padding:8px;border-radius:6px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;">
+  let htmlStr = '';
+  allTradesArray.forEach(item => {
+    const pColor = item.profit >= 0 ? '#22c55e' : '#ef4444';
+    const pSign = item.profit >= 0 ? '+' : '';
+    htmlStr += `<div style="background:rgba(255,255,255,0.05);padding:8px;border-radius:6px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;">
       <span style="color:${pColor};font-weight:bold;">${pSign}$${Number(item.profit).toFixed(2)}</span>
-      <span style="color:#94a3b8;font-size:10px;">${item.dateStr||''}</span>
-      <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${item.name} (${item.symbol})</span><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${item.color||'#38bdf8'};color:#fff;font-size:11px;"><i class="${item.cls||'fas fa-coins'}"></i></span></span>
+      <span style="color:#94a3b8;font-size:10px;">${item.dateStr || ''}</span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${item.name} (${item.symbol})</span><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${item.color || '#38bdf8'};color:#fff;font-size:11px;"><i class="${item.cls || 'fas fa-coins'}"></i></span></span>
     </div>`;
   });
-  hList.innerHTML=htmlStr;
+  hList.innerHTML = htmlStr;
 }
 
-if(qB){
-  qB.onclick=async function(e){
+if (qB) {
+  qB.onclick = async function(e) {
     e.preventDefault();
-    if(!window.isBotActive||!uUid||isExecutingTrade)return;
+    if (!window.isBotActive || !uUid || isExecutingTrade) return;
     
     isExecutingTrade = true;
-    qB.disabled=true;qB.style.opacity="0.5";qB.style.cursor="not-allowed";
-    const l=window.currentActiveLang||'fa';
+    qB.disabled = true;
+    qB.style.opacity = "0.5";
+    qB.style.cursor = "not-allowed";
+    const l = window.currentActiveLang || 'fa';
 
-    const rc=cList[Math.floor(Math.random()*cList.length)];
+    const rc = cList[Math.floor(Math.random() * cList.length)];
+    const tBox = document.getElementById('trade-box');
+    const tDet = document.getElementById('trade-details');
+    tBox.style.display = 'block';
 
-    const tBox=document.getElementById('trade-box'),tDet=document.getElementById('trade-details');
-    tBox.style.display='block';
+    tDet.innerHTML = `<i class="fas fa-spinner fa-spin" style="color:#38bdf8;"></i> ${l === 'fa' ? 'در حال ارسال درخواست به سرور و اجرای معامله در صرافی...' : 'Sending to server & executing trade...'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> <b>${rc.name} (${rc.symbol})</b>`;
 
-    tDet.innerHTML=`<i class="fas fa-spinner fa-spin" style="color:#38bdf8;"></i> ${l==='fa'?'در حال ارسال درخواست به سرور و اجرای معامله در صرافی...':'Sending to server & executing trade...'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> <b>${rc.name} (${rc.symbol})</b>`;
-
-    // ثبت درخواست واقعی در فایربیس تا ربات Node.js آن را پردازش کند
     try {
       const tradeRef = doc(db, "pendingTrades", uUid);
       await setDoc(tradeRef, {
@@ -97,7 +106,7 @@ if(qB){
         color: rc.color,
         timestamp: Date.now()
       });
-    } catch(err) {
+    } catch (err) {
       console.error("Pending trade sync error:", err);
       isExecutingTrade = false;
       window.checkClickState();
@@ -105,60 +114,70 @@ if(qB){
   };
 }
 
-onAuthStateChanged(auth,u=>{
-  if(!u){window.location.href='index.html';return;}
-  uUid=u.uid;
+onAuthStateChanged(auth, u => {
+  if (!u) { window.location.href = 'index.html'; return; }
+  uUid = u.uid;
 
-  // گوش دادن لحظه‌ای به تغییرات حساب کاربر (برای گرفتن نتیجه معامله از ربات سرور)
-  onSnapshot(doc(db,"users",u.uid), d=>{
-    if(d.exists()){
-      const data=d.data();
+  onSnapshot(doc(db, "users", u.uid), d => {
+    if (d.exists()) {
+      const data = d.data();
       const oldBalance = bBal;
-      bBal=Number(data.balance||data.depositAmount||0);
+      bBal = Number(data.balance || data.depositAmount || 0);
       
-      if(data.quantDate===todayNY){
-        cCnt=Number(data.quantCount||0);
-        tProf=Number(data.todayProfit||0);
-      }else{
-        cCnt=0;
-        tProf=0;
+      if (data.quantDate === todayNY) {
+        cCnt = Number(data.quantCount || 0);
+        tProf = Number(data.todayProfit || 0);
+      } else {
+        cCnt = 0;
+        tProf = 0;
       }
-      if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);
-      if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
+      if (tpEl) tpEl.innerText = '$' + tProf.toFixed(2);
+      if (tbEl) tbEl.innerText = '$' + bBal.toFixed(2);
 
-      if(data.tradeHistoryArray&&Array.isArray(data.tradeHistoryArray)){
-        allTradesArray=data.tradeHistoryArray;
+      if (data.tradeHistoryArray && Array.isArray(data.tradeHistoryArray)) {
+        allTradesArray = data.tradeHistoryArray;
         renderHistory();
       }
 
-      // اگر معامله‌ای در حال اجرا بود و موجودی تغییر کرد یا درخواست پاک شد، یعنی ربات کارش را انجام داده
-      if(isExecutingTrade && bBal !== oldBalance) {
+      if (isExecutingTrade && bBal !== oldBalance) {
         isExecutingTrade = false;
-        const tDet=document.getElementById('trade-details');
-        if(tDet) {
-          tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${window.currentActiveLang==='en'?'Trade Executed Successfully on Exchange!':'معامله با موفقیت در صرافی انجام و بسته شد!'}`;
+        const tDet = document.getElementById('trade-details');
+        if (tDet) {
+          tDet.innerHTML = `<i class="fas fa-check-circle" style="color:#22c55e"></i> معامله با موفقیت در صرافی انجام و بسته شد!`;
         }
         window.checkClickState();
       }
 
-      const b=document.getElementById('status-badge'),v=document.getElementById('vip1-badge'),l=window.currentActiveLang||localStorage.getItem('zenix_lang')||'fa',t=LD[l]||LD.fa;
-      if(bBal>=20){
-        window.isBotActive=true;
-        if(!isExecutingTrade) window.checkClickState();
-        b.style.background="rgba(56,189,248,.1)";b.style.borderColor="#38bdf8";b.style.color="#38bdf8";
-        b.innerHTML=`<i class="fas fa-robot"></i> <span>${t.active}</span>`;
-        v.className="badge-active";v.innerText=t.active;
-      }else{
-        window.isBotActive=false;
-        qB.disabled=true;qB.style.opacity="0.5";qB.style.cursor="not-allowed";
-        b.style.background="rgba(239,68,68,.1)";b.style.borderColor="#ef4444";b.style.color="#ef4444";
-        b.innerHTML=`<i class="fas fa-lock"></i> <span>${t.inactive}</span>`;
-        v.className="badge-lock";v.innerHTML='<i class="fas fa-lock"></i>';
+      const b = document.getElementById('status-badge');
+      const v = document.getElementById('vip1-badge');
+      const l = window.currentActiveLang || localStorage.getItem('zenix_lang') || 'fa';
+      const t = LD[l] || LD.fa;
+
+      if (bBal >= 20) {
+        window.isBotActive = true;
+        if (!isExecutingTrade) window.checkClickState();
+        if (b) {
+          b.style.background = "rgba(56,189,248,.1)";
+          b.style.borderColor = "#38bdf8";
+          b.style.color = "#38bdf8";
+          b.innerHTML = `<i class="fas fa-robot"></i> <span>${t.active}</span>`;
+        }
+        if (v) { v.className = "badge-active"; v.innerText = t.active; }
+      } else {
+        window.isBotActive = false;
+        if (qB) { qB.disabled = true; qB.style.opacity = "0.5"; qB.style.cursor = "not-allowed"; }
+        if (b) {
+          b.style.background = "rgba(239,68,68,.1)";
+          b.style.borderColor = "#ef4444";
+          b.style.color = "#ef4444";
+          b.innerHTML = `<i class="fas fa-lock"></i> <span>${t.inactive}</span>`;
+        }
+        if (v) { v.className = "badge-lock"; v.innerHTML = '<i class="fas fa-lock"></i>'; }
       }
     }
   });
 });
 
-const lBtn=document.getElementById('logout-btn');
-if(lBtn)lBtn.onclick=async e=>{e.preventDefault();await signOut(auth);localStorage.clear();window.location.href='index.html';};
+const lBtn = document.getElementById('logout-btn');
+if (lBtn) lBtn.onclick = async e => { e.preventDefault(); await signOut(auth); localStorage.clear(); window.location.href = 'index.html'; };
 </script>
