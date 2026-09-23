@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zenix - تیم من</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="stylesheet" href="style.css"></head><body><header><div class="logo"><h2>ZENIX</h2></div><div class="hr"><div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button><div class="menu" id="bell-menu"><div style="padding:8px 12px;font-size:13px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold" data-i18n="adminMsg">پیام مدیریت</div><div style="padding:10px 12px;font-size:13px;color:#cbd5e1" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div></div></div><a href="support.html" class="lb"><i class="fas fa-headset"></i></a><div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe"></i></button><div class="menu" id="lang-menu"><div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div></div></div><div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button><div class="menu" id="nav-menu"><a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span data-i18n="home">صفحه اصلی</span></a><a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a><a href="deposit.html" class="mi"><i class="fas fa-arrow-up-right-dots"></i><span data-i18n="deposit">واریز</span></a><a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span data-i18n="receive">برداشت</span></a><a href="team.html" class="mi" style="color:#38bdf8"><i class="fas fa-users"></i><span data-i18n="team">تیم من</span></a><a href="transactions.html" class="mi"><i class="fas fa-history"></i><span data-i18n="transactions">تراکنش</span></a><a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span data-i18n="profile">پروفایل</span></a><a href="support.html" class="mi"><i class="fas fa-headset"></i><span data-i18n="support">پشتیبانی</span></a><a href="login.html" class="mi" style="color:#ef4444"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a></div></div></div></header><div class="c"><div class="wel"><div><h1 data-i18n="teamTitle">مدیریت تیم و پاداش</h1><p data-i18n="teamSub">دعوت از دوستان و کسب درآمد دلاری</p></div><div style="font-size:13px;background:rgba(56,189,248,.1);border:1px solid #38bdf8;padding:6px 10px;border-radius:6px;color:#38bdf8;font-weight:600"><i class="fas fa-chart-line"></i> کل پاداش: <span id="total-commission">0.00</span> USDT</div></div><div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:16px;margin-top:12px"><div id="status-box" style="display:none;padding:12px;border-radius:8px;font-size:13px;margin-bottom:12px;text-align:center;font-weight:600"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;text-align:center"><div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px"><div style="font-size:12px;color:#94a3b8;margin-bottom:4px">اعضای کل تیم</div><div style="font-size:16px;color:#38bdf8;font-weight:bold" id="team-count">0</div></div><div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px"><div style="font-size:12px;color:#94a3b8;margin-bottom:4px">حجم معاملات تیم</div><div style="font-size:16px;color:#22c55e;font-weight:bold" id="team-volume">0$</div></div><div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px"><div style="font-size:12px;color:#94a3b8;margin-bottom:4px">کمیسیون امروز</div><div style="font-size:16px;color:#eab308;font-weight:bold" id="team-daily">0$</div></div></div><div style="font-size:15px;color:#38bdf8;font-weight:bold;margin-bottom:10px"><i class="fas fa-layer-group"></i> آمار نسل‌های تیم</div><div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px"><div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px"><div><span style="color:#38bdf8;font-weight:bold">نسل ۱ (۱۰٪):</span> <span id="lvl1-count">0</span> نفر</div><div style="display:flex;align-items:center;gap:10px"><div style="color:#22c55e;font-weight:bold" id="lvl1-comm">0.00 USDT</div><a href="team-members.html?level=1" style="background:rgba(56,189,248,0.15);border:1px solid #38bdf8;color:#38bdf8;padding:4px 10px;border-radius:6px;font-size:11px;text-decoration:none;font-weight:bold"><i class="fas fa-eye"></i> مشاهده</a></div></div><div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px"><div><span style="color:#38bdf8;font-weight:bold">نسل ۲ (۷٪):</span> <span id="lvl2-count">0</span> نفر</div><div style="display:flex;align-items:center;gap:10px"><div style="color:#22c55e;font-weight:bold" id="lvl2-comm">0.00 USDT</div><a href="team-members.html?level=2" style="background:rgba(56,189,248,0.15);border:1px solid #38bdf8;color:#38bdf8;padding:4px 10px;border-radius:6px;font-size:11px;text-decoration:none;font-weight:bold"><i class="fas fa-eye"></i> مشاهده</a></div></div><div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px"><div><span style="color:#38bdf8;font-weight:bold">نسل ۳ (۳٪):</span> <span id="lvl3-count">0</span> نفر</div><div style="display:flex;align-items:center;gap:10px"><div style="color:#22c55e;font-weight:bold" id="lvl3-comm">0.00 USDT</div><a href="team-members.html?level=3" style="background:rgba(56,189,248,0.15);border:1px solid #38bdf8;color:#38bdf8;padding:4px 10px;border-radius:6px;font-size:11px;text-decoration:none;font-weight:bold"><i class="fas fa-eye"></i> مشاهده</a></div></div></div><div style="font-size:15px;color:#38bdf8;font-weight:bold;margin-bottom:10px"><i class="fas fa-link"></i> لینک دعوت اختصاصی شما</div><div style="display:flex;background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;margin-bottom:16px"><input type="text" id="invite-link" readonly style="width:100%;background:transparent;border:none;color:#f8fafc;padding:12px;font-size:14px;outline:none;direction:ltr;text-align:left"><button type="button" onclick="copyInviteLink()" style="background:linear-gradient(135deg,#38bdf8,#0284c7);border:none;color:#fff;padding:0 18px;cursor:pointer;font-weight:bold;font-size:14px;display:flex;align-items:center;gap:6px"><i class="fas fa-clone"></i> کپی لینک</button></div><div style="background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;font-size:13px;color:#94a3b8;line-height:1.6"><div style="color:#38bdf8;font-weight:bold;margin-bottom:6px"><i class="fas fa-info-circle"></i> قوانین کمیسیون تیم:</div>* کمیسیون نسل ۱ معادل ۱۰٪، نسل ۲ معادل ۷٪ و نسل ۳ معادل ۳٪ از سود معاملات تیم است.<br>* پاداش‌ها به صورت روزانه و خودکار به موجودی حساب شما افزوده می‌شوند.</div></div></div><footer><p>&copy; 2026 Zenix</p></footer><script src="script.js"></script><script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import{getFirestore,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import{getFirestore,doc,getDoc,collection,getDocs,query,where}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
@@ -10,39 +10,56 @@ window.showMsg=function(t,e){const b=document.getElementById('status-box');b.sty
 window.copyInviteLink=function(){const c=document.getElementById("invite-link");if(!c.value.startsWith('http'))return;c.select();navigator.clipboard.writeText(c.value);showMsg("📋 لینک دعوت با موفقیت در کلیپ‌بورد کپی شد.",false);}
 
 onAuthStateChanged(auth,async(user)=>{
-    if(user){
-        try{
-            const userDoc=await getDoc(doc(db,"users",user.uid));
-            if(userDoc.exists()){
-                const userData=userDoc.data();
-                const refCode=userData.referralCode;
-                if(refCode){
-                    const baseUrl=window.location.origin+window.location.pathname.substring(0,window.location.pathname.lastIndexOf('/'));
-                    document.getElementById("invite-link").value=`${baseUrl}/register.html?ref=${refCode}`;
-                }else{
-                    document.getElementById("invite-link").value="کد معرف برای این حساب یافت نشد";
+    if(!user){window.location.href="login.html";return;}
+    try{
+        const userSnap=await getDoc(doc(db,"users",user.uid));
+        if(userSnap.exists()){
+            const uData=userSnap.data();
+            const refCode=uData.referralCode;
+            if(refCode){
+                const baseUrl=window.location.origin+window.location.pathname.substring(0,window.location.pathname.lastIndexOf('/'));
+                document.getElementById("invite-link").value=`${baseUrl}/register.html?ref=${refCode}`;
+                
+                // دریافت و محاسبه اعضای تیم از فایربیس
+                const usersRef=collection(db,"users");
+                const qLvl1=query(usersRef,where("referredBy","==",refCode));
+                const snapLvl1=await getDocs(qLvl1);
+                let lvl1Count=snapLvl1.size;
+                let lvl2Count=0, lvl3Count=0;
+                let lvl1Codes=[];
+
+                snapLvl1.forEach(docSnap=>{
+                    const data=docSnap.data();
+                    if(data.referralCode) lvl1Codes.push(data.referralCode);
+                });
+
+                if(lvl1Codes.length>0){
+                    const qLvl2=query(usersRef,where("referredBy","in",lvl1Codes.slice(0,10)));
+                    const snapLvl2=await getDocs(qLvl2);
+                    lvl2Count=snapLvl2.size;
+                    let lvl2Codes=[];
+                    snapLvl2.forEach(docSnap=>{
+                        const data=docSnap.data();
+                        if(data.referralCode) lvl2Codes.push(data.referralCode);
+                    });
+                    if(lvl2Codes.length>0){
+                        const qLvl3=query(usersRef,where("referredBy","in",lvl2Codes.slice(0,10)));
+                        const snapLvl3=await getDocs(qLvl3);
+                        lvl3Count=snapLvl3.size;
+                    }
                 }
+
+                const totalCount=lvl1Count+lvl2Count+lvl3Count;
+                document.getElementById("team-count").innerText=totalCount;
+                document.getElementById("lvl1-count").innerText=lvl1Count;
+                document.getElementById("lvl2-count").innerText=lvl2Count;
+                document.getElementById("lvl3-count").innerText=lvl3Count;
+            }else{
+                document.getElementById("invite-link").value="کد معرف برای این حساب یافت نشد";
             }
-        }catch(err){
-            document.getElementById("invite-link").value="خطا در دریافت اطلاعات از پایگاه داده";
         }
-    }else{
-        window.location.href="login.html";
+    }catch(err){
+        document.getElementById("invite-link").value="خطا در دریافت اطلاعات از پایگاه داده";
     }
 });
-
-function loadRealTeamData(){
-    const teamData=JSON.parse(localStorage.getItem('zenix_team_stats')||JSON.stringify({totalCommission:0,teamCount:0,teamVolume:0,teamDaily:0,lvl1Count:0,lvl1Comm:0,lvl2Count:0,lvl2Comm:0,lvl3Count:0,lvl3Comm:0}));
-    document.getElementById("total-commission").innerText=teamData.totalCommission.toFixed(2);
-    document.getElementById("team-count").innerText=teamData.teamCount;
-    document.getElementById("team-volume").innerText=teamData.teamVolume+"$";
-    document.getElementById("team-daily").innerText=teamData.teamDaily+"$";
-    document.getElementById("lvl1-count").innerText=teamData.lvl1Count;
-    document.getElementById("lvl1-comm").innerText=teamData.lvl1Comm.toFixed(2)+" USDT";
-    document.getElementById("lvl2-count").innerText=teamData.lvl2Count;
-    document.getElementById("lvl2-comm").innerText=teamData.lvl2Comm.toFixed(2)+" USDT";
-    document.getElementById("lvl3-count").innerText=teamData.lvl3Count;
-    document.getElementById("lvl3-comm").innerText=teamData.lvl3Comm.toFixed(2)+" USDT";
-}
-loadRealTeamData();
 </script></body></html>
