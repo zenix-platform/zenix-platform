@@ -1,183 +1,200 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenix - کوانتیفیکیشن</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+        body { background: #030712; min-height: 100vh; color: #f8fafc; display: flex; flex-direction: column; }
+        header { background: rgba(15,23,42,.9); border-bottom: 1px solid rgba(255,255,255,.1); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .logo h2 { font-size: 18px; color: #38bdf8; font-weight: 800; }
+        .hr { display: flex; align-items: center; gap: 8px; }
+        .wrap { position: relative; }
+        .lb { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); height: 36px; width: 36px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #38bdf8; text-decoration: none; }
+        .badge { position: absolute; top: -4px; right: -4px; background: #ef4444; color: #fff; font-size: 9px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .menu { display: none; position: absolute; top: 42px; background: #0f172a; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; min-width: 160px; max-height: 240px; overflow-y: auto; padding: 6px; z-index: 999; box-shadow: 0 8px 25px rgba(0,0,0,.8); }
+        [dir="rtl"] .wrap .menu { left: 0; }
+        [dir="ltr"] .wrap .menu { right: 0; }
+        .menu.show { display: block; }
+        .mi { padding: 7px 10px; font-size: 12px; color: #cbd5e1; cursor: pointer; border-radius: 6px; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .mi:hover { background: rgba(56,189,248,.2); color: #38bdf8; }
+        .c { max-width: 800px; width: 100%; margin: 15px auto; padding: 0 12px; flex: 1; }
+        .wel { background: linear-gradient(135deg,rgba(2,132,199,.15),rgba(147,51,234,.15)); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 15px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .wel h1 { font-size: 16px; margin-bottom: 3px; }
+        .wel p { color: #94a3b8; font-size: 11px; }
+        .quant-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 12px; }
+        .q-card { background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 12px; }
+        .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .q-header h3 { font-size: 14px; color: #38bdf8; }
+        .badge-active { background: rgba(34,197,94,.15); color: #22c55e; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .badge-lock { background: rgba(239,68,68,.15); color: #ef4444; font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+        .q-desc { font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+        .main-quant-box { text-align: center; margin: 15px 0; }
+        .main-quant-btn { background: linear-gradient(135deg,#0284c7,#9333ea); color: #fff; border: none; padding: 12px 24px; font-size: 14px; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%; transition: all 0.3s ease; }
+        .profit-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+        .profit-card { background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; }
+        .p-title { font-size: 10px; color: #94a3b8; display: block; }
+        .p-val { font-size: 14px; font-weight: 700; color: #fff; }
+        footer { text-align: center; padding: 10px; font-size: 11px; color: #64748b; border-top: 1px solid rgba(255,255,255,.05); }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo"><h2>ZENIX</h2></div>
+    <div class="hr">
+        <a href="support.html" class="lb"><i class="fas fa-headset"></i></a>
+        <div class="wrap">
+            <button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button>
+            <div class="menu" id="nav-menu">
+                <a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span>صفحه اصلی</span></a>
+                <a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span>کوانتیفیکیشن</span></a>
+                <a href="deposit.html" class="mi"><i class="fas fa-arrow-up-right-dots"></i><span>واریز</span></a>
+                <a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span>برداشت</span></a>
+                <a href="transactions.html" class="mi"><i class="fas fa-history"></i><span>تراکنش</span></a>
+                <a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span>پروفایل</span></a>
+                <a href="#" class="mi" id="logout-btn" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span>خروج</span></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="c">
+    <div class="wel">
+        <div>
+            <h1>سطوح معاملاتی</h1>
+            <p>سطح خود را بررسی و ربات را فعال کنید</p>
+        </div>
+        <div id="status-badge" style="font-size:11px;background:rgba(239,68,68,.1);border:1px solid #ef4444;padding:4px 8px;border-radius:6px;color:#ef4444;font-weight:600;">
+            <i class="fas fa-lock"></i> <span>غیرفعال</span>
+        </div>
+    </div>
+
+    <div style="background:rgba(30,41,59,0.9);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+        <div style="background:rgba(56,189,248,0.15);color:#38bdf8;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;">
+            <i class="fas fa-wallet"></i>
+        </div>
+        <div>
+            <div style="font-size:10px;color:#94a3b8;">موجودی کل حساب</div>
+            <div id="total-balance-val" style="font-size:16px;font-weight:bold;color:#f8fafc;">$0.00</div>
+        </div>
+    </div>
+
+    <div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;">
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;"><i class="fas fa-clock" style="color:#38bdf8;"></i> ساعت نیویورک</div>
+        <div id="ny-clock-val" style="font-size:24px;color:#38bdf8;font-weight:bold;">--:--:--</div>
+    </div>
+
+    <div class="quant-grid">
+        <div class="q-card"><div class="q-header"><h3>VIP 1</h3><span class="badge-lock" id="vip1-badge"><i class="fas fa-lock"></i></span></div><p class="q-desc">موجودی: $20 - $300</p><p class="q-desc">سود: 1.5%</p></div>
+    </div>
+
+    <div class="main-quant-box">
+        <button class="main-quant-btn" id="quant-btn" disabled style="opacity:0.5;cursor:not-allowed;">
+            <i class="fas fa-robot"></i> <span>کوانتیفیکیشن</span>
+        </button>
+    </div>
+
+    <div id="trade-box" style="display:none;background:rgba(30,41,59,0.9);border:1px solid rgba(56,189,248,0.4);border-radius:12px;padding:12px;margin-top:12px;text-align:center;color:#f8fafc;">
+        <div style="font-size:11px;color:#38bdf8;margin-bottom:6px;font-weight:600;"><i class="fas fa-exchange-alt"></i> وضعیت معامله</div>
+        <div id="trade-details" style="font-size:13px;font-weight:bold;color:#22c55e;">-</div>
+    </div>
+
+    <div class="profit-grid" style="margin-top:16px;">
+        <div class="profit-card"><i class="fas fa-chart-line" style="color:#22c55e;font-size:20px;"></i><div><span class="p-title">سود امروز</span><h4 class="p-val" id="today-profit-val">$0.00</h4></div></div>
+    </div>
+
+    <div style="margin-top:16px;background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;">
+        <h3 style="font-size:13px;color:#38bdf8;margin-bottom:10px;"><i class="fas fa-history"></i> تاریخچه معاملات</h3>
+        <div id="history-list" style="display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;">
+            <div style="font-size:12px;color:#94a3b8;text-align:center;">هنوز معامله‌ای ثبت نشده است</div>
+        </div>
+    </div>
+</div>
+
+<footer><p>&copy; 2026 Zenix</p></footer>
+
+<script>
+const mB = document.getElementById('menu-btn'), nM = document.getElementById('nav-menu');
+if(mB) mB.onclick = (e) => { e.stopPropagation(); nM.classList.toggle('show'); };
+document.onclick = () => { if(nM) nM.classList.remove('show'); };
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, updateDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const app = initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"});
-const auth = getAuth(app);
-const db = getFirestore(app);
-
+const app = initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"});
+const auth = getAuth(app), db = getFirestore(app);
 const qB = document.getElementById('quant-btn');
-let uUid = null, tProf = 0, bBal = 0;
-const tpEl = document.getElementById('today-profit-val');
-const tbEl = document.getElementById('total-balance-val');
-const hList = document.getElementById('history-list');
+let uUid = null, isExecutingTrade = false;
 
 function getNYDateStr() {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
 }
-let todayNY = getNYDateStr();
-let cCnt = 0;
-let allTradesArray = [];
-let isExecutingTrade = false;
 
-function uC() {
-  const dateStr = getNYDateStr();
-  if (dateStr !== todayNY) {
-    todayNY = dateStr;
-    cCnt = 0;
-    tProf = 0;
-    if (uUid) updateDoc(doc(db, "users", uUid), { quantCount: 0, quantDate: todayNY, todayProfit: 0 });
-    if (tpEl) tpEl.innerText = '$0.00';
-    if (window.checkClickState) window.checkClickState();
-  }
-  const t = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date());
+setInterval(() => {
   const c = document.getElementById('ny-clock-val');
-  if (c) c.innerText = t;
-}
-setInterval(uC, 1000);
-uC();
+  if(c) c.innerText = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date());
+}, 1000);
 
-const cList = [
-  { name: 'Bitcoin', symbol: 'BTC', cls: 'fab fa-bitcoin', color: '#f7931a' },
-  { name: 'Ethereum', symbol: 'ETH', cls: 'fab fa-ethereum', color: '#627eea' },
-  { name: 'Solana', symbol: 'SOL', cls: 'fas fa-coins', color: '#14f195' },
-  { name: 'Ripple', symbol: 'XRP', cls: 'fas fa-water', color: '#23292f' },
-  { name: 'Cardano', symbol: 'ADA', cls: 'fas fa-circle-dot', color: '#0033ad' },
-  { name: 'Dogecoin', symbol: 'DOGE', cls: 'fas fa-dog', color: '#c2a633' },
-  { name: 'Binance Coin', symbol: 'BNB', cls: 'fas fa-cube', color: '#f3ba2f' }
-];
-
-window.checkClickState = function() {
-  if (!window.isBotActive || isExecutingTrade) return;
-  const l = window.currentActiveLang || 'fa';
-  const txt = l === 'fa' ? 'کوانتیفیکیشن' : (LD[l]?.quantification || 'Quantification');
-  if (qB) {
-    qB.disabled = false;
-    qB.style.opacity = "1";
-    qB.style.cursor = "pointer";
-    qB.innerHTML = `<i class="fas fa-robot"></i> <span>${txt} (${cCnt})</span>`;
-  }
-};
-
-function renderHistory() {
-  if (!allTradesArray || allTradesArray.length === 0) {
-    hList.innerHTML = `<div style="font-size:12px;color:#94a3b8;text-align:center;">هنوز معامله‌ای ثبت نشده است</div>`;
-    return;
-  }
-  let htmlStr = '';
-  allTradesArray.forEach(item => {
-    const pColor = item.profit >= 0 ? '#22c55e' : '#ef4444';
-    const pSign = item.profit >= 0 ? '+' : '';
-    htmlStr += `<div style="background:rgba(255,255,255,0.05);padding:8px;border-radius:6px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;">
-      <span style="color:${pColor};font-weight:bold;">${pSign}$${Number(item.profit).toFixed(2)}</span>
-      <span style="color:#94a3b8;font-size:10px;">${item.dateStr || ''}</span>
-      <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${item.name} (${item.symbol})</span><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${item.color || '#38bdf8'};color:#fff;font-size:11px;"><i class="${item.cls || 'fas fa-coins'}"></i></span></span>
-    </div>`;
-  });
-  hList.innerHTML = htmlStr;
-}
-
-if (qB) {
+if(qB) {
   qB.onclick = async function(e) {
     e.preventDefault();
-    if (!window.isBotActive || !uUid || isExecutingTrade) return;
-    
+    if(!window.isBotActive || !uUid || isExecutingTrade) return;
     isExecutingTrade = true;
-    qB.disabled = true;
-    qB.style.opacity = "0.5";
-    qB.style.cursor = "not-allowed";
-    const l = window.currentActiveLang || 'fa';
-
-    const rc = cList[Math.floor(Math.random() * cList.length)];
-    const tBox = document.getElementById('trade-box');
-    const tDet = document.getElementById('trade-details');
-    tBox.style.display = 'block';
-
-    tDet.innerHTML = `<i class="fas fa-spinner fa-spin" style="color:#38bdf8;"></i> ${l === 'fa' ? 'در حال ارسال درخواست به سرور و اجرای معامله در صرافی...' : 'Sending to server & executing trade...'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> <b>${rc.name} (${rc.symbol})</b>`;
+    qB.disabled = true; qB.style.opacity = "0.5";
+    
+    document.getElementById('trade-box').style.display = 'block';
+    document.getElementById('trade-details').innerHTML = `<i class="fas fa-spinner fa-spin"></i> در حال ارسال درخواست به سرور و نوبیتکس...`;
 
     try {
-      const tradeRef = doc(db, "pendingTrades", uUid);
-      await setDoc(tradeRef, {
+      await setDoc(doc(db, "pendingTrades", uUid), {
         status: "pending",
-        symbol: rc.symbol,
-        name: rc.name,
-        cls: rc.cls,
-        color: rc.color,
+        symbol: "BTC",
         timestamp: Date.now()
       });
-    } catch (err) {
-      console.error("Pending trade sync error:", err);
+    } catch(err) {
       isExecutingTrade = false;
-      window.checkClickState();
+      qB.disabled = false; qB.style.opacity = "1";
     }
   };
 }
 
 onAuthStateChanged(auth, u => {
-  if (!u) { window.location.href = 'index.html'; return; }
+  if(!u) { window.location.href = 'index.html'; return; }
   uUid = u.uid;
 
   onSnapshot(doc(db, "users", u.uid), d => {
-    if (d.exists()) {
+    if(d.exists()) {
       const data = d.data();
-      const oldBalance = bBal;
-      bBal = Number(data.balance || data.depositAmount || 0);
+      const bBal = Number(data.balance || 0);
       
-      if (data.quantDate === todayNY) {
-        cCnt = Number(data.quantCount || 0);
-        tProf = Number(data.todayProfit || 0);
-      } else {
-        cCnt = 0;
-        tProf = 0;
-      }
-      if (tpEl) tpEl.innerText = '$' + tProf.toFixed(2);
-      if (tbEl) tbEl.innerText = '$' + bBal.toFixed(2);
+      document.getElementById('total-balance-val').innerText = '$' + bBal.toFixed(2);
+      document.getElementById('today-profit-val').innerText = '$' + Number(data.todayProfit || 0).toFixed(2);
 
-      if (data.tradeHistoryArray && Array.isArray(data.tradeHistoryArray)) {
-        allTradesArray = data.tradeHistoryArray;
-        renderHistory();
-      }
-
-      if (isExecutingTrade && bBal !== oldBalance) {
+      if(isExecutingTrade) {
         isExecutingTrade = false;
-        const tDet = document.getElementById('trade-details');
-        if (tDet) {
-          tDet.innerHTML = `<i class="fas fa-check-circle" style="color:#22c55e"></i> معامله با موفقیت در صرافی انجام و بسته شد!`;
-        }
-        window.checkClickState();
+        document.getElementById('trade-details').innerHTML = `<i class="fas fa-check-circle" style="color:#22c55e"></i> معامله با موفقیت در صرافی انجام شد!`;
+        qB.disabled = false; qB.style.opacity = "1";
       }
 
-      const b = document.getElementById('status-badge');
-      const v = document.getElementById('vip1-badge');
-      const l = window.currentActiveLang || localStorage.getItem('zenix_lang') || 'fa';
-      const t = LD[l] || LD.fa;
-
-      if (bBal >= 20) {
+      if(bBal >= 20) {
         window.isBotActive = true;
-        if (!isExecutingTrade) window.checkClickState();
-        if (b) {
-          b.style.background = "rgba(56,189,248,.1)";
-          b.style.borderColor = "#38bdf8";
-          b.style.color = "#38bdf8";
-          b.innerHTML = `<i class="fas fa-robot"></i> <span>${t.active}</span>`;
-        }
-        if (v) { v.className = "badge-active"; v.innerText = t.active; }
+        qB.disabled = false; qB.style.opacity = "1"; qB.style.cursor = "pointer";
+        document.getElementById('status-badge').innerHTML = `<i class="fas fa-robot"></i> فعال`;
+        document.getElementById('vip1-badge').className = "badge-active";
       } else {
         window.isBotActive = false;
-        if (qB) { qB.disabled = true; qB.style.opacity = "0.5"; qB.style.cursor = "not-allowed"; }
-        if (b) {
-          b.style.background = "rgba(239,68,68,.1)";
-          b.style.borderColor = "#ef4444";
-          b.style.color = "#ef4444";
-          b.innerHTML = `<i class="fas fa-lock"></i> <span>${t.inactive}</span>`;
-        }
-        if (v) { v.className = "badge-lock"; v.innerHTML = '<i class="fas fa-lock"></i>'; }
+        qB.disabled = true; qB.style.opacity = "0.5"; qB.style.cursor = "not-allowed";
       }
     }
   });
 });
 
-const lBtn = document.getElementById('logout-btn');
-if (lBtn) lBtn.onclick = async e => { e.preventDefault(); await signOut(auth); localStorage.clear(); window.location.href = 'index.html'; };
+document.getElementById('logout-btn').onclick = async e => { e.preventDefault(); await signOut(auth); window.location.href = 'index.html'; };
 </script>
+</body>
+</html>
