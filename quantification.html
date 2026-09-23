@@ -29,25 +29,16 @@ document.onclick=()=>{[nM,lMenu,bM].forEach(m=>m.classList.remove('show'));};doc
 <script async type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import{getFirestore,doc,getDoc,updateDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import{getFirestore,doc,setDoc,onSnapshot}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
 const qB=document.getElementById('quant-btn');let uUid=null,tProf=0,bBal=0,tpEl=document.getElementById('today-profit-val'),tbEl=document.getElementById('total-balance-val'),hList=document.getElementById('history-list');
 
 function getNYDateStr(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York'}).format(new Date());}
 let todayNY=getNYDateStr();
-let cCnt=0;
 let allTradesArray=[];
+let isExecutingTrade=false;
 
 function uC(){
-  const dateStr=getNYDateStr();
-  if(dateStr!==todayNY){
-    todayNY=dateStr;
-    cCnt=0;
-    tProf=0;
-    if(uUid)updateDoc(doc(db,"users",uUid),{quantCount:0,quantDate:todayNY,todayProfit:0});
-    if(tpEl)tpEl.innerText='$0.00';
-    window.checkClickState();
-  }
   const t=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());
   const c=document.getElementById('ny-clock-val');
   if(c)c.innerText=t;
@@ -57,15 +48,10 @@ setInterval(uC,1000);uC();
 const cList=[{name:'Bitcoin',symbol:'BTC',cls:'fab fa-bitcoin',color:'#f7931a'},{name:'Ethereum',symbol:'ETH',cls:'fab fa-ethereum',color:'#627eea'},{name:'Solana',symbol:'SOL',cls:'fas fa-coins',color:'#14f195'},{name:'Ripple',symbol:'XRP',cls:'fas fa-water',color:'#23292f'},{name:'Cardano',symbol:'ADA',cls:'fas fa-circle-dot',color:'#0033ad'},{name:'Dogecoin',symbol:'DOGE',cls:'fas fa-dog',color:'#c2a633'},{name:'Binance Coin',symbol:'BNB',cls:'fas fa-cube',color:'#f3ba2f'}];
 
 window.checkClickState=function(){
-  if(!window.isBotActive)return;
+  if(!window.isBotActive||isExecutingTrade)return;
   const l=window.currentActiveLang||'fa',txt=l==='fa'?'کوانتیفیکیشن':(LD[l]?.quantification||'Quantification');
-  if(cCnt>=4){
-    qB.disabled=true;qB.style.opacity="0.5";qB.style.cursor="not-allowed";
-    qB.innerHTML=`<i class="fas fa-ban"></i> <span>${l==='fa'?'پایان ظرفیت امروز':'Daily Limit'}</span>`;
-  }else{
-    qB.disabled=false;qB.style.opacity="1";qB.style.cursor="pointer";
-    qB.innerHTML=`<i class="fas fa-robot"></i> <span>${txt} (${cCnt}/4)</span>`;
-  }
+  qB.disabled=false;qB.style.opacity="1";qB.style.cursor="pointer";
+  qB.innerHTML=`<i class="fas fa-robot"></i> <span>${txt}</span>`;
 };
 
 function renderHistory(){
@@ -73,100 +59,61 @@ function renderHistory(){
     hList.innerHTML=`<div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">هنوز معامله‌ای ثبت نشده است</div>`;
     return;
   }
-  const nowTime=new Date().getTime();
-  const thirtyDaysMs=30*24*60*60*1000;
-  const filtered=allTradesArray.filter(item=>nowTime-item.timestamp<=thirtyDaysMs);
-  if(filtered.length===0){
-    hList.innerHTML=`<div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">هنوز معامله‌ای ثبت نشده است</div>`;
-    return;
-  }
   let htmlStr='';
-  filtered.forEach(item=>{
+  allTradesArray.forEach(item=>{
+    const pColor=item.profit>=0?'#22c55e':'#ef4444';
+    const pSign=item.profit>=0?'+':'';
     htmlStr+=`<div style="background:rgba(255,255,255,0.05);padding:8px;border-radius:6px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;">
-      <span style="color:#22c55e;font-weight:bold;">+$${item.profit.toFixed(2)}</span>
-      <span style="color:#94a3b8;font-size:10px;">${item.dateStr}</span>
-      <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${item.name} (${item.symbol})</span><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${item.color};color:#fff;font-size:11px;"><i class="${item.cls}"></i></span></span>
+      <span style="color:${pColor};font-weight:bold;">${pSign}$${Number(item.profit||0).toFixed(2)}</span>
+      <span style="color:#94a3b8;font-size:10px;">${item.dateStr||''}</span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${item.name} (${item.symbol})</span><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${item.color||'#38bdf8'};color:#fff;font-size:11px;"><i class="${item.cls||'fas fa-coins'}"></i></span></span>
     </div>`;
   });
   hList.innerHTML=htmlStr;
 }
 
 if(qB){
-  qB.onclick=function(e){
+  qB.onclick=async function(e){
     e.preventDefault();
-    if(cCnt>=4||!window.isBotActive||!uUid)return;
-    cCnt++;
-    qB.disabled=true;qB.style.opacity="0.5";
+    if(!window.isBotActive||!uUid||isExecutingTrade)return;
+    
+    isExecutingTrade=true;
+    qB.disabled=true;qB.style.opacity="0.5";qB.style.cursor="not-allowed";
     const l=window.currentActiveLang||'fa';
-
-    let dailyRate=0.015;
-    if(bBal>=10000)dailyRate=0.04;
-    else if(bBal>=5000)dailyRate=0.035;
-    else if(bBal>=2500)dailyRate=0.03;
-    else if(bBal>=1000)dailyRate=0.025;
-    else if(bBal>=300)dailyRate=0.02;
-
-    const p=(bBal*dailyRate)/4;
-
+    const rc=cList[Math.floor(Math.random()*cList.length)];
+    
     const tBox=document.getElementById('trade-box'),tDet=document.getElementById('trade-details');
     tBox.style.display='block';
-    const rc=cList[Math.floor(Math.random()*cList.length)];
-    let tLeft=10;
-    tDet.innerHTML=`<i class="fas fa-spinner fa-spin"></i> ${l==='fa'?'معامله':'Trading'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> <b>${rc.name} (${rc.symbol})</b> - <span id="cd-v" style="color:#f59e0b;font-weight:bold;">10</span> ثانیه`;
-    const tI=setInterval(()=>{
-      tLeft--;
-      const cd=document.getElementById('cd-v');
-      if(cd)cd.innerText=tLeft;
-      if(tLeft<=0)clearInterval(tI);
-    },1000);
+    tDet.innerHTML=`<i class="fas fa-spinner fa-spin" style="color:#38bdf8;"></i> ${l==='fa'?'در حال ارسال به ربات سرور و اجرای معامله...':'Executing via server bot...'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> <b>${rc.name} (${rc.symbol})</b>`;
 
-    setTimeout(()=>{
-      clearInterval(tI);
-      
-      // محاسبه و اضافه شدن سود به موجودی پس از اتمام ۱۰ ثانیه
-      tProf+=p;
-      bBal+=p;
-
-      if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);
-      if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
-
-      tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${l==='fa'?'موفق!':'Success!'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> ${rc.symbol} | ${l==='fa'?'سود':'Profit'}: <span style="color:#22c55e;">+$${p.toFixed(2)}</span>`;
-      
-      // تاریخ به صورت میلادی ثبت می‌شود
-      const now=new Date();
-      const dateStr=now.toLocaleDateString('en-GB')+' - '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-      const tradeObj={name:rc.name,symbol:rc.symbol,cls:rc.cls,color:rc.color,profit:p,dateStr:dateStr,timestamp:now.getTime()};
-      allTradesArray.unshift(tradeObj);
-      renderHistory();
-      
-      // ذخیره اطلاعات و سپس تازه سازی (رفرش) کامل صفحه مرورگر
-      updateDoc(doc(db,"users",uUid),{quantCount:cCnt,quantDate:todayNY,todayProfit:tProf,balance:bBal,tradeHistoryArray:allTradesArray}).then(()=>{
-        setTimeout(()=>{
-          window.location.reload();
-        },1000);
-      }).catch(err=>{
-        console.error(err);
-        window.location.reload();
+    try{
+      await setDoc(doc(db,"pendingTrades",uUid),{
+        status:"pending",
+        symbol:rc.symbol,
+        name:rc.name,
+        cls:rc.cls,
+        color:rc.color,
+        timestamp:Date.now()
       });
+    }catch(err){
+      console.error("Pending trade error:",err);
+      isExecutingTrade=false;
       window.checkClickState();
-    },10000);
+    }
   };
 }
 
 onAuthStateChanged(auth,u=>{
   if(!u){window.location.href='index.html';return;}
   uUid=u.uid;
-  getDoc(doc(db,"users",u.uid)).then(d=>{
+
+  onSnapshot(doc(db,"users",u.uid),d=>{
     if(d.exists()){
       const data=d.data();
+      const oldBalance=bBal;
       bBal=Number(data.balance||data.depositAmount||0);
-      if(data.quantDate===todayNY){
-        cCnt=Number(data.quantCount||0);
-        tProf=Number(data.todayProfit||0);
-      }else{
-        cCnt=0;
-        tProf=0;
-      }
+      tProf=Number(data.todayProfit||0);
+
       if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);
       if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
 
@@ -175,10 +122,19 @@ onAuthStateChanged(auth,u=>{
         renderHistory();
       }
 
+      if(isExecutingTrade&&bBal!==oldBalance){
+        isExecutingTrade=false;
+        const tDet=document.getElementById('trade-details');
+        if(tDet){
+          tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${window.currentActiveLang==='en'?'Trade executed successfully by server bot!':'معامله با موفقیت توسط ربات سرور انجام شد!'}`;
+        }
+        window.checkClickState();
+      }
+
       const b=document.getElementById('status-badge'),v=document.getElementById('vip1-badge'),l=window.currentActiveLang||localStorage.getItem('zenix_lang')||'fa',t=LD[l]||LD.fa;
       if(bBal>=20){
         window.isBotActive=true;
-        window.checkClickState();
+        if(!isExecutingTrade)window.checkClickState();
         b.style.background="rgba(56,189,248,.1)";b.style.borderColor="#38bdf8";b.style.color="#38bdf8";
         b.innerHTML=`<i class="fas fa-robot"></i> <span>${t.active}</span>`;
         v.className="badge-active";v.innerText=t.active;
@@ -190,7 +146,7 @@ onAuthStateChanged(auth,u=>{
         v.className="badge-lock";v.innerHTML='<i class="fas fa-lock"></i>';
       }
     }
-  }).catch(e=>console.error(e));
+  });
 });
 
 const lBtn=document.getElementById('logout-btn');
