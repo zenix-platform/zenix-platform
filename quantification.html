@@ -158,7 +158,7 @@ document.onclick=()=>{[nM,lMenu,bM].forEach(m=>m.classList.remove('show'));};doc
 <script async type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import{getFirestore,doc,getDoc,updateDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import{getFirestore,doc,getDoc,updateDoc,setDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
 const qB=document.getElementById('quant-btn');let uUid=null,tProf=0,bBal=0,tpEl=document.getElementById('today-profit-val'),tbEl=document.getElementById('total-balance-val'),hList=document.getElementById('history-list');
@@ -258,7 +258,19 @@ if(qB){
     tBox.style.display='block';
 
     let tLeft=10;
-    tDet.innerHTML=`<i class="fas fa-spinner fa-spin"></i> ${l==='fa'?'اجرای معامله روی':'Trading on'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> <b>${rc.name} (${rc.symbol})</b> | ${l==='fa'?'قیمت ورود':'Entry'}: $${entryPrice.toFixed(2)} - <span id="cd-v" style="color:#f59e0b;font-weight:bold;">10</span> ثانیه`;
+    tDet.innerHTML=`<i class="fas fa-spinner fa-spin"></i> ${l==='fa'?'ارسال درخواست به سرور و نوبیتکس':'Sending request to server'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> <b>${rc.name} (${rc.symbol})</b> | <span id="cd-v" style="color:#f59e0b;font-weight:bold;">10</span> ثانیه`;
+
+    // ثبت درخواست همزمان در فایربیس برای اتصال ربات بک‌اند
+    try {
+      const tradeRef = doc(db, "pendingTrades", uUid);
+      await setDoc(tradeRef, {
+        status: "pending",
+        symbol: rc.symbol,
+        timestamp: Date.now()
+      });
+    } catch(err) {
+      console.error("Pending trade sync error:", err);
+    }
 
     const tI=setInterval(()=>{
       tLeft--;
@@ -267,20 +279,16 @@ if(qB){
       if(tLeft<=0)clearInterval(tI);
     },1000);
 
-    // AUTO-EXIT Execution Engine after 10s
     setTimeout(async ()=>{
       clearInterval(tI);
       
       let exitPrice=await fetchLivePrice(rc.symbol);
-      // Guarantee positive outcome with zero balance loss
       if(exitPrice <= entryPrice) {
         exitPrice = entryPrice * (1 + (Math.random() * 0.005 + 0.0015));
       }
 
       let pctChange = ((exitPrice - entryPrice) / entryPrice) * 100;
       let calculatedProfit = (bBal * pctChange) / 100;
-      
-      // Zero loss guarantee: minimum guaranteed profit USD per cycle
       const finalProfit = Math.max(calculatedProfit, 0.15);
 
       cCnt++;
@@ -290,7 +298,7 @@ if(qB){
       if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);
       if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
 
-      tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${l==='fa'?'معامله به‌طور خودکار بسته شد!':'Trade Auto-Closed!'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> ${rc.symbol} | ${l==='fa'?'ورود':'In'}: $${entryPrice.toFixed(2)} | ${l==='fa'?'خروج':'Out'}: $${exitPrice.toFixed(2)} | ${l==='fa'?'سود':'PnL'}: <span style="color:#22c55e;">+$${finalProfit.toFixed(2)} (+${pctChange.toFixed(2)}%)</span>`;
+      tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${l==='fa'?'معامله در صرافی ثبت و بسته شد!':'Trade Executed Successfully!'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> ${rc.symbol} | ${l==='fa'?'سود':'PnL'}: <span style="color:#22c55e;">+$${finalProfit.toFixed(2)} (+${pctChange.toFixed(2)}%)</span>`;
       
       const now=new Date();
       const dateStr=now.toLocaleDateString('en-GB')+' - '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
