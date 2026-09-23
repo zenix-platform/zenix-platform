@@ -123,7 +123,7 @@ if(qB){
     setTimeout(()=>{
       clearInterval(tI);
       
-      // محاسبه و اضافه شدن سود به موجودی دقیقا پس از اتمام ۱۰ ثانیه
+      // محاسبه و اضافه شدن سود به موجودی پس از اتمام ۱۰ ثانیه
       tProf+=p;
       bBal+=p;
 
@@ -131,12 +131,23 @@ if(qB){
       if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
 
       tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${l==='fa'?'موفق!':'Success!'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> ${rc.symbol} | ${l==='fa'?'سود':'Profit'}: <span style="color:#22c55e;">+$${p.toFixed(2)}</span>`;
+      
+      // تاریخ به صورت میلادی ثبت می‌شود
       const now=new Date();
-      const dateStr=now.toLocaleDateString('fa-IR')+' - '+now.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
+      const dateStr=now.toLocaleDateString('en-GB')+' - '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
       const tradeObj={name:rc.name,symbol:rc.symbol,cls:rc.cls,color:rc.color,profit:p,dateStr:dateStr,timestamp:now.getTime()};
       allTradesArray.unshift(tradeObj);
       renderHistory();
-      updateDoc(doc(db,"users",uUid),{quantCount:cCnt,quantDate:todayNY,todayProfit:tProf,balance:bBal,tradeHistoryArray:allTradesArray}).catch(err=>console.error(err));
+      
+      // ذخیره اطلاعات و سپس تازه سازی (رفرش) کامل صفحه مرورگر
+      updateDoc(doc(db,"users",uUid),{quantCount:cCnt,quantDate:todayNY,todayProfit:tProf,balance:bBal,tradeHistoryArray:allTradesArray}).then(()=>{
+        setTimeout(()=>{
+          window.location.reload();
+        },1000);
+      }).catch(err=>{
+        console.error(err);
+        window.location.reload();
+      });
       window.checkClickState();
     },10000);
   };
