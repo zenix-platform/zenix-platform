@@ -107,11 +107,6 @@ if(qB){
     else if(bBal>=300)dailyRate=0.02;
 
     const p=(bBal*dailyRate)/4;
-    tProf+=p;
-    bBal+=p;
-
-    if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);
-    if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
 
     const tBox=document.getElementById('trade-box'),tDet=document.getElementById('trade-details');
     tBox.style.display='block';
@@ -127,6 +122,14 @@ if(qB){
 
     setTimeout(()=>{
       clearInterval(tI);
+      
+      // محاسبه و اضافه شدن سود به موجودی دقیقا پس از اتمام ۱۰ ثانیه
+      tProf+=p;
+      bBal+=p;
+
+      if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);
+      if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
+
       tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${l==='fa'?'موفق!':'Success!'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> ${rc.symbol} | ${l==='fa'?'سود':'Profit'}: <span style="color:#22c55e;">+$${p.toFixed(2)}</span>`;
       const now=new Date();
       const dateStr=now.toLocaleDateString('fa-IR')+' - '+now.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'});
