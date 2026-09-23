@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Zenix - تیم من</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
+<style>*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}.logo h2{font-size:18px;color:#38bdf8;font-weight:800}.hr{display:flex;align-items:center;gap:8px}.wrap{position:relative!important}.lb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;width:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#38bdf8;text-decoration:none}.badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}.menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:160px;max-height:240px;overflow-y:auto;padding:6px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}[dir="rtl"] .wrap .menu{left:0!important;right:auto!important}.menu.show{display:block}.mi{padding:7px 10px;font-size:12px;color:#cbd5e1;cursor:pointer;border-radius:6px;display:flex;align-items:center;gap:8px;text-decoration:none}.mi:hover{background:rgba(56,189,248,.2);color:#38bdf8}.c{max-width:800px;width:100%;margin:15px auto;padding:0 12px;flex:1}.wel{background:linear-gradient(135deg,rgba(2,132,199,.15),rgba(147,51,234,.15));border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px;margin-bottom:12px}footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05)}</style>
 </head>
 <body>
 <header>
@@ -12,7 +12,7 @@
 <div class="hr">
 <div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button>
 <div class="menu" id="bell-menu">
-<div style="padding:8px 12px;font-size:13px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold;">پیام مدیریت</div>
+<div style="padding:8px 12px;font-size:14px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold;">پیام مدیریت</div>
 <div style="padding:10px 12px;font-size:13px;color:#cbd5e1;">به پلتفرم زنیکس خوش آمدید.</div>
 </div></div>
 <a href="support.html" class="lb"><i class="fas fa-headset"></i></a>
@@ -30,14 +30,14 @@
 <a href="transactions.html" class="mi"><i class="fas fa-history"></i><span>تراکنش</span></a>
 <a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span>پروفایل</span></a>
 <a href="support.html" class="mi"><i class="fas fa-headset"></i><span>پشتیبانی</span></a>
-<a href="index.html" class="mi" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span>خروج</span></a>
+<a href="#" class="mi" id="logout-btn" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span>خروج</span></a>
 </div></div></div>
 </header>
 
 <div class="c">
 <div class="wel">
-<div><h1>مدیریت تیم و پاداش</h1><p>دعوت از دوستان و کسب درآمد دلاری</p></div>
-<div style="font-size:13px;background:rgba(56,189,248,.1);border:1px solid #38bdf8;padding:6px 10px;border-radius:6px;color:#38bdf8;font-weight:600;"><i class="fas fa-chart-line"></i> کل پاداش: <span id="total-commission">0.00</span> USDT</div>
+<div><h1 style="font-size:18px;margin-bottom:3px;">مدیریت تیم و پاداش</h1><p style="font-size:12px;color:#94a3b8;">دعوت از دوستان و کسب درآمد دلاری</p></div>
+<div style="font-size:13px;background:rgba(56,189,248,.1);border:1px solid #38bdf8;padding:6px 10px;border-radius:6px;color:#38bdf8;font-weight:600;margin-top:10px;display:inline-block;"><i class="fas fa-chart-line"></i> کل پاداش: <span id="total-commission">0.00</span> USDT</div>
 </div>
 <div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:16px;margin-top:12px;">
 <div id="status-box" style="display:none;padding:12px;border-radius:8px;font-size:13px;margin-bottom:12px;text-align:center;font-weight:600;"></div>
@@ -72,12 +72,12 @@
 </div>
 </div>
 </div>
+
 <footer><p>&copy; 2026 Zenix</p></footer>
 
-<!-- اسکریپت اتصال به فایربیس برای گرفتن دقیق آی‌دی پروفایل و اطلاعات واقعی تیم -->
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import{getFirestore,doc,onSnapshot}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
@@ -85,21 +85,19 @@ const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDo
 onAuthStateChanged(auth,u=>{
 if(!u){window.location.href='index.html';return;}
 
-// تولید دقیق همان فرمت ID پروفایل (MS-000000) بر اساس UID کاربر
+// دقیقاً همان فرمت ساخت آی‌دی در پروفایل (MS-000000)
 let nums=u.uid.replace(/\D/g,'');
 if(nums.length<6) nums=(nums+"123456789").padEnd(6,'0');
 const formattedId=`MS-${nums.substring(0,6)}`;
 
-// ساخت لینک دعوت: آدرس سایت (پایه دامنه و مسیر) + آی‌دی پروفایل
+// ساخت لینک دعوت به شکل: آدرس سایت + آی‌دی پروفایل
 const baseUrl=window.location.origin+window.location.pathname.substring(0,window.location.pathname.lastIndexOf('/'));
-const inviteUrl=`${baseUrl}/register.html?ref=${formattedId}`;
-document.getElementById('invite-link').value=inviteUrl;
+document.getElementById('invite-link').value=`${baseUrl}/register.html?ref=${formattedId}`;
 
-// دریافت اطلاعات واقعی تیم کاربر از دیتابیس (با مقادیر پیش‌فرض صفر برای شروع واقعی)
+// دریافت اطلاعات واقعی تیم از فایربیس
 onSnapshot(doc(db,"users",u.uid),d=>{
 if(d.exists()){
 const data=d.data();
-// اگر در دیتابیس فیلدهای مربوط به تیم رو داشتید اینجا قرار می‌گیرد، در غیر اینصورت مقادیر صفر واقعی نمایش داده می‌شوند
 document.getElementById("total-commission").innerText=(data.totalCommission||0).toFixed(2);
 document.getElementById("team-count").innerText=data.teamCount||0;
 document.getElementById("team-volume").innerText=(data.teamVolume||0)+"$";
@@ -116,6 +114,9 @@ document.getElementById("lvl3-comm").innerText=(data.lvl3Comm||0).toFixed(2)+" U
 }
 });
 });
+
+const lo=document.getElementById('logout-btn');
+if(lo)lo.onclick=async e=>{e.preventDefault();await signOut(auth);window.location.href='index.html';};
 </script>
 
 <script>
