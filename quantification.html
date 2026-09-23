@@ -33,8 +33,6 @@ import{getFirestore,doc,setDoc,onSnapshot}from"https://www.gstatic.com/firebasej
 const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
 const qB=document.getElementById('quant-btn');let uUid=null,tProf=0,bBal=0,tpEl=document.getElementById('today-profit-val'),tbEl=document.getElementById('total-balance-val'),hList=document.getElementById('history-list');
 
-function getNYDateStr(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York'}).format(new Date());}
-let todayNY=getNYDateStr();
 let allTradesArray=[];
 let isExecutingTrade=false;
 
@@ -95,6 +93,14 @@ if(qB){
         color:rc.color,
         timestamp:Date.now()
       });
+      // ذخیره وضعیت معامله در دیتابیس کاربر برای حفظ بعد از رفرش
+      await setDoc(doc(db,"users",uUid),{
+        isTradingActive: true,
+        currentTradeName: rc.name,
+        currentTradeSymbol: rc.symbol,
+        currentTradeCls: rc.cls,
+        currentTradeColor: rc.color
+      },{merge:true});
     }catch(err){
       console.error("Pending trade error:",err);
       isExecutingTrade=false;
@@ -122,7 +128,21 @@ onAuthStateChanged(auth,u=>{
         renderHistory();
       }
 
-      if(isExecutingTrade&&bBal!==oldBalance){
+      // چک کردن وضعیت معامله در حال جریان از دیتابیس (حفظ بعد از رفرش)
+      if(data.isTradingActive){
+        isExecutingTrade=true;
+        qB.disabled=true;qB.style.opacity="0.5";qB.style.cursor="not-allowed";
+        const tBox=document.getElementById('trade-box'),tDet=document.getElementById('trade-details');
+        if(tBox&&tDet){
+          tBox.style.display='block';
+          const rName=data.currentTradeName||'Crypto';
+          const rSym=data.currentTradeSymbol||'BTC';
+          const rCls=data.currentTradeCls||'fab fa-bitcoin';
+          const rCol=data.currentTradeColor||'#f7931a';
+          const l=window.currentActiveLang||'fa';
+          tDet.innerHTML=`<i class="fas fa-spinner fa-spin" style="color:#38bdf8;"></i> ${l==='fa'?'در حال ارسال به ربات سرور و اجرای معامله...':'Executing via server bot...'} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rCol};color:#fff;font-size:12px;margin:0 3px;"><i class="${rCls}"></i></span> <b>${rName} (${rSym})</b>`;
+        }
+      } else if(isExecutingTrade&&bBal!==oldBalance){
         isExecutingTrade=false;
         const tDet=document.getElementById('trade-details');
         if(tDet){
