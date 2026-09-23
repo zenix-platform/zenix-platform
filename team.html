@@ -77,26 +77,28 @@
 function showMsg(t,e){const b=document.getElementById('status-box');b.style.display='block';b.style.background=e?'rgba(239,68,68,0.15)':'rgba(34,197,94,0.15)';b.style.border=e?'1px solid #ef4444':'1px solid #22c55e';b.style.color=e?'#ef4444':'#22c55e';b.innerHTML=t;}
 function copyInviteLink(){const c=document.getElementById("invite-link");c.select();navigator.clipboard.writeText(c.value);showMsg("📋 لینک دعوت با موفقیت در کلیپ‌بورد کپی شد.",false);}
 
-// بارگذاری اطلاعات واقعی کاربر و تیم از سرور یا LocalStorage
 document.addEventListener("DOMContentLoaded", () => {
-    // فرض بر این است که پروفایل یا شناسه کاربر در localStorage ذخیره شده است (مثلا با کلید user_profile یا user_id)
-    const userProfile = JSON.parse(localStorage.getItem('zenix_user') || '{}');
-    const referralCode = userProfile.refCode || userProfile.id || 'GUEST'; // پیش‌فرض در صورت عدم لاگین
+    // خواندن اطلاعات پروفایل کاربر از localStorage (کلیدهای رایج مثل zenix_user یا user_profile را بررسی می‌کند)
+    const userProfile = JSON.parse(localStorage.getItem('zenix_user') || localStorage.getItem('user_profile') || '{}');
+    
+    // دریافت دقیق آی‌دی پروفایل (از فیلدهایی مثل profileId, id یا userId)
+    const profileId = userProfile.profileId || userProfile.id || userProfile.userId || '';
 
-    // تولید لینک دعوت بر اساس آدرس دامنه فعلی و کد معرف
+    // ساخت آدرس سایت به صورت پویا (پایه دامنه + مسیر صفحه ثبت‌نام)
     const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-    const fullInviteLink = `${baseUrl}/register.html?ref=${referralCode}`;
-    document.getElementById("invite-link").value = fullInviteLink;
+    
+    // قرار دادن آدرس سایت + آی‌دی پروفایل به عنوان پارامتر معرف در انتهای لینک
+    if (profileId) {
+        document.getElementById("invite-link").value = `${baseUrl}/register.html?ref=${profileId}`;
+    } else {
+        document.getElementById("invite-link").value = "لطفاً ابتدا وارد حساب کاربری خود شوید یا پروفایل را تکمیل کنید";
+    }
 
-    // دریافت اطلاعات واقعی تیم (اینجا می‌توانید بعداً درخواست fetch به API خودتان بزنید)
-    loadTeamData();
+    // بارگذاری داده‌های واقعی تیم از localStorage (اگر ثبت نشده باشند روی صفر واقعی تنظیم می‌شوند)
+    loadRealTeamData();
 });
 
-function loadTeamData() {
-    // نمونه درخواست فرضی به API (در صورت اتصال به بک‌اند، این بخش را با دیتای واقعی پر کنید)
-    // fetch('/api/team-stats').then(res => res.json()).then(data => { ... });
-
-    // فعلاً برای حالت واقعی، مقادیر پیش‌فرض صفر قرار داده شده‌اند تا کاربر واقعی با صفر شروع کند و با ثبت نام زیرمجموعه آپدیت شود
+function loadRealTeamData() {
     const teamData = JSON.parse(localStorage.getItem('zenix_team_stats') || JSON.stringify({
         totalCommission: 0.00,
         teamCount: 0,
