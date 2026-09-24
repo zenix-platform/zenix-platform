@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenix - پشتیبانی هوشمند</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+        body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}
+        header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+        .logo h2{font-size:18px;color:#38bdf8;font-weight:800}
+        .back-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;padding:0 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;color:#38bdf8;text-decoration:none}
+        .c{max-width:700px;width:100%;margin:20px auto;padding:0 12px;flex:1;display:flex;flex-direction:column}
+        .chat-box{background:rgba(15,23,42,.85);border:1px solid rgba(255,255,255,.1);border-radius:16px;display:flex;flex-direction:column;height:520px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.8)}
+        .chat-header{background:rgba(30,41,59,.9);padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px}
+        .chat-avatar{width:36px;height:36px;background:rgba(56,189,248,.2);border:1px solid #38bdf8;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#38bdf8;font-size:16px}
+        .chat-title h3{font-size:14px;color:#f8fafc}
+        .chat-title p{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px}
+        .chat-body{flex:1;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+        .msg{max-width:80%;padding:10px 14px;border-radius:12px;font-size:12px;line-height:1.6}
+        .msg.bot{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#cbd5e1;align-self:flex-start;border-top-right-radius:2px}
+        .msg.user{background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);color:#38bdf8;align-self:flex-end;border-top-left-radius:2px}
+        .options-container{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+        .opt-btn{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:#38bdf8;padding:10px 12px;border-radius:10px;font-size:12px;cursor:pointer;text-align:right;transition:all .3s ease;display:flex;align-items:center;gap:8px}
+        .opt-btn:hover{background:rgba(56,189,248,.25);border-color:#38bdf8}
+        .chat-footer{padding:12px;border-top:1px solid rgba(255,255,255,.1);background:rgba(15,23,42,.9);display:flex;gap:8px}
+        .chat-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;color:#fff;font-size:12px;outline:none}
+        .chat-input:focus{border-color:#38bdf8}
+        .send-btn{background:#38bdf8;color:#030712;border:none;border-radius:10px;width:40px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+        footer{text-align:center;padding:12px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);margin-top:auto}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><h2>ZENIX SUPPORT</h2></div>
+        <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-right"></i> بازگشت به داشبورد</a>
+    </header>
+    <div class="c">
+        <div class="chat-box">
+            <div class="chat-header">
+                <div class="chat-avatar"><i class="fas fa-robot"></i></div>
+                <div class="chat-title">
+                    <h3>ربات هوشمند زنیکس</h3>
+                    <p><i class="fas fa-circle" style="font-size:6px;"></i> آماده پاسخگویی</p>
+                </div>
+            </div>
+            <div class="chat-body" id="chat-body">
+                <div class="msg bot">
+                    سلام! من ربات هوشمند پشتیبانی زنیکس هستم. چطور می‌توانم به شما کمک کنم؟ لطفاً یکی از گزینه‌های زیر را انتخاب کنید یا مشکل خود را بنویسید:
+                    <div class="options-container" id="main-options">
+                        <button class="opt-btn" onclick="handleUserChoice('deposit')"><i class="fas fa-wallet"></i> مشکل در واریز یا شارژ حساب</button>
+                        <button class="opt-btn" onclick="handleUserChoice('withdraw')"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i> تاخیر در برداشت دارایی</button>
+                        <button class="opt-btn" onclick="handleUserChoice('quant')"><i class="fas fa-robot"></i> نحوه کارکرد کوانتیفیکیشن و سود</button>
+                        <button class="opt-btn" onclick="handleUserChoice('admin')" style="border-color:#ef4444;color:#ef4444;"><i class="fas fa-headset"></i> حل نشد؟ اتصال به پشتیبان انسانی (مدیر)</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" class="chat-input" id="user-input" placeholder="پیام خود را بنویسید...">
+                <button class="send-btn" id="send-msg-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+    <footer><p>&copy; 2026 Zenix. All rights reserved.</p></footer>
+
+    <script>
+        const chatBody = document.getElementById('chat-body');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-msg-btn');
+
+        function addMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `msg ${sender}`;
+            div.innerHTML = text;
+            chatBody.appendChild(div);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function handleUserChoice(type) {
+            if(type === 'deposit') {
+                addMessage('مشکل در واریز یا شارژ حساب', 'user');
+                setTimeout(() => {
+                    addMessage('برای واریز، حتماً باید از شبکه معتبر استفاده کرده و هش تراکنش (TxID) را ثبت کنید. معمولاً تراکنش‌ها ظرف ۵ الی ۱۵ دقیقه تایید می‌شوند. آیا مشکل شما برطرف شد?<div class="options-container"><button class="opt-btn" onclick="handleUserChoice(\'yes\')"><i class="fas fa-check"></i> بله، ممنون</button><button class="opt-btn" onclick="handleUserChoice(\'admin\')" style="border-color:#ef4444;color:#ef4444;"><i class="fas fa-headset"></i> خیر، اتصال به مدیر</button></div>', 'bot');
+                }, 600);
+            } else if(type === 'withdraw') {
+                addMessage('تاخیر در برداشت دارایی', 'user');
+                setTimeout(() => {
+                    addMessage('برداشت‌ها به صورت دوره‌ای جهت امنیت بیشتر بررسی می‌شوند. اگر بیش از ۲۴ ساعت گذشته، لطفاً به مدیر متصل شوید.<div class="options-container"><button class="opt-btn" onclick="handleUserChoice(\'admin\')" style="border-color:#ef4444;color:#ef4444;"><i class="fas fa-headset"></i> اتصال به پشتیبان انسانی (مدیر)</button></div>', 'bot');
+                }, 600);
+            } else if(type === 'quant') {
+                addMessage('نحوه کارکرد کوانتیفیکیشن و سود', 'user');
+                setTimeout(() => {
+                    addMessage('بخش کوانتیفیکیشن بر اساس الگوریتم هوش مصنوعی، نوسانات بازار را تحلیل کرده و سود روزانه به حساب شما واریز می‌کند.<div class="options-container"><button class="opt-btn" onclick="handleUserChoice(\'yes\')"><i class="fas fa-check"></i> متوجه شدم</button><button class="opt-btn" onclick="handleUserChoice(\'admin\')" style="border-color:#ef4444;color:#ef4444;"><i class="fas fa-headset"></i> سوال دیگری دارم (اتصال به مدیر)</button></div>', 'bot');
+                }, 600);
+            } else if(type === 'yes') {
+                addMessage('بله، ممنون', 'user');
+                setTimeout(() => {
+                    addMessage('خوشحالم که مشکلتان حل شد! اگر سوال دیگری داشتید در خدمت هستم.', 'bot');
+                }, 600);
+            } else if(type === 'admin') {
+                addMessage('اتصال به پشتیبان انسانی (مدیر)', 'user');
+                setTimeout(() => {
+                    addMessage('در حال انتقال به چت مستقیم با مدیر... <br><br>لطفاً روی دکمه زیر کلیک کنید تا مستقیماً در تلگرام با مدیریت گفتگو کنید:<div class="options-container"><a href="https://t.me/your_admin_username" target="_blank" class="opt-btn" style="background:#22c55e22;border-color:#22c55e;color:#22c55e;text-decoration:none;justify-content:center;"><i class="fab fa-telegram"></i> ورود به چت مستقیم مدیر (تلگرام)</a></div>', 'bot');
+                }, 800);
+            }
+        }
+
+        sendBtn.onclick = () => {
+            const val = userInput.value.trim();
+            if(!val) return;
+            addMessage(val, 'user');
+            userInput.value = '';
+            setTimeout(() => {
+                addMessage('پیام شما دریافت شد. اگر ربات نتوانست پاسخ مناسبی بدهد، لطفاً روی گزینه زیر کلیک کنید تا به مدیر وصل شوید:<div class="options-container"><button class="opt-btn" onclick="handleUserChoice(\'admin\')" style="border-color:#ef4444;color:#ef4444;"><i class="fas fa-headset"></i> اتصال به پشتیبان انسانی (مدیر)</button></div>', 'bot');
+            }, 1000);
+        };
+
+        userInput.onkeypress = (e) => {
+            if(e.key === 'Enter') sendBtn.click();
+        };
+    </script>
+</body>
+</html>
