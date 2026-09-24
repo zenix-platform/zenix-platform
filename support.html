@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zenix - پشتیبانی هوشمند هوش مصنوعی</title>
+    <title>Zenix - پشتیبانی هوشمند پلتفرم</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
@@ -46,16 +46,16 @@
                 <div class="chat-avatar"><i class="fas fa-brain"></i></div>
                 <div class="chat-title">
                     <h3>هوش مصنوعی زنیکس</h3>
-                    <p><i class="fas fa-circle" style="font-size:6px;"></i> پاسخگوی هوشمند پلتفرم</p>
+                    <p><i class="fas fa-circle" style="font-size:6px;"></i> پاسخگوی جامع تمام امور پلتفرم</p>
                 </div>
             </div>
             <div class="chat-body" id="chat-body">
                 <div class="msg bot">
-                    درود! من دستیار هوشمند پلتفرم **Zenix** هستم. هر سوالی درباره واریز، برداشت، نحوه کارکرد ربات کوانتیفیکیشن یا حساب خود دارید بپرسید تا راهنمایی‌تان کنم.<br>امروز چطور می‌توانم کمکتان کنم؟
+                    درود! من دستیار هوشمند پلتفرم **Zenix** هستم. درباره هر بخش از پلتفرم (واریز، برداشت، تغییر رمز، تغییر ایمیل، پروفایل، کوانتیفیکیشن و تیم) سوالی دارید بپرسید.<br>امروز چطور می‌توانم کمکتان کنم؟
                     <div class="options-container">
+                        <button class="opt-btn" onclick="sendQuickQuery('چطور رمز عبور یا جمیل حسابم رو تغییر بدم؟')"><i class="fas fa-user-cog"></i> تغییر رمز و ایمیل حساب</button>
                         <button class="opt-btn" onclick="sendQuickQuery('مراحل واریز وجه و شارژ حساب چطور است؟')"><i class="fas fa-wallet"></i> واریز وجه و شارژ حساب</button>
                         <button class="opt-btn" onclick="sendQuickQuery('چگونه سود کوانتیفیکیشن فعال می‌شود؟')"><i class="fas fa-robot"></i> نحوه کارکرد کوانتیفیکیشن</button>
-                        <button class="opt-btn" onclick="sendQuickQuery('قوانین و نحوه برداشت دارایی چیست؟')"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i> برداشت دارایی</button>
                     </div>
                 </div>
             </div>
@@ -97,36 +97,48 @@
                 let reply = "";
                 const q = question.toLowerCase().trim();
 
-                // ۱. پاسخ به احوالپرسی و سلام
+                // ۱. احوالپرسی
                 if (q === 'سلام' || q === 'درود' || q === 'سلام علیکم' || q === 'خسته نباشید' || q === 'شب بخیر' || q === 'روز بخیر' || q.includes('سلام')) {
-                    reply = `سلام و درود بر شما! 🌸<br>من دستیار هوشمند پلتفرم زنیکس هستم. چه کمکی در زمینه حساب، واریز، برداشت یا کوانتیفیکیشن می‌توانید به شما بکنم؟`;
+                    reply = `سلام و درود بر شما! 🌸<br>من دستیار هوشمند پلتفرم زنیکس هستم. درباره واریز، برداشت، تغییر رمز، ایمیل، پروفایل یا ربات معاملاتی هر سوالی دارید بفرمایید.`;
                 }
-                // ۲. موضوع واریز
-                else if (q.includes('واریز') || q.includes('شارژ') || q.includes('deposit')) {
-                    reply = `برای واریز وجه به حساب Zenix:<br>۱. به بخش <strong>واریز</strong> در داشبورد بروید.<br>۲. آدرس کیف پول یا شبکه مد نظر را کپی کنید.<br>۳. پس از انتقال رمزارز، هش تراکنش (TxID) را ثبت نمایید. واریزها معمولاً طی ۵ الی ۱۵ دقیقه تایید می‌شوند.<br><br>آیا این پاسخ برایتان کافی بود؟
-                    <div class="options-container">
-                        <button class="opt-btn" onclick="addMessage('بله، ممنون از راهنمایی شما.','user');setTimeout(()=>addMessage('خواهش می‌کنم! خوشحالم که توانستم کمکتان کنم.','bot'),500)"><i class="fas fa-check"></i> بله، مشکل حل شد</button>
-                        <button class="opt-btn" style="border-color:#ef4444;color:#ef4444;" onclick="connectToAdmin()"><i class="fas fa-headset"></i> خیر، اتصال به پشتیبان انسانی (مدیر)</button>
-                    </div>`;
-                } 
-                // ۳. موضوع برداشت
-                else if (q.includes('برداشت') || q.includes('نقد') || q.includes('withdraw')) {
-                    reply = `درباره بخش <strong>برداشت</strong>:<br>برداشت دارایی از طریق منوی برداشت انجام می‌شود. درخواست‌ها جهت تامین امنیت حداکثری، در سیکل‌های روزانه بررسی و به کیف پول مقصد واریز می‌گردند.<br><br>اگر در دریافت برداشت خود تاخیری مشاهده کردید، می‌توانید با مدیر ارتباط بگیرید:
+                // ۲. تغییر رمز و ایمیل (جمیل)
+                else if (q.includes('رمز') || q.includes('پسورد') || q.includes('password') || q.includes('جمیل') || q.includes('ایمیل') || q.includes('email') || q.includes('تغییر رمز') || q.includes('تغییر جمیل')) {
+                    reply = `برای <strong>تغییر رمز عبور یا ایمیل (جمیل)</strong> در پلتفرم Zenix:<br>۱. از منوی بالای سایت به بخش <strong>پروفایل</strong> (Profile) بروید.<br>۲. در آنجا می‌توانید اطلاعات حساب کاربری، شماره تلفن و رمز عبور خود را ویرایش و ذخیره کنید.<br>۳. اگر در تغییر جمیل یا بازیابی رمز با مشکل مواجه شدید، می‌توانید به مدیر متصل شوید:<br>
                     <div class="options-container">
                         <button class="opt-btn" style="border-color:#ef4444;color:#ef4444;" onclick="connectToAdmin()"><i class="fas fa-headset"></i> اتصال به پشتیبان انسانی (مدیر)</button>
                     </div>`;
+                }
+                // ۳. واریز و شارژ حساب
+                else if (q.includes('واریز') || q.includes('شارژ') || q.includes('deposit') || q.includes('پول ریختن')) {
+                    reply = `برای <strong>واریز وجه و شارژ حساب</strong>:<br>۱. به بخش <strong>واریز</strong> در پنل کاربری مراجعه کنید.<br>۲. آدرس شبکه مد نظر را کپی کرده و تراکنش را از کیف پول خود انجام دهید.<br>۳. پس از انجام انتقال، هش تراکنش (TxID) را در فرم مربوطه ثبت کنید تا پس از تایید شبکه، موجودی کیف پول شما شارژ شود.`;
                 } 
-                // ۴. موضوع کوانتیفیکیشن
-                else if (q.includes('کوانتیفیکیشن') || q.includes('ربات') || q.includes('سود') || q.includes('quantification')) {
-                    reply = `سیستم <strong>کوانتیفیکیشن (Quantification)</strong> قلب تپنده پلتفرم Zenix است:<br>این بخش با استفاده از الگوریتم‌های هوش مصنوعی، نوسانات بازار رمزارزها را آنالیز کرده و به صورت خودکار فرآیندهای معاملاتی را انجام می‌دهد تا سود روزانه به موجودی حساب شما افزوده شود.`;
+                // ۴. برداشت دارایی
+                else if (q.includes('برداشت') || q.includes('نقد') || q.includes('withdraw') || q.includes('پول برداشت')) {
+                    reply = `درباره <strong>برداشت دارایی</strong>:<br>از منوی برداشت می‌توانید درخواست نقد کردن یا انتقال دارایی خود را ثبت کنید. درخواست‌ها جهت امنیت کامل در سیکل‌های مشخص بررسی و به آدرس کیف پول شما واریز می‌شوند.`;
                 } 
-                // ۵. موضوع تیم و زیرمجموعه
-                else if (q.includes('تیم') || q.includes('زیرمجموعه') || q.includes('رفرال')) {
-                    reply = `سیستم <strong>تیم و زیرمجموعه‌ها</strong>:<br>شما می‌توانید از طریق لینک معرفی خود در بخش تیم، دوستانتان را دعوت کنید و از تراکنش‌ها و فعالیت‌های آن‌ها در چند سطح مختلف پاداش و کمیسیون دائمی دریافت کنید.`;
+                // ۵. کوانتیفیکیشن (معاملات هوشمند)
+                else if (q.includes('کوانتیفیکیشن') || q.includes('ربات') || q.includes('سود') || q.includes('quantification') || q.includes('ترید')) {
+                    reply = `بخش <strong>کوانتیفیکیشن (Quantification)</strong>:<br>این بخش ربات هوشمند معاملاتی ماست که با تحلیل نوسانات بازار رمزارزها، سود روزانه را به صورت خودکار به موجودی حساب شما اضافه می‌کند. کافی است وارد این بخش شده و ربات را استارت بزنید.`;
                 } 
-                // ۶. تشخیص سوالات خارج از پلتفرم
+                // ۶. تیم و زیرمجموعه
+                else if (q.includes('تیم') || q.includes('زیرمجموعه') || q.includes('رفرال') || q.includes('دعوت')) {
+                    reply = `سیستم <strong>تیم و زیرمجموعه‌ها</strong>:<br>شما می‌توانید لینک دعوت اختصاصی خود را بردارید و دوستانتان را به Zenix دعوت کنید تا از تراکنش‌های آن‌ها در سطوح مختلف پاداش دریافت کنید.`;
+                }
+                // ۷. پشتیبانی و ارتباط با مدیر
+                else if (q.includes('مدیر') || q.includes('اپراتور') || q.includes('پشتیبان') || q.includes('ارتباط با انسانی')) {
+                    connectToAdmin();
+                    return;
+                }
+                // ۸. تشخیص سوالات کاملاً خارج از پلتفرم
+                else if (
+                    q.includes('هوا') || q.includes('فوتبال') || q.includes('بازی') || q.includes('فیلم') || 
+                    q.includes('آشپزی') || q.includes('رئیس جمهور') || q.includes('آمریکا') || q.includes('استقلال') || q.includes('پرسپولیس')
+                ) {
+                    reply = `این سوال <strong>خارج از پلتفرم می‌باشد</strong>.<br>من فقط پاسخگوی مسائل و سوالات مربوط به پلتفرم Zenix (مانند واریز، برداشت، پروفایل، رمز عبور، کوانتیفیکیشن و...) هستم.`;
+                }
+                // ۹. پاسخ عمومی برای سایر موارد مرتبط با پلتفرم یا خطاهای ناشناخته
                 else {
-                    reply = `این سوال <strong>خارج از پلتفرم می‌باشد</strong>.<br>من فقط مجاز به پاسخگویی به سوالات مرتبط با پلتفرم Zenix (واریز، برداشت، کوانتیفیکیشن و حساب کاربری) هستم. اگر سوال دیگری دارید بپرسید یا برای ارتباط با مدیریت روی دکمه زیر کلیک کنید:
+                    reply = `سوال شما مربوط به بخش‌های داخلی پلتفرم Zenix است. سیستم ما برای خدمت‌رسانی به شما آماده است. اگر این پاسخ کامل نبود یا نیاز به بررسی تخصصی‌تر حساب خود دارید، می‌توانید مستقیماً به مدیر متصل شوید:<br>
                     <div class="options-container">
                         <button class="opt-btn" style="border-color:#ef4444;color:#ef4444;" onclick="connectToAdmin()"><i class="fas fa-headset"></i> اتصال به پشتیبان انسانی (مدیر)</button>
                     </div>`;
