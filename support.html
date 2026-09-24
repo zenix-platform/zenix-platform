@@ -80,7 +80,6 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
-        // نمایش انیمیشن در حال تایپ هوش مصنوعی
         function showTypingIndicator() {
             const div = document.createElement('div');
             div.className = 'msg bot typing-msg';
@@ -96,35 +95,38 @@
             setTimeout(() => {
                 typingElem.remove();
                 let reply = "";
-                const q = question.toLowerCase();
+                const q = question.toLowerCase().trim();
 
-                // پایگاه دانش هوش مصنوعی اختصاصی پلتفرم
-                if (q.includes('واریز') || q.includes('شارژ') || q.includes('Deposit')) {
-                    reply = `برای واریز وجه به حساب Zenix:<br>۱. به بخش <strong>واریز</strong> در داشبورد بروید.<br>۲. آدرس کیف پول یا شبکه مد نظر را کپی کنید.<br>۳. پس از انتقال رمزارز، هش تراکنش (TxID) را ثبت نمایید. واریزها معمولاً طی ۵ الی ۱۵ دقیقه تایید می‌شوند.<br><br>آیا این پاسخ برایتان کافی بود یا نیاز به اتصال به مدیر دارید؟
+                // ۱. پاسخ به احوالپرسی و سلام
+                if (q === 'سلام' || q === 'درود' || q === 'سلام علیکم' || q === 'خسته نباشید' || q === 'شب بخیر' || q === 'روز بخیر' || q.includes('سلام')) {
+                    reply = `سلام و درود بر شما! 🌸<br>من دستیار هوشمند پلتفرم زنیکس هستم. چه کمکی در زمینه حساب، واریز، برداشت یا کوانتیفیکیشن می‌توانید به شما بکنم؟`;
+                }
+                // ۲. موضوع واریز
+                else if (q.includes('واریز') || q.includes('شارژ') || q.includes('deposit')) {
+                    reply = `برای واریز وجه به حساب Zenix:<br>۱. به بخش <strong>واریز</strong> در داشبورد بروید.<br>۲. آدرس کیف پول یا شبکه مد نظر را کپی کنید.<br>۳. پس از انتقال رمزارز، هش تراکنش (TxID) را ثبت نمایید. واریزها معمولاً طی ۵ الی ۱۵ دقیقه تایید می‌شوند.<br><br>آیا این پاسخ برایتان کافی بود؟
                     <div class="options-container">
                         <button class="opt-btn" onclick="addMessage('بله، ممنون از راهنمایی شما.','user');setTimeout(()=>addMessage('خواهش می‌کنم! خوشحالم که توانستم کمکتان کنم.','bot'),500)"><i class="fas fa-check"></i> بله، مشکل حل شد</button>
                         <button class="opt-btn" style="border-color:#ef4444;color:#ef4444;" onclick="connectToAdmin()"><i class="fas fa-headset"></i> خیر، اتصال به پشتیبان انسانی (مدیر)</button>
                     </div>`;
                 } 
-                else if (q.includes('برداشت') || q.includes('نقد') || q.includes('Withdraw')) {
-                    reply = `درباره بخش <strong>برداشت</strong>:<br>برداشت دارایی از طریق منوی برداشت انجام می‌شود. حداقل مبلغ برداشت مشخص بوده و درخواست‌ها جهت تامین امنیت حداکثری، در سیکل‌های روزانه بررسی و به کیف پول مقصد واریز می‌گردند.<br><br>اگر در دریافت برداشت خود تاخیری مشاهده کردید، می‌توانید با مدیر ارتباط بگیرید:
+                // ۳. موضوع برداشت
+                else if (q.includes('برداشت') || q.includes('نقد') || q.includes('withdraw')) {
+                    reply = `درباره بخش <strong>برداشت</strong>:<br>برداشت دارایی از طریق منوی برداشت انجام می‌شود. درخواست‌ها جهت تامین امنیت حداکثری، در سیکل‌های روزانه بررسی و به کیف پول مقصد واریز می‌گردند.<br><br>اگر در دریافت برداشت خود تاخیری مشاهده کردید، می‌توانید با مدیر ارتباط بگیرید:
                     <div class="options-container">
                         <button class="opt-btn" style="border-color:#ef4444;color:#ef4444;" onclick="connectToAdmin()"><i class="fas fa-headset"></i> اتصال به پشتیبان انسانی (مدیر)</button>
                     </div>`;
                 } 
-                else if (q.includes('کوانتیفیکیشن') || q.includes('ربات') || q.includes('سود') || q.includes('Quantification')) {
-                    reply = `سیستم <strong>کوانتیفیکیشن (Quantification)</strong> قلب تپنده پلتفرم Zenix است:<br>این بخش با استفاده از الگوریتم‌های هوش مصنوعی، نوسانات بازار رمزارزها را آنالیز کرده و به صورت خودکار فرآیندهای معاملاتی را انجام می‌دهد تا سود روزانه به موجودی حساب شما افزوده شود.<br><br>سوالی درباره نحوه استارت زدن ربات دارید؟
-                    <div class="options-container">
-                        <button class="opt-btn" onclick="addMessage('متوجه شدم، ممنون.','user');setTimeout(()=>addMessage('عالیه! موفق باشید.','bot'),500)"><i class="fas fa-check"></i> متوجه شدم</button>
-                        <button class="opt-btn" style="border-color:#ef4444;color:#ef4444;" onclick="connectToAdmin()"><i class="fas fa-headset"></i> اتصال به پشتیبان انسانی (مدیر)</button>
-                    </div>`;
+                // ۴. موضوع کوانتیفیکیشن
+                else if (q.includes('کوانتیفیکیشن') || q.includes('ربات') || q.includes('سود') || q.includes('quantification')) {
+                    reply = `سیستم <strong>کوانتیفیکیشن (Quantification)</strong> قلب تپنده پلتفرم Zenix است:<br>این بخش با استفاده از الگوریتم‌های هوش مصنوعی، نوسانات بازار رمزارزها را آنالیز کرده و به صورت خودکار فرآیندهای معاملاتی را انجام می‌دهد تا سود روزانه به موجودی حساب شما افزوده شود.`;
                 } 
-                else if (q.includes('تیم') || q.includes('زیرمجموعه') || q.includes('رفرال') || q.includes('دستمزد')) {
+                // ۵. موضوع تیم و زیرمجموعه
+                else if (q.includes('تیم') || q.includes('زیرمجموعه') || q.includes('رفرال')) {
                     reply = `سیستم <strong>تیم و زیرمجموعه‌ها</strong>:<br>شما می‌توانید از طریق لینک معرفی خود در بخش تیم، دوستانتان را دعوت کنید و از تراکنش‌ها و فعالیت‌های آن‌ها در چند سطح مختلف پاداش و کمیسیون دائمی دریافت کنید.`;
                 } 
+                // ۶. تشخیص سوالات خارج از پلتفرم
                 else {
-                    // پاسخ هوشمند برای سوالات متفرقه یا خارج از چارچوب پلتفرم
-                    reply = `من به عنوان دستیار هوشمند <strong>Zenix</strong>، فقط مجاز به پاسخگویی به سوالات مرتبط با این پلتفرم مالی (واریز، برداشت، کوانتیفیکیشن و حساب کاربری) هستم.<br>اگر سوال یا مشکل خاصی در این زمینه‌ها دارید که من نتوانستم پاسخ دهم، لطفاً مستقیماً با مدیر گفتگو کنید:
+                    reply = `این سوال <strong>خارج از پلتفرم می‌باشد</strong>.<br>من فقط مجاز به پاسخگویی به سوالات مرتبط با پلتفرم Zenix (واریز، برداشت، کوانتیفیکیشن و حساب کاربری) هستم. اگر سوال دیگری دارید بپرسید یا برای ارتباط با مدیریت روی دکمه زیر کلیک کنید:
                     <div class="options-container">
                         <button class="opt-btn" style="border-color:#ef4444;color:#ef4444;" onclick="connectToAdmin()"><i class="fas fa-headset"></i> اتصال به پشتیبان انسانی (مدیر)</button>
                     </div>`;
