@@ -10,7 +10,10 @@
         body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}
         header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
         .logo h2{font-size:18px;color:#38bdf8;font-weight:800}
-        .back-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;padding:0 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;color:#38bdf8;text-decoration:none}
+        .header-actions{display:flex;gap:8px;align-items:center}
+        .back-btn, .clear-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;padding:0 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;color:#38bdf8;text-decoration:none}
+        .clear-btn{color:#ef4444;border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.1)}
+        .clear-btn:hover{background:rgba(239,68,68,.2)}
         .c{max-width:700px;width:100%;margin:20px auto;padding:0 12px;flex:1;display:flex;flex-direction:column}
         .chat-box{background:rgba(15,23,42,.85);border:1px solid rgba(255,255,255,.1);border-radius:16px;display:flex;flex-direction:column;height:540px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.8)}
         .chat-header{background:rgba(30,41,59,.9);padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px}
@@ -38,7 +41,10 @@
 <body>
     <header>
         <div class="logo"><h2>ZENIX AI SUPPORT</h2></div>
-        <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-right"></i> بازگشت به داشبورد</a>
+        <div class="header-actions">
+            <button class="clear-btn" onclick="clearChatHistory()" title="پاک کردن حافظه چت"><i class="fas fa-trash-alt"></i> پاک کردن چت</button>
+            <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-right"></i> بازگشت</a>
+        </div>
     </header>
     <div class="c">
         <div class="chat-box">
@@ -50,14 +56,7 @@
                 </div>
             </div>
             <div class="chat-body" id="chat-body">
-                <div class="msg bot">
-                    درود! من دستیار هوشمند پلتفرم **Zenix** هستم. درباره هر بخش از پلتفرم (واریز، برداشت، تغییر رمز، تغییر ایمیل، پروفایل، کوانتیفیکیشن و تیم) سوالی دارید بپرسید.<br>امروز چطور می‌توانم کمکتان کنم؟
-                    <div class="options-container">
-                        <button class="opt-btn" onclick="sendQuickQuery('چطور رمز عبور یا جمیل حسابم رو تغییر بدم؟')"><i class="fas fa-user-cog"></i> تغییر رمز و ایمیل حساب</button>
-                        <button class="opt-btn" onclick="sendQuickQuery('مراحل واریز وجه و شارژ حساب چطور است؟')"><i class="fas fa-wallet"></i> واریز وجه و شارژ حساب</button>
-                        <button class="opt-btn" onclick="sendQuickQuery('چگونه سود کوانتیفیکیشن فعال می‌شود؟')"><i class="fas fa-robot"></i> نحوه کارکرد کوانتیفیکیشن</button>
-                    </div>
-                </div>
+                <!-- پیام‌ها به صورت پویا از حافظه یا پیش‌فرض لود می‌شوند -->
             </div>
             <div class="chat-footer">
                 <input type="text" class="chat-input" id="user-input" placeholder="سوال خود را درباره پلتفرم بنویسید...">
@@ -72,12 +71,55 @@
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-msg-btn');
 
-        function addMessage(text, sender) {
+        // بارگذاری تاریخچه از حافظه مرورگر هنگام باز شدن صفحه
+        window.addEventListener('DOMContentLoaded', () => {
+            loadChatHistory();
+        });
+
+        function saveMessageToStorage(text, sender) {
+            let history = JSON.parse(localStorage.getItem('zenix_chat_history')) || [];
+            history.push({ text, sender });
+            localStorage.setItem('zenix_chat_history', JSON.stringify(history));
+        }
+
+        function loadChatHistory() {
+            let history = JSON.parse(localStorage.getItem('zenix_chat_history')) || [];
+            if (history.length === 0) {
+                // اگر حافظه خالی بود، پیام خوشامدگویی اولیه را نشان بده و ذخیره کن
+                const initialMsg = `درود! من دستیار هوشمند پلتفرم **Zenix** هستم. درباره هر بخش از پلتفرم (واریز، برداشت، تغییر رمز، تغییر ایمیل، پروفایل، کوانتیفیکیشن و تیم) سوالی دارید بپرسید.<br>امروز چطور می‌توانم کمکتان کنم?
+                <div class="options-container">
+                    <button class="opt-btn" onclick="sendQuickQuery('چطور رمز عبور یا جمیل حسابم رو تغییر بدم؟')"><i class="fas fa-user-cog"></i> تغییر رمز و ایمیل حساب</button>
+                    <button class="opt-btn" onclick="sendQuickQuery('مراحل واریز وجه و شارژ حساب چطور است؟')"><i class="fas fa-wallet"></i> واریز وجه و شارژ حساب</button>
+                    <button class="opt-btn" onclick="sendQuickQuery('چگونه سود کوانتیفیکیشن فعال می‌شود؟')"><i class="fas fa-robot"></i> نحوه کارکرد کوانتیفیکیشن</button>
+                </div>`;
+                addMessage(initialMsg, 'bot', false);
+            } else {
+                // نمایش تمام پیام‌های ذخیره شده قبلی
+                chatBody.innerHTML = '';
+                history.forEach(item => {
+                    addMessage(item.text, item.sender, false);
+                });
+            }
+        }
+
+        function clearChatHistory() {
+            if(confirm('آیا مطمئن هستید که می‌خواهید تاریخچه چت را پاک کنید؟')) {
+                localStorage.removeItem('zenix_chat_history');
+                chatBody.innerHTML = '';
+                loadChatHistory();
+            }
+        }
+
+        function addMessage(text, sender, save = true) {
             const div = document.createElement('div');
             div.className = `msg ${sender}`;
             div.innerHTML = text;
             chatBody.appendChild(div);
             chatBody.scrollTop = chatBody.scrollHeight;
+
+            if (save) {
+                saveMessageToStorage(text, sender);
+            }
         }
 
         function showTypingIndicator() {
@@ -97,41 +139,33 @@
                 let reply = "";
                 const q = question.toLowerCase().trim();
 
-                // بررسی اینکه آیا کاربر فقط سلام کرده است
                 const isOnlyGreeting = (q === 'سلام' || q === 'درود' || q === 'سلام علیکم' || q === 'خسته نباشید' || q === 'شب بخیر' || q === 'روز بخیر');
 
                 if (isOnlyGreeting) {
                     reply = `سلام و درود بر شما! 🌸`;
                 }
-                // بررسی تغییر رمز، پسورد، جمیل یا ایمیل (حتی اگر اولش سلام گفته باشد)
                 else if (q.includes('رمز') || q.includes('پسورد') || q.includes('password') || q.includes('جمیل') || q.includes('ایمیل') || q.includes('email') || q.includes('تعویض')) {
                     reply = `سلام و درود بر شما! 🌸<br>برای <strong>تغییر رمز عبور یا ایمیل (جمیل)</strong> در پلتفرم Zenix:<br>۱. از منوی بالای سایت به بخش <strong>پروفایل</strong> (Profile) بروید.<br>۲. در آنجا می‌توانید اطلاعات حساب کاربری، ایمیل و رمز عبور خود را ویرایش و ذخیره کنید.<br>۳. اگر نیاز به بررسی امنیتی یا تغییرات توسط مدیریت دارید، می‌توانید از دکمه زیر استفاده کنید:<br>
                     <div class="options-container">
                         <button class="opt-btn" style="border-color:#ef4444;color:#ef4444;" onclick="connectToAdmin()"><i class="fas fa-headset"></i> اتصال به پشتیبان انسانی (مدیر)</button>
                     </div>`;
                 }
-                // بررسی واریز و شارژ حساب
                 else if (q.includes('واریز') || q.includes('شارژ') || q.includes('deposit') || q.includes('پول ریختن')) {
                     reply = `سلام و درود بر شما! 🌸<br>برای <strong>واریز وجه و شارژ حساب</strong>:<br>۱. به بخش <strong>واریز</strong> در پنل کاربری مراجعه کنید.<br>۲. آدرس شبکه مد نظر را کپی کرده و تراکنش را انجام دهید.<br>۳. پس از انتقال، هش تراکنش (TxID) را در فرم مربوطه ثبت کنید تا پس از تایید شبکه، موجودی شما شارژ شود.`;
                 } 
-                // بررسی برداشت دارایی
                 else if (q.includes('برداشت') || q.includes('نقد') || q.includes('withdraw') || q.includes('پول برداشت')) {
                     reply = `سلام و درود بر شما! 🌸<br>درباره <strong>برداشت دارایی</strong>:<br>از منوی برداشت می‌توانید درخواست نقد کردن یا انتقال دارایی خود را ثبت کنید. درخواست‌ها جهت امنیت کامل در سیکل‌های مشخص بررسی و به کیف پول شما واریز می‌شوند.`;
                 } 
-                // بررسی کوانتیفیکیشن (معاملات هوشمند)
                 else if (q.includes('کوانتیفیکیشن') || q.includes('ربات') || q.includes('سود') || q.includes('quantification') || q.includes('ترید')) {
                     reply = `سلام و درود بر شما! 🌸<br>بخش <strong>کوانتیفیکیشن (Quantification)</strong>:<br>این بخش ربات هوشمند معاملاتی ماست که با تحلیل نوسانات بازار رمزارزها، سود روزانه را به صورت خودکار به موجودی حساب شما اضافه می‌کند. کافی است وارد این بخش شده و ربات را استارت بزنید.`;
                 } 
-                // بررسی تیم و زیرمجموعه
                 else if (q.includes('تیم') || q.includes('زیرمجموعه') || q.includes('رفرال') || q.includes('دعوت')) {
                     reply = `سلام و درود بر شما! 🌸<br>سیستم <strong>تیم و زیرمجموعه‌ها</strong>:<br>شما می‌توانید لینک دعوت اختصاصی خود را بردارید و دوستانتان را به Zenix دعوت کنید تا از تراکنش‌های آن‌ها در سطوح مختلف پاداش دریافت کنید.`;
                 }
-                // ارتباط با مدیر
                 else if (q.includes('مدیر') || q.includes('اپراتور') || q.includes('پشتیبان') || q.includes('انسان')) {
                     connectToAdmin();
                     return;
                 }
-                // تشخیص سوالات کاملاً خارج از پلتفرم
                 else if (
                     q.includes('هوا') || q.includes('فوتبال') || q.includes('بازی') || q.includes('فیلم') || 
                     q.includes('آشپزی') || q.includes('رئیس جمهور') || q.includes('آمریکا') || q.includes('استقلال') || q.includes('پرسپولیس') ||
@@ -139,7 +173,6 @@
                 ) {
                     reply = `این سوال <strong>خارج از پلتفرم می‌باشد</strong>.<br>من فقط پاسخگوی مسائل و سوالات مربوط به پلتفرم Zenix (مانند واریز، برداشت، پروفایل، رمز عبور، کوانتیفیکیشن و...) هستم.`;
                 }
-                // پاسخ پیش‌فرض برای هرگونه سوال دیگر مربوط به پلتفرم
                 else {
                     reply = `سلام و درود بر شما! 🌸<br>سوال شما مربوط به بخش‌های داخلی پلتفرم Zenix است. سیستم ما برای خدمت‌رسانی به شما آماده است. اگر این پاسخ کامل نبود یا نیاز به بررسی تخصصی‌تر حساب خود دارید، می‌توانید مستقیماً به مدیر متصل شوید:<br>
                     <div class="options-container">
@@ -147,29 +180,30 @@
                     </div>`;
                 }
 
-                addMessage(reply, 'bot');
+                addMessage(reply, 'bot', true);
             }, 1000);
         }
 
         function sendQuickQuery(text) {
-            addMessage(text, 'user');
+            addMessage(text, 'user', true);
             processAIResponse(text);
         }
 
         function connectToAdmin() {
-            addMessage('درخواست اتصال به پشتیبان انسانی...', 'user');
+            const adminMsg = `در حال انتقال به اپراتور...<br>لطفاً روی دکمه زیر کلیک کنید تا مستقیماً با مدیریت گفتگو کنید:
+            <div class="options-container">
+                <a href="https://t.me/your_admin_username" target="_blank" class="opt-btn" style="background:#22c55e22;border-color:#22c55e;color:#22c55e;text-decoration:none;justify-content:center;"><i class="fab fa-telegram"></i> ورود به چت مستقیم مدیر (تلگرام)</a>
+            </div>`;
+            addMessage('درخواست اتصال به پشتیبان انسانی...', 'user', true);
             setTimeout(() => {
-                addMessage(`در حال انتقال به اپراتور...<br>لطفاً روی دکمه زیر کلیک کنید تا مستقیماً با مدیریت گفتگو کنید:
-                <div class="options-container">
-                    <a href="https://t.me/your_admin_username" target="_blank" class="opt-btn" style="background:#22c55e22;border-color:#22c55e;color:#22c55e;text-decoration:none;justify-content:center;"><i class="fab fa-telegram"></i> ورود به چت مستقیم مدیر (تلگرام)</a>
-                </div>`, 'bot');
+                addMessage(adminMsg, 'bot', true);
             }, 800);
         }
 
         sendBtn.onclick = () => {
             const val = userInput.value.trim();
             if(!val) return;
-            addMessage(val, 'user');
+            addMessage(val, 'user', true);
             userInput.value = '';
             processAIResponse(val);
         };
