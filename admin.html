@@ -449,14 +449,23 @@
 
         document.getElementById('f-edit').onsubmit=async e=>{
             e.preventDefault();
-            await updateDoc(doc(db,"users",document.getElementById('e-uid').value),{
-                fullname:document.getElementById('e-name').value,
-                email:document.getElementById('e-email').value,
-                phone:document.getElementById('e-phone').value,
-                balance:parseFloat(document.getElementById('e-bal').value)||0,
-                platformProfit:parseFloat(document.getElementById('e-profit').value)||0
-            });
-            closeModal('m-edit'); loadData();
+            const targetUid = document.getElementById('e-uid').value;
+            console.log("در حال ارسال اطلاعات ویرایش برای کاربر:", targetUid);
+            try {
+                await updateDoc(doc(db,"users",targetUid),{
+                    fullname: document.getElementById('e-name').value,
+                    email: document.getElementById('e-email').value,
+                    phone: document.getElementById('e-phone').value,
+                    balance: parseFloat(document.getElementById('e-bal').value)||0,
+                    platformProfit: parseFloat(document.getElementById('e-profit').value)||0
+                });
+                console.log("با موفقیت در فایربیس آپدیت شد!");
+                closeModal('m-edit'); 
+                loadData();
+            } catch(err) {
+                console.error("خطا در آپدیت فایربیس:", err);
+                alert("خطا در ذخیره اطلاعات: " + err.message);
+            }
         };
 
         ['act','pend','ban'].forEach(k=>{
