@@ -1,701 +1,80 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zenix - Ultra Modern Admin Dashboard</title>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        
-        *{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
-        body{background:#070b19;min-height:100vh;color:#f1f5f9;display:flex;flex-direction:column;font-size:12.5px;background-image:radial-gradient(circle at 15% 15%,rgba(56,189,248,.08) 0,transparent 40%),radial-gradient(circle at 85% 85%,rgba(129,140,248,.08) 0,transparent 40%)}
-        
-        header{background:rgba(11,17,32,.85);border-bottom:1px solid rgba(255,255,255,.06);padding:16px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
-        .logo{display:flex;align-items:center;gap:14px}
-        .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,#38bdf8,#6366f1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;box-shadow:0 0 20px rgba(56,189,248,.3)}
-        .logo h2{font-size:18px;background:linear-gradient(135deg,#38bdf8,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800;letter-spacing:.5px}
-        .admin-badge{background:rgba(56,189,248,.1);color:#38bdf8;font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid rgba(56,189,248,.25);font-weight:600}
-        
-        .btn-logout{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#ef4444;padding:8px 16px;border-radius:10px;font-size:11.5px;cursor:pointer;display:flex;align-items:center;gap:8px;font-weight:700;transition:all .3s}
-        .btn-logout:hover{background:rgba(239,68,68,.2);box-shadow:0 0 15px rgba(239,68,68,.2);transform:translateY(-1px)}
-
-        .c{max-width:1500px;width:100%;margin:28px auto;padding:0 24px;flex:1}
-        
-        /* Stats Grid */
-        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-bottom:28px}
-        .stat-card{background:linear-gradient(135deg,rgba(15,23,42,.7),rgba(30,41,59,.4));border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:20px;display:flex;align-items:center;gap:18px;box-shadow:0 10px 30px rgba(0,0,0,.3);transition:all .35s;backdrop-filter:blur(10px)}
-        .stat-card:hover{border-color:rgba(56,189,248,.3);transform:translateY(-3px);box-shadow:0 15px 35px rgba(56,189,248,.1)}
-        .stat-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 8px 20px rgba(0,0,0,.3)}
-        .stat-info span{font-size:11px;color:#94a3b8;display:block;margin-bottom:6px;font-weight:600;letter-spacing:.3px}
-        .stat-info h3{font-size:22px;font-weight:800;color:#fff}
-
-        /* Tabs */
-        .admin-tabs{display:flex;gap:10px;margin-bottom:28px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:14px;flex-wrap:wrap}
-        .tab-btn{background:rgba(15,23,42,.5);border:1px solid rgba(255,255,255,.06);color:#94a3b8;padding:11px 18px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:9px;transition:all .3s}
-        .tab-btn:hover{background:rgba(56,189,248,.06);color:#38bdf8}
-        .tab-btn.active{background:linear-gradient(135deg,rgba(56,189,248,.15),rgba(99,102,241,.15));border-color:rgba(56,189,248,.4);color:#38bdf8;box-shadow:0 8px 25px rgba(56,189,248,.15)}
-        .tab-badge{background:#ef4444;color:#fff;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:800}
-        .tab-badge.zero{background:rgba(255,255,255,.06);color:#94a3b8}
-
-        .tab-content{display:none}
-        .tab-content.active{display:block}
-
-        /* Panel Box & Tables */
-        .panel-box{background:linear-gradient(135deg,rgba(15,23,42,.75),rgba(11,17,32,.85));border:1px solid rgba(255,255,255,.06);border-radius:22px;padding:26px;box-shadow:0 15px 45px rgba(0,0,0,.6);margin-bottom:28px;backdrop-filter:blur(15px)}
-        .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:16px}
-        .panel-title{font-size:16px;color:#38bdf8;font-weight:800;display:flex;align-items:center;gap:12px}
-        
-        .search-box{position:relative;flex:1;max-width:340px}
-        .search-box input{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:11px 16px 11px 40px;color:#fff;font-size:12px;outline:none;transition:all .3s}
-        .search-box input:focus{border-color:#38bdf8;box-shadow:0 0 15px rgba(56,189,248,.2);background:rgba(255,255,255,.06)}
-        .search-box i{position:absolute;top:13px;left:15px;color:#94a3b8;font-size:13px}
-
-        .table-responsive{width:100%;overflow-x:auto}
-        table{width:100%;border-collapse:collapse;text-align:right;font-size:12px}
-        th,td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);white-space:nowrap}
-        th{color:#94a3b8;font-weight:700;background:rgba(255,255,255,.02);font-size:11.5px;letter-spacing:.5px}
-        td{color:#cbd5e1}
-        tbody tr{transition:all .2s}
-        tbody tr:hover{background:rgba(56,189,248,.03)}
-
-        .badge-id{color:#38bdf8;font-weight:800;font-family:monospace;cursor:pointer;padding:5px 10px;background:rgba(56,189,248,.1);border-radius:8px;border:1px solid rgba(56,189,248,.25);font-size:11.5px;transition:all .2s}
-        .badge-id:hover{background:rgba(56,189,248,.2);box-shadow:0 0 10px rgba(56,189,248,.2)}
-        .ref-tag{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:#c084fc;padding:4px 10px;border-radius:8px;font-size:11px;font-weight:700;font-family:monospace}
-        
-        /* Buttons & Actions */
-        .btn-action{padding:7px 14px;border-radius:9px;cursor:pointer;font-size:11.5px;font-weight:700;border:none;display:inline-flex;align-items:center;gap:7px;transition:all .25s}
-        .btn-action:hover{transform:translateY(-1px);filter:brightness(1.1)}
-        .btn-edit{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#38bdf8}
-        .btn-approve{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#22c55e}
-        .btn-reject{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444}
-        .btn-ban{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.35);color:#f87171}
-        .btn-msg{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);color:#c084fc}
-
-        /* Messaging Form Styling */
-        .msg-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-        @media(max-width:900px){.msg-grid{grid-template-columns:1fr}}
-        .msg-container{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:20px}
-        .form-control{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 16px;color:#fff;font-size:12.5px;outline:none;transition:all .3s}
-        .form-control:focus{border-color:#38bdf8;box-shadow:0 0 15px rgba(56,189,248,.2);background:rgba(255,255,255,.07)}
-        textarea.form-control{resize:vertical;min-height:130px}
-
-        /* Modals */
-        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(2,6,23,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(15px)}
-        .modal.show{display:flex}
-        .modal-content{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(56,189,248,.3);border-radius:24px;width:100%;max-width:460px;padding:28px;max-height:90vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.9)}
-        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;color:#38bdf8;font-weight:800;font-size:15px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:14px}
-        .modal-close{background:rgba(255,255,255,.05);border:none;color:#94a3b8;cursor:pointer;font-size:15px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
-        .modal-close:hover{background:rgba(239,68,68,.2);color:#ef4444}
-        
-        .form-group{margin-bottom:16px}
-        .form-group label{display:block;font-size:11.5px;color:#94a3b8;margin-bottom:8px;font-weight:700}
-        
-        .btn-save{width:100%;background:linear-gradient(135deg,#0284c7,#6366f1);color:#fff;border:none;padding:13px;border-radius:12px;font-weight:800;cursor:pointer;margin-top:16px;font-size:13.5px;box-shadow:0 8px 25px rgba(2,132,199,.3);transition:all .3s}
-        .btn-save:hover{filter:brightness(1.1);transform:translateY(-1px)}
-        
-        .detail-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12.5px}
-        .detail-row span:first-child{color:#94a3b8}
-        .detail-row span:last-child{color:#f1f5f9;font-weight:700}
-        
-        footer{text-align:center;padding:24px;font-size:11.5px;color:#64748b;border-top:1px solid rgba(255,255,255,.04);margin-top:auto}
-    </style>
-</head>
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zenix - Admin Dashboard</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');*{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans',sans-serif}body{background:#070b19;min-height:100vh;color:#f1f5f9;display:flex;flex-direction:column;font-size:12.5px}header{background:rgba(11,17,32,.85);border-bottom:1px solid rgba(255,255,255,.06);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}.logo{display:flex;align-items:center;gap:12px}.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#38bdf8,#6366f1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}.logo h2{font-size:17px;background:linear-gradient(135deg,#38bdf8,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800}.admin-badge{background:rgba(56,189,248,.1);color:#38bdf8;font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid rgba(56,189,248,.25);font-weight:600}.btn-logout{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:#ef4444;padding:7px 14px;border-radius:10px;font-size:11.5px;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:700}.c{max-width:1500px;width:100%;margin:24px auto;padding:0 20px;flex:1}.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px}.stat-card{background:linear-gradient(135deg,rgba(15,23,42,.7),rgba(30,41,59,.4));border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:18px;display:flex;align-items:center;gap:16px}.stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}.stat-info span{font-size:11px;color:#94a3b8;display:block;margin-bottom:4px;font-weight:600}.stat-info h3{font-size:20px;font-weight:800;color:#fff}.admin-tabs{display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:12px;flex-wrap:wrap}.tab-btn{background:rgba(15,23,42,.5);border:1px solid rgba(255,255,255,.06);color:#94a3b8;padding:10px 16px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.2s}.tab-btn:hover{color:#38bdf8}.tab-btn.active{background:linear-gradient(135deg,rgba(56,189,248,.15),rgba(99,102,241,.15));border-color:rgba(56,189,248,.4);color:#38bdf8}.tab-badge{background:rgba(56,189,248,.2);color:#38bdf8;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:800;border:1px solid rgba(56,189,248,.3)}.tab-badge.zero{background:rgba(255,255,255,.06);color:#94a3b8;border:none}.tab-badge.alert{background:#ef4444;color:#fff;border:none}.tab-content{display:none}.tab-content.active{display:block}.panel-box{background:linear-gradient(135deg,rgba(15,23,42,.75),rgba(11,17,32,.85));border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:22px;box-shadow:0 15px 40px rgba(0,0,0,.6);margin-bottom:24px}.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:14px}.panel-title{font-size:15px;color:#38bdf8;font-weight:800;display:flex;align-items:center;gap:10px}.search-box{position:relative;flex:1;max-width:320px}.search-box input{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 14px 10px 36px;color:#fff;font-size:12px;outline:none}.search-box input:focus{border-color:#38bdf8}.search-box i{position:absolute;top:12px;left:14px;color:#94a3b8;font-size:12px}.table-responsive{width:100%;overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:right;font-size:12px}th,td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);white-space:nowrap}th{color:#94a3b8;font-weight:700;background:rgba(255,255,255,.02);font-size:11px}td{color:#cbd5e1}tbody tr:hover{background:rgba(56,189,248,.03)}.badge-id{color:#38bdf8;font-weight:800;font-family:monospace;cursor:pointer;padding:4px 8px;background:rgba(56,189,248,.1);border-radius:6px;border:1px solid rgba(56,189,248,.25);font-size:11px}.ref-tag{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);color:#c084fc;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;font-family:monospace}.btn-action{padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700;border:none;display:inline-flex;align-items:center;gap:6px;transition:.2s}.btn-action:hover{filter:brightness(1.1)}.btn-edit{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);color:#38bdf8}.btn-approve{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#22c55e}.btn-reject{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444}.btn-ban{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.35);color:#f87171}.btn-msg{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);color:#c084fc}.msg-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}@media(max-width:900px){.msg-grid{grid-template-columns:1fr}}.msg-container{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px}.form-control{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px;color:#fff;font-size:12px;outline:none}.form-control:focus{border-color:#38bdf8}textarea.form-control{resize:vertical;min-height:120px}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(2,6,23,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(10px)}.modal.show{display:flex}.modal-content{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(56,189,248,.3);border-radius:20px;width:100%;max-width:440px;padding:24px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.9)}.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;color:#38bdf8;font-weight:800;font-size:14px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:12px}.modal-close{background:rgba(255,255,255,.05);border:none;color:#94a3b8;cursor:pointer;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center}.modal-close:hover{background:rgba(239,68,68,.2);color:#ef4444}.form-group{margin-bottom:14px}.form-group label{display:block;font-size:11px;color:#94a3b8;margin-bottom:6px;font-weight:700}.btn-save{width:100%;background:linear-gradient(135deg,#0284c7,#6366f1);color:#fff;border:none;padding:11px;border-radius:10px;font-weight:800;cursor:pointer;margin-top:14px;font-size:13px}.detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px}.detail-row span:first-child{color:#94a3b8}.detail-row span:last-child{color:#f1f5f9;font-weight:700}footer{text-align:center;padding:20px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.04);margin-top:auto}</style></head>
 <body>
-    <header>
-        <div class="logo">
-            <div class="logo-icon"><i class="fas fa-shield-halved"></i></div>
-            <div>
-                <h2>ZENIX ADMIN</h2>
-                <span style="font-size:10px;color:#94a3b8">Next-Gen Control Panel</span>
-            </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px">
-            <span class="admin-badge"><i class="fas fa-user-shield"></i> مدیر کل</span>
-            <button class="btn-logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> خروج</button>
-        </div>
-    </header>
-
-    <div class="c">
-        <!-- Stats KPIs -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon" style="background:rgba(56,189,248,.15);color:#38bdf8"><i class="fas fa-users"></i></div>
-                <div class="stat-info"><span>کل کاربران سیستم</span><h3 id="st-users">0</h3></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-wallet"></i></div>
-                <div class="stat-info"><span>موجودی کل دارایی</span><h3 id="st-bal">$0.00</h3></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background:rgba(245,158,11,.15);color:#f59e0b"><i class="fas fa-clock"></i></div>
-                <div class="stat-info"><span>درخواست‌های احراز</span><h3 id="st-req">0</h3></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon" style="background:rgba(239,68,68,.15);color:#ef4444"><i class="fas fa-money-bill-transfer"></i></div>
-                <div class="stat-info"><span>برداشت‌های معلق</span><h3 id="st-w-req">0</h3></div>
-            </div>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <div class="admin-tabs">
-            <button class="tab-btn active" onclick="switchTab('t-verified', this)"><i class="fas fa-user-check"></i> تاییدشده (دارای واریز)</button>
-            <button class="tab-btn" onclick="switchTab('t-unverified', this)"><i class="fas fa-user-times"></i> تاییدنشده / بدون واریز</button>
-            <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> غیرفعال / مسدود</button>
-            <button class="tab-btn" onclick="switchTab('t-withdraw', this)"><i class="fas fa-money-bill-transfer"></i> برداشت‌ها <span class="tab-badge zero" id="w-badge">0</span></button>
-            <button class="tab-btn" onclick="switchTab('t-messaging', this)"><i class="fas fa-paper-plane"></i> ارسال پیام به کاربران</button>
-            <button class="tab-btn" onclick="switchTab('t-reqs', this)"><i class="fas fa-bell"></i> درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
-        </div>
-
-        <!-- Tab 1: Verified Users -->
-        <div id="t-verified" class="tab-content active">
-            <div class="panel-box">
-                <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-check" style="color:#22c55e"></i> کاربران تاییدشده پلتفرم</div>
-                    <div class="search-box"><input type="text" id="s-ver" placeholder="جستجو نام، ایمیل، شناسه..."><i class="fas fa-search"></i></div>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>شناسه</th>
-                                <th>نام و نام خانوادگی</th>
-                                <th>ایمیل</th>
-                                <th>تلفن</th>
-                                <th>معرف</th>
-                                <th>موجودی ($)</th>
-                                <th>سود از پلتفرم</th>
-                                <th>تاریخ ثبت‌نام</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tb-ver"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 2: Unverified Users -->
-        <div id="t-unverified" class="tab-content">
-            <div class="panel-box">
-                <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-times" style="color:#f59e0b"></i> کاربران تاییدنشده (بدون واریز)</div>
-                    <div class="search-box"><input type="text" id="s-unver" placeholder="جستجو..."><i class="fas fa-search"></i></div>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>شناسه</th>
-                                <th>نام و نام خانوادگی</th>
-                                <th>ایمیل</th>
-                                <th>تلفن</th>
-                                <th>معرف</th>
-                                <th>موجودی ($)</th>
-                                <th>تاریخ ثبت‌نام</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tb-unver"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 3: Banned Users -->
-        <div id="t-banned" class="tab-content">
-            <div class="panel-box">
-                <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-slash" style="color:#ef4444"></i> حساب‌های غیرفعال یا مسدود</div>
-                    <div class="search-box"><input type="text" id="s-ban" placeholder="جستجو..."><i class="fas fa-search"></i></div>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>شناسه</th>
-                                <th>نام و نام خانوادگی</th>
-                                <th>ایمیل</th>
-                                <th>تلفن</th>
-                                <th>معرف</th>
-                                <th>موجودی</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tb-ban"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 4: Withdrawals -->
-        <div id="t-withdraw" class="tab-content">
-            <div class="panel-box">
-                <div class="panel-header"><div class="panel-title"><i class="fas fa-wallet"></i> مدیریت درخواست‌های برداشت وجه</div></div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>شناسه کاربر</th>
-                                <th>نام کاربر</th>
-                                <th>مبلغ ($)</th>
-                                <th>آدرس کیف پول</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tb-withdraw"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 5: Messaging Hub (New Feature) -->
-        <div id="t-messaging" class="tab-content">
-            <div class="panel-box">
-                <div class="panel-header"><div class="panel-title"><i class="fas fa-paper-plane" style="color:#c084fc"></i> ارسال پیام اطلاع‌رسانی به کاربران</div></div>
-                <div class="msg-grid">
-                    <div class="msg-container">
-                        <h4 style="font-size:14px;color:#38bdf8;margin-bottom:14px"><i class="fas fa-users-gear"></i> ارسال گروهی (مجموعه‌ای)</h4>
-                        <form id="form-bulk-msg">
-                            <div class="form-group">
-                                <label>انتخاب گروه مخاطبان</label>
-                                <select id="bulk-target" class="form-control">
-                                    <option value="all">همه کاربران پلتفرم</option>
-                                    <option value="verified">فقط کاربران تاییدشده</option>
-                                    <option value="unverified">فقط کاربران تاییدنشده</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>موضوع پیام</label>
-                                <input type="text" id="bulk-subject" class="form-control" placeholder="مثلاً: اطلاعیه مهم پلتفرم Zenix">
-                            </div>
-                            <div class="form-group">
-                                <label>متن پیام</label>
-                                <textarea id="bulk-text" class="form-control" placeholder="متن پیام خود را اینجا بنویسید..."></textarea>
-                            </div>
-                            <button type="submit" class="btn-save"><i class="fas fa-paper-plane"></i> ارسال به گروه انتخاب شده</button>
-                        </form>
-                    </div>
-
-                    <div class="msg-container">
-                        <h4 style="font-size:14px;color:#c084fc;margin-bottom:14px"><i class="fas fa-user"></i> ارسال تکی (به یک کاربر خاص)</h4>
-                        <form id="form-single-msg">
-                            <div class="form-group">
-                                <label>انتخاب کاربر</label>
-                                <select id="single-user-select" class="form-control">
-                                    <option value="">در حال بارگذاری کاربران...</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>موضوع پیام</label>
-                                <input type="text" id="single-subject" class="form-control" placeholder="مثلاً: وضعیت حساب کاربری">
-                            </div>
-                            <div class="form-group">
-                                <label>متن پیام</label>
-                                <textarea id="single-text" class="form-control" placeholder="متن پیام خصوصی برای این کاربر..."></textarea>
-                            </div>
-                            <button type="submit" class="btn-save" style="background:linear-gradient(135deg,#a855f7,#6366f1);box-shadow:0 8px 25px rgba(168,85,247,.3)"><i class="fas fa-envelope"></i> ارسال پیام تکی</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 6: Requests -->
-        <div id="t-reqs" class="tab-content">
-            <div class="panel-box">
-                <div class="panel-header"><div class="panel-title"><i class="fas fa-inbox"></i> صندوق درخواست‌ها</div></div>
-                <div id="req-container"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modals -->
-    <div class="modal" id="m-details">
-        <div class="modal-content">
-            <div class="modal-header"><span>اطلاعات کامل کاربر</span><button class="modal-close" onclick="closeModal('m-details')"><i class="fas fa-times"></i></button></div>
-            <div id="user-details-body"></div>
-            <div id="modal-action-btn" style="margin-top:18px"></div>
-        </div>
-    </div>
-
-    <div class="modal" id="m-edit">
-        <div class="modal-content">
-            <div class="modal-header"><span>ویرایش مشخصات کاربر</span><button class="modal-close" onclick="closeModal('m-edit')"><i class="fas fa-times"></i></button></div>
-            <form id="f-edit">
-                <input type="hidden" id="e-uid">
-                <div class="form-group"><label>نام و نام خانوادگی</label><input type="text" id="e-name" class="form-control"></div>
-                <div class="form-group"><label>ایمیل</label><input type="text" id="e-email" class="form-control"></div>
-                <div class="form-group"><label>تلفن</label><input type="text" id="e-phone" class="form-control"></div>
-                <div class="form-group"><label>موجودی حساب ($)</label><input type="number" step="any" id="e-bal" class="form-control"></div>
-                <div class="form-group"><label>سود از پلتفرم ($)</label><input type="number" step="any" id="e-profit" class="form-control"></div>
-                <button type="submit" class="btn-save">ذخیره تغییرات</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal for sending quick message from user row -->
-    <div class="modal" id="m-quick-msg">
-        <div class="modal-content">
-            <div class="modal-header"><span>ارسال پیام به کاربر</span><button class="modal-close" onclick="closeModal('m-quick-msg')"><i class="fas fa-times"></i></button></div>
-            <form id="f-quick-msg">
-                <input type="hidden" id="qm-uid">
-                <div class="form-group"><label>موضوع</label><input type="text" id="qm-sub" class="form-control" placeholder="موضوع پیام..."></div>
-                <div class="form-group"><label>متن پیام</label><textarea id="qm-text" class="form-control" placeholder="پیام خود را بنویسید..."></textarea></div>
-                <button type="submit" class="btn-save">ارسال پیام</button>
-            </form>
-        </div>
-    </div>
-
-    <footer><p>&copy; 2026 Zenix Platform - Enterprise Admin Dashboard</p></footer>
-
-    <script type="module">
-        import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import{getFirestore,collection,getDocs,doc,updateDoc,addTimestamp,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        
-        const db=getFirestore(initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"}));
-        const auth=getAuth();
-        let uMap={},codeToNameMap={};
-
-        window.switchTab=(id,btn)=>{
-            document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            btn.classList.add('active');
-        };
-
-        window.closeModal=id=>document.getElementById(id).classList.remove('show');
-        
-        const getName=u=>u.fullname||u.fullName||u.name||(u.firstName?`${u.firstName} ${u.lastName||''}`:null)||u.email?.split('@')[0]||'کاربر بدون نام';
-        
-        const formatDate=ts=>{
-            if(!ts)return 'نامشخص';
-            let d;
-            if(typeof ts.toDate==='function'){
-                d=ts.toDate();
-            } else if(typeof ts==='string'){
-                let cleanStr = ts.replace(/at\s.*UTC.*/i, '').trim();
-                d=new Date(cleanStr);
-                if(isNaN(d.getTime())) d=new Date(ts);
-            } else {
-                d=new Date(ts);
-            }
-            return isNaN(d.getTime())?'نامشخص':`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} | ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-        };
-
-        async function loadData(){
-            try {
-                const snap=await getDocs(collection(db,"users"));
-                let tbVer=document.getElementById('tb-ver'), tbUnver=document.getElementById('tb-unver'), tbBan=document.getElementById('tb-ban'), tbW=document.getElementById('tb-withdraw');
-                let singleSelect=document.getElementById('single-user-select');
-                
-                tbVer.innerHTML=""; tbUnver.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML="";
-                singleSelect.innerHTML='<option value="">-- انتخاب کاربر --</option>';
-                
-                uMap={}; codeToNameMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[], withdrawList=[];
-                let cVer=0, cUnver=0, cBan=0;
-
-                snap.forEach(d=>{
-                    let u=d.data(), uid=d.id;
-                    if(u.referralCode){
-                        codeToNameMap[u.referralCode] = getName(u);
-                    }
-                });
-
-                snap.forEach(d=>{
-                    let u=d.data(), uid=d.id; uMap[uid]=u; totU++; totB+=Number(u.balance||0);
-                    let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
-                    let nameStr=getName(u);
-                    let emailStr=u.email||'-';
-                    let phoneStr=u.phone||'-';
-                    let regStr=formatDate(u.createdAt);
-
-                    // پر کردن لیست دراپ‌داون پیام تکی
-                    singleSelect.innerHTML+=`<option value="${uid}">${nameStr} (${emailStr})</option>`;
-
-                    let refCode = u.referredBy || u.refCode || '-';
-                    let referrerName = (refCode !== '-' && codeToNameMap[refCode]) ? `${codeToNameMap[refCode]} (${refCode})` : refCode;
-
-                    let search=`${idCode} ${nameStr} ${emailStr} ${phoneStr} ${refCode} ${regStr}`.toLowerCase();
-                    
-                    let isBanned=(u.status==='cancelled'||u.status==='banned'||u.status==='inactive'||u.isBanned===true||u.active===false);
-                    let balance = Number(u.balance || 0);
-                    let isVerified = (u.adminApprovalStatus === 'approved' || balance > 0 || u.isVerified === true);
-
-                    if(u.pendingWithdrawal && u.pendingWithdrawal.status === 'pending'){
-                        totW++;
-                        withdrawList.push({ uid, u, idCode, nameStr, data: u.pendingWithdrawal });
-                    }
-
-                    let balStr = `$${balance.toLocaleString()}`;
-                    let profitStr = `$${Number(u.platformProfit || u.profit || 0).toLocaleString()}`;
-                    let refBadgeHtml = refCode !== '-' ? `<span class="ref-tag">${referrerName}</span>` : `<span style="color:#64748b">بدون معرف</span>`;
-
-                    if(isBanned){
-                        cBan++;
-                        tbBan.innerHTML+=`<tr data-s="${search}">
-                            <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
-                            <td><b>${nameStr}</b></td>
-                            <td>${emailStr}</td>
-                            <td dir="ltr" style="text-align:right">${phoneStr}</td>
-                            <td>${refBadgeHtml}</td>
-                            <td style="color:#ef4444">${balStr}</td>
-                            <td>
-                                <button class="btn-action btn-approve" onclick="toggleBan('${uid}',false)"><i class="fas fa-undo"></i> فعال‌سازی</button>
-                                <button class="btn-action btn-msg" onclick="openQuickMsg('${uid}')"><i class="fas fa-envelope"></i></button>
-                            </td>
-                        </tr>`;
-                    } else if(isVerified){
-                        cVer++;
-                        tbVer.innerHTML+=`<tr data-s="${search}">
-                            <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
-                            <td><b>${nameStr}</b></td>
-                            <td>${emailStr}</td>
-                            <td dir="ltr" style="text-align:right">${phoneStr}</td>
-                            <td>${refBadgeHtml}</td>
-                            <td style="color:#22c55e;font-weight:bold">${balStr}</td>
-                            <td style="color:#38bdf8;font-weight:bold">${profitStr}</td>
-                            <td>${regStr}</td>
-                            <td>
-                                <button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-user-slash"></i> غیرفعال</button>
-                                <button class="btn-action btn-msg" onclick="openQuickMsg('${uid}')"><i class="fas fa-envelope"></i></button>
-                            </td>
-                        </tr>`;
-                    } else {
-                        cUnver++;
-                        tbUnver.innerHTML+=`<tr data-s="${search}">
-                            <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
-                            <td><b>${nameStr}</b></td>
-                            <td>${emailStr}</td>
-                            <td dir="ltr" style="text-align:right">${phoneStr}</td>
-                            <td>${refBadgeHtml}</td>
-                            <td style="color:#94a3b8">${balStr}</td>
-                            <td>${regStr}</td>
-                            <td>
-                                <button class="btn-action btn-approve" onclick="verifyUser('${uid}')"><i class="fas fa-check"></i> تایید</button>
-                                <button class="btn-action btn-msg" onclick="openQuickMsg('${uid}')"><i class="fas fa-envelope"></i></button>
-                            </td>
-                        </tr>`;
-                    }
-                });
-
-                document.getElementById('st-users').innerText=totU;
-                document.getElementById('st-bal').innerText='$'+totB.toLocaleString('en-US',{minimumFractionDigits:2});
-                document.getElementById('st-req').innerText=totR;
-                document.getElementById('st-w-req').innerText=totW;
-                
-                let badge=document.getElementById('req-badge');
-                badge.innerText=totR; badge.className=totR>0?'tab-badge':'tab-badge zero';
-
-                let wBadge=document.getElementById('w-badge');
-                wBadge.innerText=totW; wBadge.className=totW>0?'tab-badge':'tab-badge zero';
-
-                if(cVer===0) tbVer.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:30px;color:#94a3b8">هیچ کاربر تاییدشده‌ای یافت نشد</td></tr>`;
-                if(cUnver===0) tbUnver.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:30px;color:#94a3b8">هیچ کاربر تاییدنشده‌ای وجود ندارد</td></tr>`;
-                if(cBan===0) tbBan.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:30px;color:#94a3b8">هیچ حساب مسدودی وجود ندارد</td></tr>`;
-
-                renderWithdrawals(withdrawList);
-                renderReqs(reqList);
-            } catch(err) {
-                console.error("Error loading users:", err);
-            }
-        }
-
-        window.verifyUser=async(uid)=>{
-            if(!confirm('تایید این کاربر و اعطای دسترسی کامل؟')) return;
-            await updateDoc(doc(db,"users",uid),{ adminApprovalStatus: "approved", isVerified: true });
-            loadData();
-        };
-
-        window.openDetails=uid=>{
-            let u=uMap[uid], idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
-            let regDate=formatDate(u.createdAt);
-            let refCode = u.referredBy || u.refCode || 'ندارد';
-            let referrerDisplay = (refCode !== 'ندارد' && codeToNameMap[refCode]) ? `${codeToNameMap[refCode]} (${refCode})` : refCode;
-
-            document.getElementById('user-details-body').innerHTML=`
-                <div class="detail-row"><span>شناسه:</span><span>${idCode}</span></div>
-                <div class="detail-row"><span>نام و نام خانوادگی:</span><span>${getName(u)}</span></div>
-                <div class="detail-row"><span>ایمیل:</span><span>${u.email||'-'}</span></div>
-                <div class="detail-row"><span>تلفن:</span><span dir="ltr">${u.phone||'-'}</span></div>
-                <div class="detail-row"><span>معرف:</span><span style="color:#c084fc">${referrerDisplay}</span></div>
-                <div class="detail-row"><span>موجودی:</span><span style="color:#22c55e">$${Number(u.balance||0).toLocaleString()}</span></div>
-                <div class="detail-row"><span>وضعیت:</span><span>${u.adminApprovalStatus||'معلق'}</span></div>
-                <div class="detail-row"><span>تاریخ ثبت‌نام:</span><span>${regDate}</span></div>
-            `;
-            document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:12px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات</button>`;
-            document.getElementById('m-details').classList.add('show');
-        };
-
-        window.openQuickMsg=uid=>{
-            document.getElementById('qm-uid').value=uid;
-            document.getElementById('qm-sub').value='';
-            document.getElementById('qm-text').value='';
-            document.getElementById('m-quick-msg').classList.add('show');
-        };
-
-        document.getElementById('f-quick-msg').onsubmit=async e=>{
-            e.preventDefault();
-            let uid = document.getElementById('qm-uid').value;
-            let sub = document.getElementById('qm-sub').value;
-            let txt = document.getElementById('qm-text').value;
-            if(!txt) { alert('متن پیام الزامی است'); return; }
-            
-            try {
-                await updateDoc(doc(db,"users",uid),{
-                    adminMessage: { subject: sub, body: txt, time: new Date().toISOString(), read: false }
-                });
-                alert('پیام با موفقیت برای کاربر ارسال شد.');
-                closeModal('m-quick-msg');
-            } catch(err) {
-                alert('خطا در ارسال پیام: ' + err.message);
-            }
-        };
-
-        // ارسال پیام گروهی
-        document.getElementById('form-bulk-msg').onsubmit=async e=>{
-            e.preventDefault();
-            let target = document.getElementById('bulk-target').value;
-            let sub = document.getElementById('bulk-subject').value;
-            let txt = document.getElementById('bulk-text').value;
-            if(!txt) { alert('متن پیام الزامی است'); return; }
-            if(!confirm('آیا از ارسال این پیام برای گروه انتخاب شده اطمینان دارید؟')) return;
-
-            try {
-                let count = 0;
-                for(let uid in uMap){
-                    let u = uMap[uid];
-                    let balance = Number(u.balance || 0);
-                    let isVerified = (u.adminApprovalStatus === 'approved' || balance > 0 || u.isVerified === true);
-
-                    if(target === 'all' || (target === 'verified' && isVerified) || (target === 'unverified' && !isVerified)){
-                        await updateDoc(doc(db,"users",uid),{
-                            adminMessage: { subject: sub, body: txt, time: new Date().toISOString(), read: false }
-                        });
-                        count++;
-                    }
-                }
-                alert(`پیام با موفقیت به ${count} کاربر ارسال شد.`);
-                document.getElementById('bulk-subject').value='';
-                document.getElementById('bulk-text').value='';
-            } catch(err) {
-                alert('خطا در ارسال گروهی: ' + err.message);
-            }
-        };
-
-        // ارسال پیام تکی از تب پیام‌ها
-        document.getElementById('form-single-msg').onsubmit=async e=>{
-            e.preventDefault();
-            let uid = document.getElementById('single-user-select').value;
-            let sub = document.getElementById('single-subject').value;
-            let txt = document.getElementById('single-text').value;
-            if(!uid) { alert('لطفاً یک کاربر را انتخاب کنید'); return; }
-            if(!txt) { alert('متن پیام الزامی است'); return; }
-
-            try {
-                await updateDoc(doc(db,"users",uid),{
-                    adminMessage: { subject: sub, body: txt, time: new Date().toISOString(), read: false }
-                });
-                alert('پیام خصوصی با موفقیت ارسال شد.');
-                document.getElementById('single-subject').value='';
-                document.getElementById('single-text').value='';
-            } catch(err) {
-                alert('خطا در ارسال پیام: ' + err.message);
-            }
-        };
-
-        function renderWithdrawals(list){
-            let box=document.getElementById('tb-withdraw');
-            if(list.length===0){box.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:30px;color:#94a3b8">هیچ درخواست برداشتی وجود ندارد.</td></tr>`;return;}
-            let html='';
-            list.forEach(i=>{
-                let amt = Number(i.data.amount||0);
-                html+=`<tr>
-                    <td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td>
-                    <td><b>${i.nameStr}</b></td>
-                    <td style="color:#22c55e;font-weight:bold">$${amt.toLocaleString()}</td>
-                    <td dir="ltr">${i.data.address||i.data.wallet||'-'}</td>
-                    <td>
-                        <button class="btn-action btn-approve" onclick="handleWithdraw('${i.uid}', true, ${amt})"><i class="fas fa-check"></i> تایید</button>
-                        <button class="btn-action btn-reject" onclick="handleWithdraw('${i.uid}', false, ${amt})"><i class="fas fa-times"></i> رد</button>
-                    </td>
-                </tr>`;
-            });
-            box.innerHTML=html;
-        }
-
-        window.handleWithdraw=async(uid, approve, amount)=>{
-            let u = uMap[uid];
-            if(approve){
-                if(!confirm(`تایید برداشت به مبلغ $${amount}؟`)) return;
-                await updateDoc(doc(db,"users",uid), { pendingWithdrawal: null });
-                alert('تایید شد.');
-            } else {
-                if(!confirm(`لغو برداشت و بازگشت مبلغ $${amount} به موجودی؟`)) return;
-                await updateDoc(doc(db,"users",uid), { balance: Number(u.balance || 0) + amount, pendingWithdrawal: null });
-                alert('لغو و مبلغ عودت داده شد.');
-            }
-            loadData();
-        };
-
-        function renderReqs(list){
-            let box=document.getElementById('req-container');
-            if(list.length===0){box.innerHTML=`<div style="text-align:center;padding:30px;color:#94a3b8">هیچ درخواست معلقی وجود ندارد.</div>`;return;}
-            let html=`<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام کاربر</th><th>ایمیل جدید</th><th>تاریخ</th><th>عملیات</th></tr></thead><tbody>`;
-            list.forEach(i=>{
-                let u=i.u, uid=i.uid, idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
-                html+=`<tr><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${getName(u)}</b></td><td style="color:#f59e0b">${u.pendingEmail||u.newEmail||'-'}</td><td>${formatDate(u.createdAt)}</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button></td></tr>`;
-            });
-            box.innerHTML=html+`</tbody></table></div>`;
-        }
-
-        window.toggleBan=async(uid,ban)=>{
-            if(!confirm(ban?'غیرفعال‌سازی این حساب؟':'فعال‌سازی مجدد حساب؟'))return;
-            await updateDoc(doc(db,"users",uid),{status:ban?"cancelled":"active",isBanned:ban});
-            loadData();
-        };
-
-        window.appEm=async(uid,email)=>{await updateDoc(doc(db,"users",uid),{email,pendingEmail:"",newEmail:"",selfieImage:"",adminApprovalStatus:"approved"});loadData();};
-        window.rejEm=async(uid)=>{await updateDoc(doc(db,"users",uid),{adminApprovalStatus:"rejected"});loadData();};
-
-        window.openE=uid=>{
-            let u=uMap[uid];
-            document.getElementById('e-uid').value=uid;
-            document.getElementById('e-name').value=getName(u);
-            document.getElementById('e-email').value=u.email||'';
-            document.getElementById('e-phone').value=u.phone||'';
-            document.getElementById('e-bal').value=u.balance||0;
-            document.getElementById('e-profit').value=u.platformProfit || u.profit || 0;
-            document.getElementById('m-edit').classList.add('show');
-        };
-
-        document.getElementById('f-edit').onsubmit=async e=>{
-            e.preventDefault();
-            const targetUid = document.getElementById('e-uid').value;
-            try {
-                await updateDoc(doc(db,"users",targetUid),{
-                    fullname: document.getElementById('e-name').value,
-                    email: document.getElementById('e-email').value,
-                    phone: document.getElementById('e-phone').value,
-                    balance: parseFloat(document.getElementById('e-bal').value)||0,
-                    platformProfit: parseFloat(document.getElementById('e-profit').value)||0
-                });
-                closeModal('m-edit'); 
-                loadData();
-            } catch(err) {
-                alert("خطا در ذخیره اطلاعات: " + err.message);
-            }
-        };
-
-        ['ver','unver','ban'].forEach(k=>{
-            let inp = document.getElementById(`s-${k}`);
-            if(inp) inp.oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll(`#tb-${k} tr`).forEach(r=>r.style.display=r.dataset.s.includes(q)?'':'none');};
-        });
-
-        onAuthStateChanged(auth,u=>{if(!u)window.location.href='index.html';else loadData();});
-        document.getElementById('logout-btn').onclick=async()=>{await signOut(auth);window.location.href='index.html';};
-    </script>
-</body>
-</html>
+<header>
+<div class="logo"><div class="logo-icon"><i class="fas fa-shield-halved"></i></div><div><h2>ZENIX ADMIN</h2><span style="font-size:9.5px;color:#94a3b8">Control Panel</span></div></div>
+<div style="display:flex;align-items:center;gap:10px"><span class="admin-badge"><i class="fas fa-user-shield"></i> مدیر کل</span><button class="btn-logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+</header>
+<div class="c">
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-icon" style="background:rgba(56,189,248,.15);color:#38bdf8"><i class="fas fa-users"></i></div><div class="stat-info"><span>کل کاربران سیستم</span><h3 id="st-users">0</h3></div></div>
+<div class="stat-card"><div class="stat-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-wallet"></i></div><div class="stat-info"><span>موجودی کل دارایی</span><h3 id="st-bal">$0.00</h3></div></div>
+<div class="stat-card"><div class="stat-icon" style="background:rgba(245,158,11,.15);color:#f59e0b"><i class="fas fa-clock"></i></div><div class="stat-info"><span>درخواست‌های احراز</span><h3 id="st-req">0</h3></div></div>
+<div class="stat-card"><div class="stat-icon" style="background:rgba(239,68,68,.15);color:#ef4444"><i class="fas fa-money-bill-transfer"></i></div><div class="stat-info"><span>برداشت‌های معلق</span><h3 id="st-w-req">0</h3></div></div>
+</div>
+<div class="admin-tabs">
+<button class="tab-btn active" onclick="switchTab('t-verified',this)"><i class="fas fa-user-check"></i> تاییدشده <span class="tab-badge zero" id="badge-ver">0</span></button>
+<button class="tab-btn" onclick="switchTab('t-unverified',this)"><i class="fas fa-user-times"></i> تاییدنشده <span class="tab-badge zero" id="badge-unver">0</span></button>
+<button class="tab-btn" onclick="switchTab('t-banned',this)"><i class="fas fa-user-slash"></i> غیرفعال/مسدود <span class="tab-badge zero" id="badge-ban">0</span></button>
+<button class="tab-btn" onclick="switchTab('t-withdraw',this)"><i class="fas fa-money-bill-transfer"></i> برداشت‌ها <span class="tab-badge zero" id="w-badge">0</span></button>
+<button class="tab-btn" onclick="switchTab('t-messaging',this)"><i class="fas fa-paper-plane"></i> ارسال پیام</button>
+<button class="tab-btn" onclick="switchTab('t-reqs',this)"><i class="fas fa-bell"></i> درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
+</div>
+<div id="t-verified" class="tab-content active"><div class="panel-box"><div class="panel-header"><div class="panel-title"><i class="fas fa-user-check" style="color:#22c55e"></i> کاربران تاییدشده</div><div class="search-box"><input type="text" id="s-ver" placeholder="جستجو..."><i class="fas fa-search"></i></div></div><div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام</th><th>ایمیل</th><th>تلفن</th><th>معرف</th><th>موجودی ($)</th><th>سود</th><th>تاریخ</th><th>عملیات</th></tr></thead><tbody id="tb-ver"></tbody></table></div></div></div>
+<div id="t-unverified" class="tab-content"><div class="panel-box"><div class="panel-header"><div class="panel-title"><i class="fas fa-user-times" style="color:#f59e0b"></i> کاربران تاییدنشده</div><div class="search-box"><input type="text" id="s-unver" placeholder="جستجو..."><i class="fas fa-search"></i></div></div><div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام</th><th>ایمیل</th><th>تلفن</th><th>معرف</th><th>موجودی ($)</th><th>تاریخ</th><th>عملیات</th></tr></thead><tbody id="tb-unver"></tbody></table></div></div></div>
+<div id="t-banned" class="tab-content"><div class="panel-box"><div class="panel-header"><div class="panel-title"><i class="fas fa-user-slash" style="color:#ef4444"></i> حساب‌های غیرفعال</div><div class="search-box"><input type="text" id="s-ban" placeholder="جستجو..."><i class="fas fa-search"></i></div></div><div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام</th><th>ایمیل</th><th>تلفن</th><th>معرف</th><th>موجودی</th><th>عملیات</th></tr></thead><tbody id="tb-ban"></tbody></table></div></div></div>
+<div id="t-withdraw" class="tab-content"><div class="panel-box"><div class="panel-header"><div class="panel-title"><i class="fas fa-wallet"></i> مدیریت برداشت‌ها</div></div><div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام</th><th>مبلغ ($)</th><th>کیف پول</th><th>عملیات</th></tr></thead><tbody id="tb-withdraw"></tbody></table></div></div></div>
+<div id="t-messaging" class="tab-content"><div class="panel-box"><div class="panel-header"><div class="panel-title"><i class="fas fa-paper-plane" style="color:#c084fc"></i> ارسال پیام اطلاع‌رسانی</div></div><div class="msg-grid">
+<div class="msg-container"><h4 style="font-size:13px;color:#38bdf8;margin-bottom:12px">ارسال گروهی</h4><form id="form-bulk-msg"><div class="form-group"><label>مخاطبان</label><select id="bulk-target" class="form-control"><option value="all">همه کاربران</option><option value="verified">فقط تاییدشده‌ها</option><option value="unverified">فقط تاییدنشده‌ها</option></select></div><div class="form-group"><label>موضوع</label><input type="text" id="bulk-subject" class="form-control" placeholder="موضوع پیام..."></div><div class="form-group"><label>متن</label><textarea id="bulk-text" class="form-control" placeholder="متن پیام..."></textarea></div><button type="submit" class="btn-save">ارسال گروهی</button></form></div>
+<div class="msg-container"><h4 style="font-size:13px;color:#c084fc;margin-bottom:12px">ارسال تکی</h4><form id="form-single-msg"><div class="form-group"><label>انتخاب کاربر</label><select id="single-user-select" class="form-control"><option value="">بارگذاری...</option></select></div><div class="form-group"><label>موضوع</label><input type="text" id="single-subject" class="form-control" placeholder="موضوع پیام..."></div><div class="form-group"><label>متن</label><textarea id="single-text" class="form-control" placeholder="متن پیام خصوصی..."></textarea></div><button type="submit" class="btn-save" style="background:linear-gradient(135deg,#a855f7,#6366f1)">ارسال تکی</button></form></div>
+</div></div></div>
+<div id="t-reqs" class="tab-content"><div class="panel-box"><div class="panel-header"><div class="panel-title"><i class="fas fa-inbox"></i> صندوق درخواست‌ها</div></div><div id="req-container"></div></div></div>
+</div>
+<div class="modal" id="m-details"><div class="modal-content"><div class="modal-header"><span>اطلاعات کامل</span><button class="modal-close" onclick="closeModal('m-details')"><i class="fas fa-times"></i></button></div><div id="user-details-body"></div><div id="modal-action-btn" style="margin-top:16px"></div></div></div>
+<div class="modal" id="m-edit"><div class="modal-content"><div class="modal-header"><span>ویرایش کاربر</span><button class="modal-close" onclick="closeModal('m-edit')"><i class="fas fa-times"></i></button></div><form id="f-edit"><input type="hidden" id="e-uid"><div class="form-group"><label>نام</label><input type="text" id="e-name" class="form-control"></div><div class="form-group"><label>ایمیل</label><input type="text" id="e-email" class="form-control"></div><div class="form-group"><label>تلفن</label><input type="text" id="e-phone" class="form-control"></div><div class="form-group"><label>موجودی ($)</label><input type="number" step="any" id="e-bal" class="form-control"></div><div class="form-group"><label>سود ($)</label><input type="number" step="any" id="e-profit" class="form-control"></div><button type="submit" class="btn-save">ذخیره</button></form></div></div>
+<div class="modal" id="m-quick-msg"><div class="modal-content"><div class="modal-header"><span>ارسال پیام</span><button class="modal-close" onclick="closeModal('m-quick-msg')"><i class="fas fa-times"></i></button></div><form id="f-quick-msg"><input type="hidden" id="qm-uid"><div class="form-group"><label>موضوع</label><input type="text" id="qm-sub" class="form-control" placeholder="موضوع..."></div><div class="form-group"><label>متن</label><textarea id="qm-text" class="form-control" placeholder="پیام..."></textarea></div><button type="submit" class="btn-save">ارسال</button></form></div></div>
+<footer><p>&copy; 2026 Zenix Platform</p></footer>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import{getFirestore,collection,getDocs,doc,updateDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+const db=getFirestore(initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"}));
+const auth=getAuth();let uMap={},codeToNameMap={};
+window.switchTab=(id,btn)=>{document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active')};
+window.closeModal=id=>document.getElementById(id).classList.remove('show');
+const getName=u=>u.fullname||u.fullName||u.name||(u.firstName?`${u.firstName} ${u.lastName||''}`:null)||u.email?.split('@')[0]||'کاربر';
+const formatDate=ts=>{if(!ts)return'نامشخص';let d;if(typeof ts.toDate==='function')d=ts.toDate();else if(typeof ts==='string'){let clean=ts.replace(/at\s.*UTC.*/i,'').trim();d=new Date(clean);if(isNaN(d.getTime()))d=new Date(ts)}else d=new Date(ts);return isNaN(d.getTime())?'نامشخص':`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} | ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
+async function loadData(){try{const snap=await getDocs(collection(db,"users"));let tbVer=document.getElementById('tb-ver'),tbUnver=document.getElementById('tb-unver'),tbBan=document.getElementById('tb-ban'),tbW=document.getElementById('tb-withdraw');let singleSelect=document.getElementById('single-user-select');tbVer.innerHTML="";tbUnver.innerHTML="";tbBan.innerHTML="";tbW.innerHTML="";singleSelect.innerHTML='<option value="">-- انتخاب کاربر --</option>';uMap={};codeToNameMap={};let totU=0,totB=0,totR=0,totW=0,reqList=[],withdrawList=[];let cVer=0,cUnver=0,cBan=0;
+snap.forEach(d=>{let u=d.data(),uid=d.id;if(u.referralCode)codeToNameMap[u.referralCode]=getName(u)});
+snap.forEach(d=>{let u=d.data(),uid=d.id;uMap[uid]=u;totU++;totB+=Number(u.balance||0);let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;let nameStr=getName(u),emailStr=u.email||'-',phoneStr=u.phone||'-',regStr=formatDate(u.createdAt);singleSelect.innerHTML+=`<option value="${uid}">${nameStr} (${emailStr})</option>`;let refCode=u.referredBy||u.refCode||'-',referrerName=(refCode!=='-'&&codeToNameMap[refCode])?`${codeToNameMap[refCode]} (${refCode})`:[refCode];let search=`${idCode} ${nameStr} ${emailStr} ${phoneStr} ${refCode} ${regStr}`.toLowerCase();let isBanned=(u.status==='cancelled'||u.status==='banned'||u.status==='inactive'||u.isBanned===true||u.active===false);let balance=Number(u.balance||0);let isVerified=(u.adminApprovalStatus==='approved'||balance>0||u.isVerified===true);if(u.pendingWithdrawal&&u.pendingWithdrawal.status==='pending'){totW++;withdrawList.push({uid,u,idCode,nameStr,data:u.pendingWithdrawal})}let balStr=`$${balance.toLocaleString()}`,profitStr=`$${Number(u.platformProfit||u.profit||0).toLocaleString()}`,refBadgeHtml=refCode!=='-'?`<span class="ref-tag">${referrerName}</span>`:`<span style="color:#64748b">بدون معرف</span>`;
+if(isBanned){cBan++;tbBan.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${nameStr}</b></td><td>${emailStr}</td><td dir="ltr" style="text-align:right">${phoneStr}</td><td>${refBadgeHtml}</td><td style="color:#ef4444">${balStr}</td><td><button class="btn-action btn-approve" onclick="toggleBan('${uid}',false)"><i class="fas fa-undo"></i> فعال</button><button class="btn-action btn-msg" onclick="openQuickMsg('${uid}')"><i class="fas fa-envelope"></i></button></td></tr>`}
+else if(isVerified){cVer++;tbVer.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${nameStr}</b></td><td>${emailStr}</td><td dir="ltr" style="text-align:right">${phoneStr}</td><td>${refBadgeHtml}</td><td style="color:#22c55e;font-weight:bold">${balStr}</td><td style="color:#38bdf8;font-weight:bold">${profitStr}</td><td>${regStr}</td><td><button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-user-slash"></i> غیرفعال</button><button class="btn-action btn-msg" onclick="openQuickMsg('${uid}')"><i class="fas fa-envelope"></i></button></td></tr>`}
+else{cUnver++;tbUnver.innerHTML+=`<tr data-s="${search}"><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${nameStr}</b></td><td>${emailStr}</td><td dir="ltr" style="text-align:right">${phoneStr}</td><td>${refBadgeHtml}</td><td style="color:#94a3b8">${balStr}</td><td>${regStr}</td><td><button class="btn-action btn-approve" onclick="verifyUser('${uid}')"><i class="fas fa-check"></i> تایید</button><button class="btn-action btn-msg" onclick="openQuickMsg('${uid}')"><i class="fas fa-envelope"></i></button></td></tr>`}
+});
+document.getElementById('st-users').innerText=totU;document.getElementById('st-bal').innerText='$'+totB.toLocaleString('en-US',{minimumFractionDigits:2});document.getElementById('st-req').innerText=totR;document.getElementById('st-w-req').innerText=totW;
+let bVer=document.getElementById('badge-ver');bVer.innerText=cVer;bVer.className=cVer>0?'tab-badge':'tab-badge zero';
+let bUnver=document.getElementById('badge-unver');bUnver.innerText=cUnver;bUnver.className=cUnver>0?'tab-badge alert':'tab-badge zero';
+let bBan=document.getElementById('badge-ban');bBan.innerText=cBan;bBan.className=cBan>0?'tab-badge alert':'tab-badge zero';
+let badge=document.getElementById('req-badge');badge.innerText=totR;badge.className=totR>0?'tab-badge alert':'tab-badge zero';
+let wBadge=document.getElementById('w-badge');wBadge.innerText=totW;wBadge.className=totW>0?'tab-badge alert':'tab-badge zero';
+if(cVer===0)tbVer.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:25px;color:#94a3b8">کاربر تاییدشده‌ای یافت نشد</td></tr>`;
+if(cUnver===0)tbUnver.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:25px;color:#94a3b8">کاربر تاییدنشده‌ای وجود ندارد</td></tr>`;
+if(cBan===0)tbBan.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:25px;color:#94a3b8">حساب مسدودی وجود ندارد</td></tr>`;
+renderWithdrawals(withdrawList);renderReqs(reqList)}catch(e){console.error(e)}}
+window.verifyUser=async(uid)=>{if(!confirm('تایید کاربر؟'))return;await updateDoc(doc(db,"users",uid),{adminApprovalStatus:"approved",isVerified:true});loadData()};
+window.openDetails=uid=>{let u=uMap[uid],idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`,regDate=formatDate(u.createdAt),refCode=u.referredBy||u.refCode||'ندارد',refDisp=(refCode!=='ندارد'&&codeToNameMap[refCode])?`${codeToNameMap[refCode]} (${refCode})`:refCode;document.getElementById('user-details-body').innerHTML=`<div class="detail-row"><span>شناسه:</span><span>${idCode}</span></div><div class="detail-row"><span>نام:</span><span>${getName(u)}</span></div><div class="detail-row"><span>ایمیل:</span><span>${u.email||'-'}</span></div><div class="detail-row"><span>تلفن:</span><span dir="ltr">${u.phone||'-'}</span></div><div class="detail-row"><span>معرف:</span><span style="color:#c084fc">${refDisp}</span></div><div class="detail-row"><span>موجودی:</span><span style="color:#22c55e">$${Number(u.balance||0).toLocaleString()}</span></div><div class="detail-row"><span>وضعیت:</span><span>${u.adminApprovalStatus||'معلق'}</span></div><div class="detail-row"><span>تاریخ:</span><span>${regDate}</span></div>`;document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:10px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش</button>`;document.getElementById('m-details').classList.add('show')};
+window.openQuickMsg=uid=>{document.getElementById('qm-uid').value=uid;document.getElementById('qm-sub').value='';document.getElementById('qm-text').value='';document.getElementById('m-quick-msg').classList.add('show')};
+document.getElementById('f-quick-msg').onsubmit=async e=>{e.preventDefault();let uid=document.getElementById('qm-uid').value,sub=document.getElementById('qm-sub').value,txt=document.getElementById('qm-text').value;if(!txt)return alert('متن اجباری است');try{await updateDoc(doc(db,"users",uid),{adminMessage:{subject:sub,body:txt,time:new Date().toISOString(),read:false}});alert('ارسال شد');closeModal('m-quick-msg')}catch(err){alert('خطا: '+err.message)}};
+document.getElementById('form-bulk-msg').onsubmit=async e=>{e.preventDefault();let target=document.getElementById('bulk-target').value,sub=document.getElementById('bulk-subject').value,txt=document.getElementById('bulk-text').value;if(!txt)return alert('متن اجباری است');if(!confirm('ارسال گروهی؟'))return;try{let count=0;for(let uid in uMap){let u=uMap[uid],bal=Number(u.balance||0),isVer=(u.adminApprovalStatus==='approved'||bal>0||u.isVerified===true);if(target==='all'||(target==='verified'&&isVer)||(target==='unverified'&&!isVer)){await updateDoc(doc(db,"users",uid),{adminMessage:{subject:sub,body:txt,time:new Date().toISOString(),read:false}});count++}}alert(`به ${count} کاربر ارسال شد`);document.getElementById('bulk-subject').value='';document.getElementById('bulk-text').value=''}catch(err){alert('خطا: '+err.message)}};
+document.getElementById('form-single-msg').onsubmit=async e=>{e.preventDefault();let uid=document.getElementById('single-user-select').value,sub=document.getElementById('single-subject').value,txt=document.getElementById('single-text').value;if(!uid||!txt)return alert('انتخاب کاربر و متن الزامی است');try{await updateDoc(doc(db,"users",uid),{adminMessage:{subject:sub,body:txt,time:new Date().toISOString(),read:false}});alert('ارسال شد');document.getElementById('single-subject').value='';document.getElementById('single-text').value=''}catch(err){alert('خطا: '+err.message)}};
+function renderWithdrawals(list){let box=document.getElementById('tb-withdraw');if(list.length===0){box.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:25px;color:#94a3b8">برداشتی وجود ندارد</td></tr>`;return;}let html='';list.forEach(i=>{let amt=Number(i.data.amount||0);html+=`<tr><td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td><td><b>${i.nameStr}</b></td><td style="color:#22c55e;font-weight:bold">$${amt.toLocaleString()}</td><td dir="ltr">${i.data.address||i.data.wallet||'-'}</td><td><button class="btn-action btn-approve" onclick="handleWithdraw('${i.uid}',true,${amt})">تایید</button><button class="btn-action btn-reject" onclick="handleWithdraw('${i.uid}',false,${amt})">رد</button></td></tr>`});box.innerHTML=html}
+window.handleWithdraw=async(uid,approve,amount)=>{let u=uMap[uid];if(approve){if(!confirm(`تایید برداشت $${amount}؟`))return;await updateDoc(doc(db,"users",uid),{pendingWithdrawal:null});alert('تایید شد')}else{if(!confirm(`لغو و بازگشت $${amount}؟`))return;await updateDoc(doc(db,"users",uid),{balance:Number(u.balance||0)+amount,pendingWithdrawal:null});alert('لغو شد')}loadData()};
+function renderReqs(list){let box=document.getElementById('req-container');if(list.length===0){box.innerHTML=`<div style="text-align:center;padding:25px;color:#94a3b8">درخواستی نیست</div>`;return;}let html=`<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام</th><th>ایمیل جدید</th><th>تاریخ</th><th>عملیات</th></tr></thead><tbody>`;list.forEach(i=>{let u=i.u,uid=i.uid,idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;html+=`<tr><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${getName(u)}</b></td><td style="color:#f59e0b">${u.pendingEmail||u.newEmail||'-'}</td><td>${formatDate(u.createdAt)}</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button></td></tr>`});box.innerHTML=html+`</tbody></table></div>`}
+window.toggleBan=async(uid,ban)=>{if(!confirm(ban?'غیرفعال‌سازی؟':'فعال‌سازی؟'))return;await updateDoc(doc(db,"users",uid),{status:ban?"cancelled":"active",isBanned:ban});loadData()};
+window.appEm=async(uid,email)=>{await updateDoc(doc(db,"users",uid),{email,pendingEmail:"",newEmail:"",selfieImage:"",adminApprovalStatus:"approved"});loadData()};
+window.rejEm=async(uid)=>{await updateDoc(doc(db,"users",uid),{adminApprovalStatus:"rejected"});loadData()};
+window.openE=uid=>{let u=uMap[uid];document.getElementById('e-uid').value=uid;document.getElementById('e-name').value=getName(u);document.getElementById('e-email').value=u.email||'';document.getElementById('e-phone').value=u.phone||'';document.getElementById('e-bal').value=u.balance||0;document.getElementById('e-profit').value=u.platformProfit||u.profit||0;document.getElementById('m-edit').classList.add('show')};
+document.getElementById('f-edit').onsubmit=async e=>{e.preventDefault();let uid=document.getElementById('e-uid').value;try{await updateDoc(doc(db,"users",uid),{fullname:document.getElementById('e-name').value,email:document.getElementById('e-email').value,phone:document.getElementById('e-phone').value,balance:parseFloat(document.getElementById('e-bal').value)||0,platformProfit:parseFloat(document.getElementById('e-profit').value)||0});closeModal('m-edit');loadData()}catch(err){alert('خطا: '+err.message)}};
+['ver','unver','ban'].forEach(k=>{let inp=document.getElementById(`s-${k}`);if(inp)inp.oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll(`#tb-${k} tr`).forEach(r=>r.style.display=r.dataset.s.includes(q)?'':'none')}});
+onAuthStateChanged(auth,u=>{if(!u)window.location.href='index.html';else loadData()});
+document.getElementById('logout-btn').onclick=async()=>{await signOut(auth);window.location.href='index.html'};
+</script></body></html>
