@@ -21,7 +21,13 @@
   <div id="crypto-ticker-list"></div>
 </div>
 
-</div><footer><p>&copy; 2026 Zenix</p></footer><script type="module">import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";import{getFirestore,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);let uName="";let currLang=localStorage.getItem('zenix_lang')||'fa';
+</div><footer><p>&copy; 2026 Zenix</p></footer><script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import{getFirestore,doc,getDoc,collection,getDocs}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
+let uName="";let currLang=localStorage.getItem('zenix_lang')||'fa';
 
 const ld={
   fa:{wel:'خوش آمدید',sub:'پنل مدیریت کاربری',st:'تایید شده',s1:'موجودی',s2:'زیرمجموعه',c1:'کوانتیفیکیشن',d1:'معاملات هوشمند',c2:'واریز',d2:'شارژ حساب',c3:'برداشت',d3:'برداشت دارایی',c4:'تیم',d4:'زیرمجموعه‌ها',c5:'تراکنش‌ها',d5:'تاریخچه مالی',c6:'پروفایل',d6:'تنظیمات امنیت',m1:'صفحه اصلی',m2:'کوانتیفیکیشن',m3:'واریز',m4:'برداشت',m5:'تراکنش',m6:'پروفایل',m7:'پشتیبانی',m8:'خروج',tA:'پیام مدیریت',tB:'به پلتفرم زنیکس خوش آمدید.',tMkt:'بازار ارزهای دیجیتال',tLive:'زنده',phoneErr:'وارد کردن شماره تلفن الزامی است.'},
@@ -45,20 +51,28 @@ uName=data.fullName||data.fullname||data.name||"";setLang(currLang);
 const userBal = Number(data.balance !== undefined && data.balance !== null ? data.balance : (data.depositAmount || 0));
 document.getElementById('val-balance').textContent=`$${userBal.toFixed(2)}`;
 
-// محاسبه جمع کل زیرمجموعه‌ها (نسل ۱ + نسل ۲ + نسل ۳ یا فیلدهای مشابه)
-let gen1 = Number(data.gen1Count || data.generation1 || (Array.isArray(data.gen1) ? data.gen1.length : 0));
-let gen2 = Number(data.gen2Count || data.generation2 || (Array.isArray(data.gen2) ? data.gen2.length : 0));
-let gen3 = Number(data.gen3Count || data.generation3 || (Array.isArray(data.gen3) ? data.gen3.length : 0));
-let totalRef = gen1 + gen2 + gen3;
+// محاسبه دقیق مجموع نسل ۱، ۲ و ۳ از پایگاه داده درست مثل صفحه تیم
+let totalRef = 0;
+const refCode = data.referralCode;
+if(refCode){
+  const snapAll=await getDocs(collection(db,"users"));
+  let allUsers=[];
+  snapAll.forEach(docSnap=>{allUsers.push(docSnap.data());});
 
-if (totalRef === 0) {
-  if (data.referralsCount !== undefined && data.referralsCount !== null) {
-    totalRef = Number(data.referralsCount);
-  } else if (Array.isArray(data.referrals)) {
-    totalRef = data.referrals.length;
-  } else if (Array.isArray(data.subUsers)) {
-    totalRef = data.subUsers.length;
-  }
+  let lvl1List=allUsers.filter(item=>item.referredBy===refCode);
+  let lvl1Codes=lvl1List.map(item=>item.referralCode).filter(Boolean);
+
+  let lvl2List=allUsers.filter(item=>lvl1Codes.includes(item.referredBy));
+  let lvl2Codes=lvl2List.map(item=>item.referralCode).filter(Boolean);
+
+  let lvl3List=allUsers.filter(item=>lvl2Codes.includes(item.referredBy));
+
+  totalRef = lvl1List.length + lvl2List.length + lvl3List.length;
+}else{
+  let gen1 = Number(data.gen1Count || data.generation1 || 0);
+  let gen2 = Number(data.gen2Count || data.generation2 || 0);
+  let gen3 = Number(data.gen3Count || data.generation3 || 0);
+  totalRef = gen1 + gen2 + gen3;
 }
 document.getElementById('val-ref').textContent = totalRef;
 
