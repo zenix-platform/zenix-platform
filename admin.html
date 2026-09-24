@@ -123,47 +123,19 @@
 
         <!-- Navigation Tabs -->
         <div class="admin-tabs">
-            <button class="tab-btn active" onclick="switchTab('t-active', this)"><i class="fas fa-user-check"></i> کاربران فعال</button>
-            <button class="tab-btn" onclick="switchTab('t-pending', this)"><i class="fas fa-user-clock"></i> در انتظار احراز</button>
-            <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> غیرفعال / لغو شده</button>
+            <button class="tab-btn active" onclick="switchTab('t-verified', this)"><i class="fas fa-user-check"></i> کاربران تاییدشده (دارای واریز)</button>
+            <button class="tab-btn" onclick="switchTab('t-unverified', this)"><i class="fas fa-user-times"></i> کاربران تاییدنشده / بدون واریز</button>
+            <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> غیرفعال / مسدود</button>
             <button class="tab-btn" onclick="switchTab('t-withdraw', this)"><i class="fas fa-money-bill-transfer"></i> برداشت‌ها <span class="tab-badge zero" id="w-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-reqs', this)"><i class="fas fa-bell"></i> درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
         </div>
 
-        <!-- Tab 1: Active Users Table -->
-        <div id="t-active" class="tab-content active">
+        <!-- Tab 1: Verified Users (With Deposit) -->
+        <div id="t-verified" class="tab-content active">
             <div class="panel-box">
                 <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-check"></i> لیست کاربران فعال سیستم</div>
-                    <div class="search-box"><input type="text" id="s-act" placeholder="جستجو..."><i class="fas fa-search"></i></div>
-                </div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>شناسه</th>
-                                <th>نام و نام خانوادگی</th>
-                                <th>ایمیل</th>
-                                <th>تلفن</th>
-                                <th>معرف (کد دعوت)</th>
-                                <th>موجودی</th>
-                                <th>سود از پلتفرم</th>
-                                <th>تاریخ ثبت‌نام</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tb-act"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 2: Pending Users Table -->
-        <div id="t-pending" class="tab-content">
-            <div class="panel-box">
-                <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-clock"></i> کاربران با درخواست‌های در انتظار</div>
-                    <div class="search-box"><input type="text" id="s-pend" placeholder="جستجو..."><i class="fas fa-search"></i></div>
+                    <div class="panel-title"><i class="fas fa-user-check" style="color:#22c55e"></i> کاربران تاییدشده (حداکثر واریز)</div>
+                    <div class="search-box"><input type="text" id="s-ver" placeholder="جستجو..."><i class="fas fa-search"></i></div>
                 </div>
                 <div class="table-responsive">
                     <table>
@@ -174,12 +146,40 @@
                                 <th>ایمیل</th>
                                 <th>تلفن</th>
                                 <th>معرف</th>
-                                <th>موجودی</th>
+                                <th>موجودی ($)</th>
                                 <th>سود از پلتفرم</th>
+                                <th>تاریخ ثبت‌نام</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
-                        <tbody id="tb-pend"></tbody>
+                        <tbody id="tb-ver"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Unverified Users (No Deposit) -->
+        <div id="t-unverified" class="tab-content">
+            <div class="panel-box">
+                <div class="panel-header">
+                    <div class="panel-title"><i class="fas fa-user-times" style="color:#f59e0b"></i> کاربران تاییدنشده (بدون واریز)</div>
+                    <div class="search-box"><input type="text" id="s-unver" placeholder="جستجو..."><i class="fas fa-search"></i></div>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شناسه</th>
+                                <th>نام و نام خانوادگی</th>
+                                <th>ایمیل</th>
+                                <th>تلفن</th>
+                                <th>معرف</th>
+                                <th>موجودی ($)</th>
+                                <th>تاریخ ثبت‌نام</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-unver"></tbody>
                     </table>
                 </div>
             </div>
@@ -189,7 +189,7 @@
         <div id="t-banned" class="tab-content">
             <div class="panel-box">
                 <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-slash"></i> حساب‌های غیرفعال یا لغو شده</div>
+                    <div class="panel-title"><i class="fas fa-user-slash" style="color:#ef4444"></i> حساب‌های غیرفعال یا لغو شده</div>
                     <div class="search-box"><input type="text" id="s-ban" placeholder="جستجو..."><i class="fas fa-search"></i></div>
                 </div>
                 <div class="table-responsive">
@@ -202,7 +202,6 @@
                                 <th>تلفن</th>
                                 <th>معرف</th>
                                 <th>موجودی</th>
-                                <th>سود از پلتفرم</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -275,7 +274,7 @@
         
         const db=getFirestore(initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"}));
         const auth=getAuth();
-        let uMap={},codeToNameMap={},tUid=null;
+        let uMap={},codeToNameMap={};
 
         window.switchTab=(id,btn)=>{
             document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
@@ -306,12 +305,11 @@
         async function loadData(){
             try {
                 const snap=await getDocs(collection(db,"users"));
-                let tbAct=document.getElementById('tb-act'), tbPend=document.getElementById('tb-pend'), tbBan=document.getElementById('tb-ban'), tbW=document.getElementById('tb-withdraw');
-                tbAct.innerHTML=""; tbPend.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML="";
+                let tbVer=document.getElementById('tb-ver'), tbUnver=document.getElementById('tb-unver'), tbBan=document.getElementById('tb-ban'), tbW=document.getElementById('tb-withdraw');
+                tbVer.innerHTML=""; tbUnver.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML="";
                 uMap={}; codeToNameMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[], withdrawList=[];
-                let cAct=0, cPend=0, cBan=0;
+                let cVer=0, cUnver=0, cBan=0;
 
-                // گام اول: ساخت نقشه کد معرف به نام کاربر
                 snap.forEach(d=>{
                     let u=d.data(), uid=d.id;
                     if(u.referralCode){
@@ -319,7 +317,6 @@
                     }
                 });
 
-                // گام دوم: پردازش و نمایش کاربران
                 snap.forEach(d=>{
                     let u=d.data(), uid=d.id; uMap[uid]=u; totU++; totB+=Number(u.balance||0);
                     let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
@@ -328,52 +325,66 @@
                     let phoneStr=u.phone||'-';
                     let regStr=formatDate(u.createdAt);
 
-                    // پیدا کردن نام معرف بر اساس کد referredBy
                     let refCode = u.referredBy || u.refCode || '-';
                     let referrerName = (refCode !== '-' && codeToNameMap[refCode]) ? `${codeToNameMap[refCode]} (${refCode})` : refCode;
 
                     let search=`${idCode} ${nameStr} ${emailStr} ${phoneStr} ${refCode} ${regStr}`.toLowerCase();
                     
                     let isBanned=(u.status==='cancelled'||u.status==='banned'||u.status==='inactive'||u.isBanned===true||u.active===false);
-                    let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage||u.adminApprovalStatus==='pending');
+                    let balance = Number(u.balance || 0);
+                    let isVerified = (u.adminApprovalStatus === 'approved' || balance > 0 || u.isVerified === true);
 
                     if(u.pendingWithdrawal && u.pendingWithdrawal.status === 'pending'){
                         totW++;
                         withdrawList.push({ uid, u, idCode, nameStr, data: u.pendingWithdrawal });
                     }
 
-                    let balStr = `$${Number(u.balance||0).toLocaleString()}`;
+                    let balStr = `$${balance.toLocaleString()}`;
                     let profitStr = `$${Number(u.platformProfit || u.profit || 0).toLocaleString()}`;
                     let refBadgeHtml = refCode !== '-' ? `<span class="ref-tag">${referrerName}</span>` : `<span style="color:#64748b">بدون معرف</span>`;
 
-                    let rowHtml=`<tr data-s="${search}">
-                        <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
-                        <td><b>${nameStr}</b></td>
-                        <td>${emailStr}</td>
-                        <td dir="ltr" style="text-align:right">${phoneStr}</td>
-                        <td>${refBadgeHtml}</td>
-                        <td style="color:#22c55e;font-weight:bold">${balStr}</td>
-                        <td style="color:#38bdf8;font-weight:bold">${profitStr}</td>`;
-
                     if(isBanned){
                         cBan++;
-                        rowHtml+=`<td><button class="btn-action btn-approve" onclick="toggleBan('${uid}',false)"><i class="fas fa-undo"></i> فعال‌سازی</button></td></tr>`;
+                        let rowHtml=`<tr data-s="${search}">
+                            <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
+                            <td><b>${nameStr}</b></td>
+                            <td>${emailStr}</td>
+                            <td dir="ltr" style="text-align:right">${phoneStr}</td>
+                            <td>${refBadgeHtml}</td>
+                            <td style="color:#ef4444">${balStr}</td>
+                            <td><button class="btn-action btn-approve" onclick="toggleBan('${uid}',false)"><i class="fas fa-undo"></i> فعال‌سازی</button></td>
+                        </tr>`;
                         tbBan.innerHTML+=rowHtml;
-                    }else if(hasPend){
-                        cPend++; totR++;
-                        reqList.push({uid, u, time: u.requestTimestamp||u.updatedAt||Date.now()});
-                        rowHtml+=`<td>
-                            <button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||emailStr}')">تایید</button>
-                            <button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button>
-                        </td></tr>`;
-                        tbPend.innerHTML+=rowHtml;
-                    }else{
-                        cAct++;
-                        rowHtml+=`<td>${regStr}</td>
-                        <td>
-                            <button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-user-slash"></i> غیرفعال کردن</button>
-                        </td></tr>`;
-                        tbAct.innerHTML+=rowHtml;
+                    } else if(isVerified){
+                        cVer++;
+                        let rowHtml=`<tr data-s="${search}">
+                            <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
+                            <td><b>${nameStr}</b></td>
+                            <td>${emailStr}</td>
+                            <td dir="ltr" style="text-align:right">${phoneStr}</td>
+                            <td>${refBadgeHtml}</td>
+                            <td style="color:#22c55e;font-weight:bold">${balStr}</td>
+                            <td style="color:#38bdf8;font-weight:bold">${profitStr}</td>
+                            <td>${regStr}</td>
+                            <td><button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-user-slash"></i> غیرفعال</button></td>
+                        </tr>`;
+                        tbVer.innerHTML+=rowHtml;
+                    } else {
+                        cUnver++;
+                        let rowHtml=`<tr data-s="${search}">
+                            <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
+                            <td><b>${nameStr}</b></td>
+                            <td>${emailStr}</td>
+                            <td dir="ltr" style="text-align:right">${phoneStr}</td>
+                            <td>${refBadgeHtml}</td>
+                            <td style="color:#94a3b8">${balStr}</td>
+                            <td>${regStr}</td>
+                            <td>
+                                <button class="btn-action btn-approve" onclick="verifyUser('${uid}')"><i class="fas fa-check"></i> تایید</button>
+                                <button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-user-slash"></i></button>
+                            </td>
+                        </tr>`;
+                        tbUnver.innerHTML+=rowHtml;
                     }
                 });
 
@@ -388,9 +399,9 @@
                 let wBadge=document.getElementById('w-badge');
                 wBadge.innerText=totW; wBadge.className=totW>0?'tab-badge':'tab-badge zero';
 
-                if(cAct===0) tbAct.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر فعالی یافت نشد</td></tr>`;
-                if(cPend===0) tbPend.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر معلقی یافت نشد</td></tr>`;
-                if(cBan===0) tbBan.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر غیرفعالی وجود ندارد</td></tr>`;
+                if(cVer===0) tbVer.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر تاییدشده‌ای یافت نشد</td></tr>`;
+                if(cUnver===0) tbUnver.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر تاییدنشده‌ای وجود ندارد</td></tr>`;
+                if(cBan===0) tbBan.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">هیچ حساب مسدودی وجود ندارد</td></tr>`;
 
                 renderWithdrawals(withdrawList);
                 renderReqs(reqList);
@@ -398,6 +409,12 @@
                 console.error("Error loading users:", err);
             }
         }
+
+        window.verifyUser=async(uid)=>{
+            if(!confirm('تایید این کاربر و اعطای دسترسی کامل؟')) return;
+            await updateDoc(doc(db,"users",uid),{ adminApprovalStatus: "approved", isVerified: true });
+            loadData();
+        };
 
         window.openDetails=uid=>{
             let u=uMap[uid], idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
@@ -410,11 +427,9 @@
                 <div class="detail-row"><span>نام و نام خانوادگی:</span><span>${getName(u)}</span></div>
                 <div class="detail-row"><span>ایمیل:</span><span>${u.email||'-'}</span></div>
                 <div class="detail-row"><span>تلفن:</span><span dir="ltr">${u.phone||'-'}</span></div>
-                <div class="detail-row"><span>دعوت‌شده توسط (معرف):</span><span style="color:#c084fc">${referrerDisplay}</span></div>
-                <div class="detail-row"><span>کد دعوت خودش:</span><span style="color:#38bdf8">${u.referralCode||'ندارد'}</span></div>
-                <div class="detail-row"><span>موجودی:</span><span>$${Number(u.balance||0).toLocaleString()}</span></div>
-                <div class="detail-row"><span>سود از پلتفرم:</span><span>$${Number(u.platformProfit || u.profit || 0).toLocaleString()}</span></div>
-                <div class="detail-row"><span>وضعیت تایید:</span><span>${u.adminApprovalStatus||'نامشخص'}</span></div>
+                <div class="detail-row"><span>معرف:</span><span style="color:#c084fc">${referrerDisplay}</span></div>
+                <div class="detail-row"><span>موجودی:</span><span style="color:#22c55e">$${Number(u.balance||0).toLocaleString()}</span></div>
+                <div class="detail-row"><span>وضعیت:</span><span>${u.adminApprovalStatus||'معلق/تاییدنشده'}</span></div>
                 <div class="detail-row"><span>تاریخ ثبت‌نام:</span><span>${regDate}</span></div>
             `;
             document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:10px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات</button>`;
@@ -504,7 +519,7 @@
             }
         };
 
-        ['act','pend','ban'].forEach(k=>{
+        ['ver','unver','ban'].forEach(k=>{
             let inp = document.getElementById(`s-${k}`);
             if(inp) inp.oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll(`#tb-${k} tr`).forEach(r=>r.style.display=r.dataset.s.includes(q)?'':'none');};
         });
