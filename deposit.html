@@ -67,14 +67,14 @@ footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1p
 </div>
 <div style="text-align:center;margin:16px 0;">
 <div style="background:#fff;display:inline-block;padding:10px;border-radius:8px;margin-bottom:8px;">
-<img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=T9yJ1qcNoV3WjZVxkPqL8x2m9jZ1vXkPqL" alt="QR Code" style="display:block;">
+<img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=TMkUAe5kzL3PdfkwV2vKot3dL3kkDD9z4Y" alt="QR Code" style="display:block;">
 </div>
 <div style="font-size:11px;color:#94a3b8;">اسکن جهت واریز مستقیم</div>
 </div>
 <div style="margin-bottom:16px;">
 <label id="wallet-label" style="font-size:11px;color:#94a3b8;display:block;margin-bottom:4px;">آدرس کیف پول (TRC20):</label>
 <div style="display:flex;background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;">
-<input type="text" id="wallet-address" value="T9yJ1qcNoV3WjZVxkPqL8x2m9jZ1vXkPqL" readonly style="width:100%;background:transparent;border:none;color:#f8fafc;padding:10px;font-size:12px;outline:none;direction:ltr;text-align:left;">
+<input type="text" id="wallet-address" value="TMkUAe5kzL3PdfkwV2vKot3dL3kkDD9z4Y" readonly style="width:100%;background:transparent;border:none;color:#f8fafc;padding:10px;font-size:12px;outline:none;direction:ltr;text-align:left;">
 <button type="button" onclick="copyAddress()" style="background:#38bdf8;border:none;color:#0f172a;padding:0 14px;cursor:pointer;font-weight:bold;font-size:12px;"><i class="fas fa-copy"></i> کپی</button>
 </div>
 </div>
@@ -103,7 +103,11 @@ import{getFirestore,doc,updateDoc,increment}from"https://www.gstatic.com/firebas
 
 const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
 
-const wallets={TRC20:"T9yJ1qcNoV3WjZVxkPqL8x2m9jZ1vXkPqL",BEP20:"0x71C8a21B3b914E1d86295B42D23c22b943b2E9f1"};
+// آدرس‌های جدید کیف پول شما برای شبکه‌ها
+const wallets={
+  TRC20:"TMkUAe5kzL3PdfkwV2vKot3dL3kkDD9z4Y",
+  BEP20:"0x9eA4B9aCa9B7505E63BA436d3240718A21574dc4"
+};
 let currentUser=null;
 
 function showMsg(text,isErr){
