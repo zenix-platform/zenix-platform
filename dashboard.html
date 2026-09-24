@@ -58,7 +58,7 @@
         <div class="logo"><div class="logo-icon">Z</div><div class="logo-text">ZENIX</div></div>
         <div class="hr">
             <div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell" style="color:#fbbf24"></i><span class="badge" id="bell-badge">0</span></button></div>
-            <div class="wrap"><button type="button" class="lb" id="help-btn" title="راهنمای پلتفرم"><i class="fas fa-circle-question" style="color:#38bdf8"></i></button></div>
+            <div class="wrap"><button type="button" class="lb" id="help-btn" title="راهنمای صفحه داشبورد"><i class="fas fa-circle-question" style="color:#38bdf8"></i></button></div>
             <a href="support.html" class="lb"><i class="fas fa-headset" style="color:#a855f7"></i></a>
             <div class="wrap">
                 <button type="button" class="lb" id="lang-btn"><i class="fas fa-globe" style="color:#22c55e"></i></button>
@@ -121,20 +121,32 @@
             <div id="modal-msg-container"><div style="text-align:center;padding:20px;color:#94a3b8">هیچ پیام جدیدی وجود ندارد.</div></div>
         </div>
     </div>
+    
+    <!-- مدال راهنمای اختصاصی صفحه داشبورد -->
     <div class="modal" id="m-help">
         <div class="modal-content">
-            <div class="modal-header"><span id="t-help-title">درباره پلتفرم Zenix (هدف، ماهیت و ساختار)</span><button class="modal-close" onclick="closeHelpModal()"><i class="fas fa-times"></i></button></div>
+            <div class="modal-header"><span id="t-help-title">راهنمای صفحه داشبورد</span><button class="modal-close" onclick="closeHelpModal()"><i class="fas fa-times"></i></button></div>
             <div style="overflow-y:auto;padding-right:4px">
-                <p style="font-size:13px;color:#cbd5e1;line-height:1.7;margin-bottom:10px;">پلتفرم Zenix یک اکوسیستم مالی نوین و هوشمند در حوزه ارزهای دیجیتال و پردازش‌های معاملاتی است که با هدف ایجاد بستری امن، خودکار و سودآور برای کاربران طراحی شده است.</p>
-                <ul style="font-size:12px;color:#94a3b8;padding-right:18px;line-height:1.7;margin-bottom:0;">
-                    <li style="margin-bottom:6px;"><strong style="color:#f8fafc;">هدف اصلی:</strong> اتوماسیون فرآیندهای معاملاتی از طریق سیستم‌های هوش مصنوعی و الگوریتم‌های کوانتیفیکیشن (Quantification)، به‌طوری‌که کاربران بدون نیاز به تخصص پیچیده در ترید، بتوانند از نوسانات بازار جهانی سود کسب کنند.</li>
-                    <li style="margin-bottom:6px;"><strong style="color:#f8fafc;">امنیت و زیرساخت:</strong> متکی بر پروتکل‌های رمزنگاری پیشرفته، اتصال به گره‌های پردازشی ابری پرسرعت و مدیریت یکپارچه دارایی‌ها در بستر پایگاه داده ابری امن (Firebase).</li>
-                    <li style="margin-bottom:6px;"><strong style="color:#f8fafc;">ساختار چندسطحی (Referral & Team):</strong> ایجاد یک شبکه پویای معرفی دوستان تا کاربران بتوانند از فعالیت زیرمجموعه‌های خود در چند سطح مختلف پاداش و درآمد پایدار دریافت کنند.</li>
-                    <li><strong style="color:#f8fafc;">احساس واقع‌گرایی:</strong> وجود بازار لحظه‌ای رمزارزها، شاخص‌های زنده حجم معاملات، نرخ گاز شبکه و اطلاعیه‌های سیستم به کاربر این اطمینان را می‌دهد که با یک پلتفرم بین‌المللی و زنده سروکار دارد.</li>
-                </ul>
+                <div class="msg-body-box">
+                    <div class="msg-title-text"><i class="fas fa-home" style="color:#38bdf8"></i> داشبورد (صفحه اصلی) چیست؟</div>
+                    <div class="msg-desc-text">این صفحه، مرجع اصلی مدیریت حساب کاربری شما در پلتفرم Zenix است که به شما امکان دسترسی سریع به تمام بخش‌های مالی و معاملاتی را می‌دهد.</div>
+                </div>
+                <div class="msg-body-box">
+                    <div class="msg-title-text"><i class="fas fa-wallet" style="color:#38bdf8"></i> کارت موجودی و زیرمجموعه‌ها</div>
+                    <div class="msg-desc-text">در این قسمت می‌توانید مجموع کل دارایی‌های دلاری و تعداد اعضای تیم زیرمجموعه خود را به صورت لحظه‌ای مشاهده کنید.</div>
+                </div>
+                <div class="msg-body-box">
+                    <div class="msg-title-text"><i class="fas fa-th-large" style="color:#a855f7"></i> بخش‌های دسترسی سریع</div>
+                    <div class="msg-desc-text">دکمه‌های میانبر (کوانتیفیکیشن، واریز، برداشت، تیم، تراکنش‌ها و پروفایل) برای ورود آنی به بخش‌های مختلف پلتفرم تعبیه شده‌اند.</div>
+                </div>
+                <div class="msg-body-box">
+                    <div class="msg-title-text"><i class="fas fa-chart-line" style="color:#22c55e"></i> بازار زنده ارزهای دیجیتال</div>
+                    <div class="msg-desc-text">نمایش لحظه‌ای تغییرات قیمت و درصد سود برترین ارزهای دیجیتال برای رصد بازار جهانی در یک نگاه.</div>
+                </div>
             </div>
         </div>
     </div>
+
     <footer>
         <p>&copy; 2026 Zenix. All rights reserved.</p>
         <p style="color:#22c55e;"><i class="fas fa-circle" style="font-size:6px;"></i> <span id="t-node">سرور فعال (US-East)</span></p>
