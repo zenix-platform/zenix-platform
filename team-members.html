@@ -88,7 +88,7 @@ onAuthStateChanged(auth,async(user)=>{
                     const u=d.data();
                     if(lvl==='1'){
                         memberList.push({
-                            id:d.id,
+                            id:u.referralCode||'---',
                             n:u.username||u.email?.split('@')[0]||'کاربر',
                             regDate:formatDate(u.createdAt),
                             v:u.totalDeposit||0,
@@ -105,7 +105,7 @@ onAuthStateChanged(auth,async(user)=>{
                     s2.forEach(d=>{
                         const u=d.data();
                         memberList.push({
-                            id:d.id,
+                            id:u.referralCode||'---',
                             n:u.username||u.email?.split('@')[0]||'کاربر',
                             regDate:formatDate(u.createdAt),
                             v:u.totalDeposit||0,
@@ -124,7 +124,7 @@ onAuthStateChanged(auth,async(user)=>{
                         s3.forEach(d=>{
                             const u=d.data();
                             memberList.push({
-                                id:d.id,
+                                id:u.referralCode||'---',
                                 n:u.username||u.email?.split('@')[0]||'کاربر',
                                 regDate:formatDate(u.createdAt),
                                 v:u.totalDeposit||0,
