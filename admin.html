@@ -7,73 +7,87 @@
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <style>
-        *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
-        body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column;font-size:12px}
-        header{background:rgba(15,23,42,.85);border-bottom:1px solid rgba(255,255,255,.08);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
-        .logo{display:flex;align-items:center;gap:10px}
-        .logo h2{font-size:16px;color:#38bdf8;font-weight:800;letter-spacing:1px}
-        .admin-badge{background:rgba(56,189,248,.12);color:#38bdf8;font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid rgba(56,189,248,.25);font-weight:600}
-        .btn-logout{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#ef4444;padding:6px 12px;border-radius:8px;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:600;transition:all .2s}
-        .btn-logout:hover{background:rgba(239,68,68,.25)}
-        .c{max-width:1450px;width:100%;margin:20px auto;padding:0 16px;flex:1}
+        *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif}
+        body{background:#020617;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column;font-size:12px}
+        
+        header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(56,189,248,.15);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);box-shadow:0 4px 20px rgba(0,0,0,.5)}
+        .logo{display:flex;align-items:center;gap:12px}
+        .logo h2{font-size:18px;background:linear-gradient(135deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:900;letter-spacing:1px}
+        .admin-badge{background:linear-gradient(135deg,rgba(56,189,248,.15),rgba(129,140,248,.15));color:#38bdf8;font-size:11px;padding:4px 10px;border-radius:8px;border:1px solid rgba(56,189,248,.3);font-weight:700;box-shadow:0 0 12px rgba(56,189,248,.1)}
+        .btn-logout{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:7px 14px;border-radius:9px;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:700;transition:all .3s}
+        .btn-logout:hover{background:rgba(239,68,68,.25);transform:translateY(-1px)}
+
+        .c{max-width:1450px;width:100%;margin:24px auto;padding:0 20px;flex:1}
         
         /* Stats Grid */
-        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
-        .stat-card{background:linear-gradient(135deg,rgba(15,23,42,.9),rgba(30,41,59,.6));border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
-        .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
-        .stat-info span{font-size:11px;color:#94a3b8;display:block;margin-bottom:2px}
-        .stat-info h3{font-size:18px;font-weight:800;color:#f8fafc}
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px}
+        .stat-card{background:linear-gradient(135deg,rgba(15,23,42,.85),rgba(30,41,59,.5));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;display:flex;align-items:center;gap:16px;box-shadow:0 10px 30px rgba(0,0,0,.5);transition:all .3s}
+        .stat-card:hover{border-color:rgba(56,189,248,.3);transform:translateY(-2px)}
+        .stat-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 15px rgba(0,0,0,.3)}
+        .stat-info span{font-size:11px;color:#94a3b8;display:block;margin-bottom:4px;font-weight:500}
+        .stat-info h3{font-size:20px;font-weight:900;color:#f8fafc}
 
         /* Tabs */
-        .admin-tabs{display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:10px;flex-wrap:wrap}
-        .tab-btn{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#94a3b8;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .25s}
-        .tab-btn.active{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.4);color:#38bdf8;box-shadow:0 0 15px rgba(56,189,248,.15)}
-        .tab-badge{background:#ef4444;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;font-weight:700}
+        .admin-tabs{display:flex;gap:10px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:12px;flex-wrap:wrap}
+        .tab-btn{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.08);color:#94a3b8;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .3s}
+        .tab-btn:hover{background:rgba(56,189,248,.08);color:#38bdf8}
+        .tab-btn.active{background:linear-gradient(135deg,rgba(56,189,248,.18),rgba(129,140,248,.18));border-color:rgba(56,189,248,.4);color:#38bdf8;box-shadow:0 4px 20px rgba(56,189,248,.2)}
+        .tab-badge{background:#ef4444;color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:800}
         .tab-badge.zero{background:rgba(255,255,255,.08);color:#94a3b8}
 
         .tab-content{display:none}
         .tab-content.active{display:block}
 
         /* Panel Box & Tables */
-        .panel-box{background:rgba(15,23,42,.75);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.6);margin-bottom:20px;backdrop-filter:blur(10px)}
-        .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
-        .panel-title{font-size:14px;color:#38bdf8;font-weight:700;display:flex;align-items:center;gap:8px}
-        .search-box{position:relative;flex:1;max-width:300px}
-        .search-box input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px 8px 34px;color:#fff;font-size:12px;outline:none;transition:border-color .2s}
-        .search-box input:focus{border-color:#38bdf8;box-shadow:0 0 8px rgba(56,189,248,.2)}
-        .search-box i{position:absolute;top:10px;left:12px;color:#94a3b8;font-size:12px}
+        .panel-box{background:linear-gradient(135deg,rgba(15,23,42,.85),rgba(15,23,42,.65));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.7);margin-bottom:24px;backdrop-filter:blur(12px)}
+        .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:16px}
+        .panel-title{font-size:15px;color:#38bdf8;font-weight:800;display:flex;align-items:center;gap:10px}
+        
+        .search-box{position:relative;flex:1;max-width:320px}
+        .search-box input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 14px 10px 38px;color:#fff;font-size:12px;outline:none;transition:all .3s}
+        .search-box input:focus{border-color:#38bdf8;box-shadow:0 0 12px rgba(56,189,248,.25);background:rgba(255,255,255,.07)}
+        .search-box i{position:absolute;top:12px;left:14px;color:#94a3b8;font-size:13px}
 
         .table-responsive{width:100%;overflow-x:auto}
         table{width:100%;border-collapse:collapse;text-align:right;font-size:11px}
-        th,td{padding:10px 10px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}
-        th{color:#94a3b8;font-weight:600;background:rgba(255,255,255,.02);font-size:11px}
+        th,td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}
+        th{color:#94a3b8;font-weight:700;background:rgba(255,255,255,.03);font-size:11px;letter-spacing:.5px}
         td{color:#cbd5e1}
-        tbody tr:hover{background:rgba(255,255,255,.02)}
+        tbody tr{transition:background .2s}
+        tbody tr:hover{background:rgba(56,189,248,.04)}
 
-        .badge-id{color:#38bdf8;font-weight:700;font-family:monospace;cursor:pointer;padding:3px 8px;background:rgba(56,189,248,.1);border-radius:6px;border:1px solid rgba(56,189,248,.25);font-size:11px}
+        .badge-id{color:#38bdf8;font-weight:800;font-family:monospace;cursor:pointer;padding:4px 10px;background:rgba(56,189,248,.12);border-radius:8px;border:1px solid rgba(56,189,248,.3);font-size:11px;transition:all .2s}
+        .badge-id:hover{background:rgba(56,189,248,.25)}
         
         /* Buttons & Actions */
-        .btn-action{padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;border:none;display:inline-flex;align-items:center;gap:4px;transition:opacity .2s}
-        .btn-action:hover{opacity:.85}
+        .btn-action{padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700;border:none;display:inline-flex;align-items:center;gap:6px;transition:all .25s}
+        .btn-action:hover{transform:translateY(-1px);opacity:.9}
         .btn-edit{background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);color:#38bdf8}
         .btn-approve{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22c55e}
         .btn-reject{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444}
-        .btn-ban{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.4);color:#f87171}
+        .btn-ban{background:rgba(239,68,68,.18);border:1px solid rgba(239,68,68,.35);color:#f87171}
 
         /* Modals */
-        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(2,6,23,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
         .modal.show{display:flex}
-        .modal-content{background:#0f172a;border:1px solid rgba(56,189,248,.3);border-radius:14px;width:100%;max-width:420px;padding:20px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,.9)}
-        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:#38bdf8;font-weight:700;font-size:13px}
-        .modal-close{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:16px}
-        .form-group{margin-bottom:12px}
-        .form-group label{display:block;font-size:10px;color:#94a3b8;margin-bottom:4px}
-        .form-group input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-size:11px;outline:none}
-        .btn-save{width:100%;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;border:none;padding:10px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:10px;font-size:12px}
-        .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px}
+        .modal-content{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(56,189,248,.35);border-radius:20px;width:100%;max-width:440px;padding:24px;max-height:90vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.9)}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;color:#38bdf8;font-weight:800;font-size:14px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:12px}
+        .modal-close{background:rgba(255,255,255,.05);border:none;color:#94a3b8;cursor:pointer;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s}
+        .modal-close:hover{background:rgba(239,68,68,.2);color:#ef4444}
+        
+        .form-group{margin-bottom:14px}
+        .form-group label{display:block;font-size:11px;color:#94a3b8;margin-bottom:6px;font-weight:600}
+        .form-group input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 14px;color:#fff;font-size:12px;outline:none;transition:all .3s}
+        .form-group input:focus{border-color:#38bdf8;box-shadow:0 0 12px rgba(56,189,248,.25)}
+        
+        .btn-save{width:100%;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:800;cursor:pointer;margin-top:14px;font-size:13px;box-shadow:0 4px 15px rgba(2,132,199,.3);transition:all .3s}
+        .btn-save:hover{background:linear-gradient(135deg,#0369a1,#0284c7);transform:translateY(-1px)}
+        
+        .detail-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12px}
         .detail-row span:first-child{color:#94a3b8}
-        .detail-row span:last-child{color:#f8fafc;font-weight:600}
-        footer{text-align:center;padding:16px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);margin-top:auto}
+        .detail-row span:last-child{color:#f8fafc;font-weight:700}
+        
+        footer{text-align:center;padding:20px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);margin-top:auto}
     </style>
 </head>
 <body>
@@ -110,7 +124,7 @@
         <div class="admin-tabs">
             <button class="tab-btn active" onclick="switchTab('t-active', this)"><i class="fas fa-user-check"></i> کاربران فعال</button>
             <button class="tab-btn" onclick="switchTab('t-pending', this)"><i class="fas fa-user-clock"></i> در انتظار احراز</button>
-            <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> لغو شده</button>
+            <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> غیرفعال / لغو شده</button>
             <button class="tab-btn" onclick="switchTab('t-withdraw', this)"><i class="fas fa-money-bill-transfer"></i> برداشت‌ها <span class="tab-badge zero" id="w-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-reqs', this)"><i class="fas fa-bell"></i> درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
         </div>
@@ -172,7 +186,7 @@
         <div id="t-banned" class="tab-content">
             <div class="panel-box">
                 <div class="panel-header">
-                    <div class="panel-title"><i class="fas fa-user-slash"></i> حساب‌های لغو شده</div>
+                    <div class="panel-title"><i class="fas fa-user-slash"></i> حساب‌های غیرفعال یا لغو شده</div>
                     <div class="search-box"><input type="text" id="s-ban" placeholder="جستجو..."><i class="fas fa-search"></i></div>
                 </div>
                 <div class="table-responsive">
@@ -229,7 +243,7 @@
         <div class="modal-content">
             <div class="modal-header"><span>اطلاعات کامل کاربر</span><button class="modal-close" onclick="closeModal('m-details')"><i class="fas fa-times"></i></button></div>
             <div id="user-details-body"></div>
-            <div id="modal-action-btn" style="margin-top:12px"></div>
+            <div id="modal-action-btn" style="margin-top:16px"></div>
         </div>
     </div>
 
@@ -302,7 +316,8 @@
                     let regStr=formatDate(u.createdAt);
                     let search=`${idCode} ${nameStr} ${emailStr} ${phoneStr} ${regStr}`.toLowerCase();
                     
-                    let isBanned=(u.status==='cancelled'||u.status==='banned'||u.isBanned===true);
+                    // بررسی جامع وضعیت غیرفعال، لغو شده یا مسدود بودن
+                    let isBanned=(u.status==='cancelled'||u.status==='banned'||u.status==='inactive'||u.isBanned===true||u.active===false);
                     let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage||u.adminApprovalStatus==='pending');
 
                     if(u.pendingWithdrawal && u.pendingWithdrawal.status === 'pending'){
@@ -337,7 +352,7 @@
                         cAct++;
                         rowHtml+=`<td>${regStr}</td>
                         <td>
-                            <button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)">لغو کاربر</button>
+                            <button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)"><i class="fas fa-user-slash"></i> غیرفعال کردن</button>
                         </td></tr>`;
                         tbAct.innerHTML+=rowHtml;
                     }
@@ -354,9 +369,9 @@
                 let wBadge=document.getElementById('w-badge');
                 wBadge.innerText=totW; wBadge.className=totW>0?'tab-badge':'tab-badge zero';
 
-                if(cAct===0) tbAct.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربر فعالی یافت نشد</td></tr>`;
-                if(cPend===0) tbPend.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربر معلقی یافت نشد</td></tr>`;
-                if(cBan===0) tbBan.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربر لغو شده‌ای وجود ندارد</td></tr>`;
+                if(cAct===0) tbAct.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر فعالی یافت نشد</td></tr>`;
+                if(cPend===0) tbPend.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر معلقی یافت نشد</td></tr>`;
+                if(cBan===0) tbBan.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر غیرفعالی وجود ندارد</td></tr>`;
 
                 renderWithdrawals(withdrawList);
                 renderReqs(reqList);
@@ -378,13 +393,13 @@
                 <div class="detail-row"><span>وضعیت تایید:</span><span>${u.adminApprovalStatus||'نامشخص'}</span></div>
                 <div class="detail-row"><span>تاریخ ثبت‌نام:</span><span>${regDate}</span></div>
             `;
-            document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:8px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات</button>`;
+            document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:10px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات</button>`;
             document.getElementById('m-details').classList.add('show');
         };
 
         function renderWithdrawals(list){
             let box=document.getElementById('tb-withdraw');
-            if(list.length===0){box.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست برداشتی وجود ندارد.</td></tr>`;return;}
+            if(list.length===0){box.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:24px;color:#94a3b8">هیچ درخواست برداشتی وجود ندارد.</td></tr>`;return;}
             let html='';
             list.forEach(i=>{
                 let amt = Number(i.data.amount||0);
@@ -394,8 +409,8 @@
                     <td style="color:#22c55e;font-weight:bold">$${amt.toLocaleString()}</td>
                     <td dir="ltr">${i.data.address||i.data.wallet||'-'}</td>
                     <td>
-                        <button class="btn-action btn-approve" onclick="handleWithdraw('${i.uid}', true, ${amt})"><i class="fas fa-check"></i></button>
-                        <button class="btn-action btn-reject" onclick="handleWithdraw('${i.uid}', false, ${amt})"><i class="fas fa-times"></i></button>
+                        <button class="btn-action btn-approve" onclick="handleWithdraw('${i.uid}', true, ${amt})"><i class="fas fa-check"></i> تایید</button>
+                        <button class="btn-action btn-reject" onclick="handleWithdraw('${i.uid}', false, ${amt})"><i class="fas fa-times"></i> رد</button>
                     </td>
                 </tr>`;
             });
@@ -418,7 +433,7 @@
 
         function renderReqs(list){
             let box=document.getElementById('req-container');
-            if(list.length===0){box.innerHTML=`<div style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست معلقی وجود ندارد.</div>`;return;}
+            if(list.length===0){box.innerHTML=`<div style="text-align:center;padding:24px;color:#94a3b8">هیچ درخواست معلقی وجود ندارد.</div>`;return;}
             let html=`<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام کاربر</th><th>ایمیل جدید</th><th>تاریخ</th><th>عملیات</th></tr></thead><tbody>`;
             list.forEach(i=>{
                 let u=i.u, uid=i.uid, idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
@@ -428,7 +443,7 @@
         }
 
         window.toggleBan=async(uid,ban)=>{
-            if(!confirm(ban?'مسدودسازی این حساب؟':'فعال‌سازی مجدد حساب؟'))return;
+            if(!confirm(ban?'غیرفعال‌سازی این حساب؟':'فعال‌سازی مجدد حساب؟'))return;
             await updateDoc(doc(db,"users",uid),{status:ban?"cancelled":"active",isBanned:ban});
             loadData();
         };
@@ -450,7 +465,6 @@
         document.getElementById('f-edit').onsubmit=async e=>{
             e.preventDefault();
             const targetUid = document.getElementById('e-uid').value;
-            console.log("در حال ارسال اطلاعات ویرایش برای کاربر:", targetUid);
             try {
                 await updateDoc(doc(db,"users",targetUid),{
                     fullname: document.getElementById('e-name').value,
@@ -459,11 +473,9 @@
                     balance: parseFloat(document.getElementById('e-bal').value)||0,
                     platformProfit: parseFloat(document.getElementById('e-profit').value)||0
                 });
-                console.log("با موفقیت در فایربیس آپدیت شد!");
                 closeModal('m-edit'); 
                 loadData();
             } catch(err) {
-                console.error("خطا در آپدیت فایربیس:", err);
                 alert("خطا در ذخیره اطلاعات: " + err.message);
             }
         };
