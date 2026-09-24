@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zenix - اعضای تیم</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="stylesheet" href="style.css"><style>.wrap{position:relative!important;}[dir="ltr"] .wrap .menu{right:0!important;left:auto!important;}[dir="rtl"] .wrap .menu{left:0!important;right:auto!important;}.team-container{max-height:75vh;overflow-y:auto;padding-right:4px;padding-left:4px;display:flex;flex-direction:column;gap:12px;}.team-container::-webkit-scrollbar{width:5px;}.team-container::-webkit-scrollbar-thumb{background:rgba(56,189,248,0.3);border-radius:10px;}.member-card{background:linear-gradient(135deg,rgba(15,23,42,0.9),rgba(30,41,59,0.9));border:1px solid rgba(56,189,248,0.25);border-radius:14px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,0.3);transition:all 0.3s ease;display:flex;flex-direction:column;gap:12px;}.member-card:hover{border-color:rgba(56,189,248,0.6);box-shadow:0 6px 25px rgba(56,189,248,0.15);}.member-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;}.member-info{display:flex;flex-direction:column;gap:3px;}.member-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}.stat-box{background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;}.member-dates{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#94a3b8;background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:6px;}</style></head><body><header><div class="logo"><h2>ZENIX</h2></div><div class="hr"><div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button><div class="menu" id="bell-menu"><div style="padding:8px 12px;font-size:15px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold" data-i18n="adminMsg">پیام مدیریت</div><div style="padding:10px 12px;font-size:15px;color:#cbd5e1" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div></div></div><a href="support.html" class="lb"><i class="fas fa-headset"></i></a><div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe"></i></button><div class="menu" id="lang-menu"><div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div><div class="mi" data-lang="fr">Français</div><div class="mi" data-lang="de">Deutsch</div><div class="mi" data-lang="es">Español</div><div class="mi" data-lang="ru">Русский</div></div></div><div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button><div class="menu" id="nav-menu"><a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span data-i18n="home">صفحه اصلی</span></a><a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a><a href="deposit.html" class="mi"><i class="fas fa-arrow-up-right-dots"></i><span data-i18n="deposit">واریز</span></a><a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span data-i18n="receive">برداشت</span></a><a href="team.html" class="mi" style="color:#38bdf8"><i class="fas fa-users"></i><span data-i18n="team">تیم من</span></a><a href="transactions.html" class="mi"><i class="fas fa-history"></i><span data-i18n="transactions">تراکنش</span></a><a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span data-i18n="profile">پروفایل</span></a><a href="support.html" class="mi"><i class="fas fa-headset"></i><span data-i18n="support">پشتیبانی</span></a><a href="login.html" class="mi" style="color:#ef4444"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a></div></div></div></header><div class="c"><div class="wel"><div><h1 id="page-title" style="font-size:22px"></h1><p id="page-desc" style="font-size:15px"></p></div></div><div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:16px;margin-top:12px"><div id="team-members-list" class="team-container"></div></div></div><footer><p>&copy; 2026 Zenix</p></footer><script src="script.js"></script><script type="module">
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zenix - اعضای تیم</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="stylesheet" href="style.css"><style>.wrap{position:relative!important;}[dir="ltr"] .wrap .menu{right:0!important;left:auto!important;}[dir="rtl"] .wrap .menu{left:0!important;right:auto!important;}.team-container{max-height:75vh;overflow-y:auto;padding:4px;display:flex;flex-direction:column;gap:12px;}.team-container::-webkit-scrollbar{width:5px;}.team-container::-webkit-scrollbar-thumb{background:rgba(56,189,248,0.3);border-radius:10px;}.member-card{background:linear-gradient(135deg,rgba(15,23,42,0.9),rgba(30,41,59,0.9));border:1px solid rgba(56,189,248,0.25);border-radius:14px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,0.3);display:flex;flex-direction:column;gap:12px;}.member-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px;}.member-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}.stat-box{background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;}.member-dates{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#94a3b8;background:rgba(255,255,255,0.02);padding:8px 12px;border-radius:8px;gap:10px;flex-wrap:wrap;}</style></head><body><header><div class="logo"><h2>ZENIX</h2></div><div class="hr"><div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button><div class="menu" id="bell-menu"><div style="padding:8px 12px;font-size:15px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold" data-i18n="adminMsg">پیام مدیریت</div><div style="padding:10px 12px;font-size:15px;color:#cbd5e1" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div></div></div><a href="support.html" class="lb"><i class="fas fa-headset"></i></a><div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe"></i></button><div class="menu" id="lang-menu"><div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div><div class="mi" data-lang="fr">Français</div><div class="mi" data-lang="de">Deutsch</div><div class="mi" data-lang="es">Español</div><div class="mi" data-lang="ru">Русский</div></div></div><div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button><div class="menu" id="nav-menu"><a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span data-i18n="home">صفحه اصلی</span></a><a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a><a href="deposit.html" class="mi"><i class="fas fa-arrow-up-right-dots"></i><span data-i18n="deposit">واریز</span></a><a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span data-i18n="receive">برداشت</span></a><a href="team.html" class="mi" style="color:#38bdf8"><i class="fas fa-users"></i><span data-i18n="team">تیم من</span></a><a href="transactions.html" class="mi"><i class="fas fa-history"></i><span data-i18n="transactions">تراکنش</span></a><a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span data-i18n="profile">پروفایل</span></a><a href="support.html" class="mi"><i class="fas fa-headset"></i><span data-i18n="support">پشتیبانی</span></a><a href="login.html" class="mi" style="color:#ef4444"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a></div></div></div></header><div class="c"><div class="wel"><div><h1 id="page-title" style="font-size:22px"></h1><p id="page-desc" style="font-size:15px"></p></div></div><div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:16px;margin-top:12px"><div id="team-members-list" class="team-container"></div></div></div><footer><p>&copy; 2026 Zenix</p></footer><script src="script.js"></script><script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import{getFirestore,doc,getDoc,collection,getDocs,query,where}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -20,6 +20,15 @@ ru:{dir:'ltr',adminMsg:'Сообщение админа',welcomeText:'Добро
 const p=new URLSearchParams(location.search),lvl=p.get('level')||'1';
 const fmt=v=>(v%1===0?v:Number(v).toFixed(2))+' $';
 
+function formatDate(val){
+    if(!val) return '---';
+    if(val.seconds){
+        const date=new Date(val.seconds*1000);
+        return date.toISOString().replace('T',' ').substring(0,16);
+    }
+    return val;
+}
+
 window.setLang=function(lang){
     const t=L[lang]||L.fa;
     document.documentElement.dir=t.dir;
@@ -40,25 +49,25 @@ function renderList(lst, t){
     document.getElementById('team-members-list').innerHTML=lst.length?lst.map(m=>`
     <div class="member-card">
         <div class="member-top">
-            <div class="member-info">
+            <div style="display:flex;flex-direction:column;gap:3px;">
                 <div style="color:#38bdf8;font-weight:bold;font-size:16px;display:flex;align-items:center;gap:6px;"><i class="fas fa-user-circle"></i> ${m.n}</div>
                 <div style="font-size:12px;color:#94a3b8;direction:ltr;text-align:right;">ID: ${m.id}</div>
             </div>
-            <div style="background:rgba(56,189,248,0.1);color:#38bdf8;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:bold;">نسل ${lvl}</div>
+            <div style="background:rgba(56,189,248,0.1);color:#38bdf8;padding:4px 10px;border-radius:6px;font-size:12px;font-weight:bold;">نسل ${lvl}</div>
         </div>
         <div class="member-stats">
             <div class="stat-box">
-                <span style="font-size:12px;color:#94a3b8;">${t.depositLbl}</span>
-                <span style="color:#22c55e;font-weight:bold;font-size:14px;direction:ltr;">${fmt(m.v)}</span>
+                <span style="font-size:13px;color:#94a3b8;">${t.depositLbl}</span>
+                <span style="color:#22c55e;font-weight:bold;font-size:15px;direction:ltr;">${fmt(m.v)}</span>
             </div>
             <div class="stat-box">
-                <span style="font-size:12px;color:#94a3b8;">${t.receiveLbl}</span>
-                <span style="color:#ef4444;font-weight:bold;font-size:14px;direction:ltr;">${fmt(m.w)}</span>
+                <span style="font-size:13px;color:#94a3b8;">${t.receiveLbl}</span>
+                <span style="color:#ef4444;font-weight:bold;font-size:15px;direction:ltr;">${fmt(m.w)}</span>
             </div>
         </div>
         <div class="member-dates">
-            <div><i class="fas fa-user-plus" style="margin-left:4px;"></i> ${t.reg} <span style="color:#f8fafc;direction:ltr;display:inline-block;">${m.regDate}</span></div>
-            <div><i class="fas fa-clock" style="margin-left:4px;"></i> ${t.dep} <span style="color:#f8fafc;direction:ltr;display:inline-block;">${m.depDate}</span></div>
+            <div><i class="fas fa-user-plus" style="margin-left:4px;color:#38bdf8;"></i> ${t.reg} <span style="color:#f8fafc;direction:ltr;display:inline-block;">${m.regDate}</span></div>
+            <div><i class="fas fa-clock" style="margin-left:4px;color:#eab308;"></i> ${t.dep} <span style="color:#f8fafc;direction:ltr;display:inline-block;">${m.depDate}</span></div>
         </div>
     </div>`).join(''):`<div style="text-align:center;color:#94a3b8;padding:25px;font-size:15px;"><i class="fas fa-info-circle"></i> ${t.nf}</div>`;
 }
@@ -79,12 +88,12 @@ onAuthStateChanged(auth,async(user)=>{
                     const u=d.data();
                     if(lvl==='1'){
                         memberList.push({
-                            id:d.id.substring(0,8)+'...',
+                            id:d.id,
                             n:u.username||u.email?.split('@')[0]||'کاربر',
-                            regDate:u.createdAt||'---',
+                            regDate:formatDate(u.createdAt),
                             v:u.totalDeposit||0,
                             w:u.totalWithdraw||0,
-                            depDate:u.lastDepositDate||'---'
+                            depDate:formatDate(u.lastDepositDate)
                         });
                     }
                     if(u.referralCode) codes1.push(u.referralCode);
@@ -96,12 +105,12 @@ onAuthStateChanged(auth,async(user)=>{
                     s2.forEach(d=>{
                         const u=d.data();
                         memberList.push({
-                            id:d.id.substring(0,8)+'...',
+                            id:d.id,
                             n:u.username||u.email?.split('@')[0]||'کاربر',
-                            regDate:u.createdAt||'---',
+                            regDate:formatDate(u.createdAt),
                             v:u.totalDeposit||0,
                             w:u.totalWithdraw||0,
-                            depDate:u.lastDepositDate||'---'
+                            depDate:formatDate(u.lastDepositDate)
                         });
                     });
                 }else if(lvl==='3' && codes1.length>0){
@@ -115,12 +124,12 @@ onAuthStateChanged(auth,async(user)=>{
                         s3.forEach(d=>{
                             const u=d.data();
                             memberList.push({
-                                id:d.id.substring(0,8)+'...',
+                                id:d.id,
                                 n:u.username||u.email?.split('@')[0]||'کاربر',
-                                regDate:u.createdAt||'---',
+                                regDate:formatDate(u.createdAt),
                                 v:u.totalDeposit||0,
                                 w:u.totalWithdraw||0,
-                                depDate:u.lastDepositDate||'---'
+                                depDate:formatDate(u.lastDepositDate)
                             });
                         });
                     }
