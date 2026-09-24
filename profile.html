@@ -96,7 +96,10 @@ try{
 await updateDoc(doc(db,"users",currentUser.uid),{phone:`${code}${number}`});
 const msg=document.getElementById('phone-success');msg.style.display='block';
 pInput.setAttribute('readonly','true');document.getElementById('c-select-btn').setAttribute('disabled','true');document.getElementById('c-select-btn').style.opacity='0.7';document.getElementById('save-phone-btn').style.display='none';
-setTimeout(()=>msg.style.display='none',3000);
+setTimeout(()=>{
+msg.style.display='none';
+window.location.href = 'dashboard.html';
+},1500);
 }catch(e){}
 };
 
