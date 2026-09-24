@@ -119,8 +119,14 @@ function toggleM(m, e) {
     m.classList.toggle('show');
 }
 
-if (mBtn) mBtn.onclick = e => toggleM(nMenu, e);
-if (lBtn) lBtn.onclick = e => toggleM(lMenu, e);
+if (mBtn) {
+    mBtn.onclick = e => toggleM(nMenu, e);
+    mBtn.ontouchstart = e => { e.preventDefault(); toggleM(nMenu, e); };
+}
+if (lBtn) {
+    lBtn.onclick = e => toggleM(lMenu, e);
+    lBtn.ontouchstart = e => { e.preventDefault(); toggleM(lMenu, e); };
+}
 
 document.onclick = e => {
     if (!e.target.closest('.menu') && !e.target.closest('#menu-btn') && !e.target.closest('#lang-btn')) {
