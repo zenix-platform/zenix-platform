@@ -187,7 +187,7 @@ const cryptoPool = [
     {id:'xrp', name:'XRP', symbol:'XRP', price:1.45, cls:'fas fa-bolt', color:'#23292f', change:4.20},
     {id:'doge', name:'Dogecoin', symbol:'DOGE', price:0.38, cls:'fas fa-dog', color:'#c2a633', change:5.65},
     {id:'ada', name:'Cardano', symbol:'ADA', price:0.75, cls:'fas fa-circle-nodes', color:'#0033ad', change:1.10},
-    {id:'avax', name:'Avalanche', symbol:'AVAX', price:32.40, cls:'fas fa-mountain', color:'#e84142', change:2.30}
+    {id:'avax', name:'Avalanche', symbol:'AVAX', price:32.40, cls:'fas fa-mountain', color:#e84142', change:2.30}
 ];
 
 function initCryptoTicker() {
