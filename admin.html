@@ -58,6 +58,7 @@
 
         .badge-id{color:#38bdf8;font-weight:800;font-family:monospace;cursor:pointer;padding:4px 10px;background:rgba(56,189,248,.12);border-radius:8px;border:1px solid rgba(56,189,248,.3);font-size:11px;transition:all .2s}
         .badge-id:hover{background:rgba(56,189,248,.25)}
+        .ref-tag{background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);color:#c084fc;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:700;font-family:monospace}
         
         /* Buttons & Actions */
         .btn-action{padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700;border:none;display:inline-flex;align-items:center;gap:6px;transition:all .25s}
@@ -144,6 +145,7 @@
                                 <th>نام و نام خانوادگی</th>
                                 <th>ایمیل</th>
                                 <th>تلفن</th>
+                                <th>معرف (کد دعوت)</th>
                                 <th>موجودی</th>
                                 <th>سود از پلتفرم</th>
                                 <th>تاریخ ثبت‌نام</th>
@@ -171,6 +173,7 @@
                                 <th>نام و نام خانوادگی</th>
                                 <th>ایمیل</th>
                                 <th>تلفن</th>
+                                <th>معرف</th>
                                 <th>موجودی</th>
                                 <th>سود از پلتفرم</th>
                                 <th>عملیات</th>
@@ -197,6 +200,7 @@
                                 <th>نام و نام خانوادگی</th>
                                 <th>ایمیل</th>
                                 <th>تلفن</th>
+                                <th>معرف</th>
                                 <th>موجودی</th>
                                 <th>سود از پلتفرم</th>
                                 <th>عملیات</th>
@@ -271,7 +275,7 @@
         
         const db=getFirestore(initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"}));
         const auth=getAuth();
-        let uMap={},tUid=null;
+        let uMap={},codeToNameMap={},tUid=null;
 
         window.switchTab=(id,btn)=>{
             document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
@@ -304,9 +308,18 @@
                 const snap=await getDocs(collection(db,"users"));
                 let tbAct=document.getElementById('tb-act'), tbPend=document.getElementById('tb-pend'), tbBan=document.getElementById('tb-ban'), tbW=document.getElementById('tb-withdraw');
                 tbAct.innerHTML=""; tbPend.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML="";
-                uMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[], withdrawList=[];
+                uMap={}; codeToNameMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[], withdrawList=[];
                 let cAct=0, cPend=0, cBan=0;
 
+                // گام اول: ساخت نقشه کد معرف به نام کاربر
+                snap.forEach(d=>{
+                    let u=d.data(), uid=d.id;
+                    if(u.referralCode){
+                        codeToNameMap[u.referralCode] = getName(u);
+                    }
+                });
+
+                // گام دوم: پردازش و نمایش کاربران
                 snap.forEach(d=>{
                     let u=d.data(), uid=d.id; uMap[uid]=u; totU++; totB+=Number(u.balance||0);
                     let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
@@ -314,9 +327,13 @@
                     let emailStr=u.email||'-';
                     let phoneStr=u.phone||'-';
                     let regStr=formatDate(u.createdAt);
-                    let search=`${idCode} ${nameStr} ${emailStr} ${phoneStr} ${regStr}`.toLowerCase();
+
+                    // پیدا کردن نام معرف بر اساس کد referredBy
+                    let refCode = u.referredBy || u.refCode || '-';
+                    let referrerName = (refCode !== '-' && codeToNameMap[refCode]) ? `${codeToNameMap[refCode]} (${refCode})` : refCode;
+
+                    let search=`${idCode} ${nameStr} ${emailStr} ${phoneStr} ${refCode} ${regStr}`.toLowerCase();
                     
-                    // بررسی جامع وضعیت غیرفعال، لغو شده یا مسدود بودن
                     let isBanned=(u.status==='cancelled'||u.status==='banned'||u.status==='inactive'||u.isBanned===true||u.active===false);
                     let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage||u.adminApprovalStatus==='pending');
 
@@ -327,12 +344,14 @@
 
                     let balStr = `$${Number(u.balance||0).toLocaleString()}`;
                     let profitStr = `$${Number(u.platformProfit || u.profit || 0).toLocaleString()}`;
+                    let refBadgeHtml = refCode !== '-' ? `<span class="ref-tag">${referrerName}</span>` : `<span style="color:#64748b">بدون معرف</span>`;
 
                     let rowHtml=`<tr data-s="${search}">
                         <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
                         <td><b>${nameStr}</b></td>
                         <td>${emailStr}</td>
                         <td dir="ltr" style="text-align:right">${phoneStr}</td>
+                        <td>${refBadgeHtml}</td>
                         <td style="color:#22c55e;font-weight:bold">${balStr}</td>
                         <td style="color:#38bdf8;font-weight:bold">${profitStr}</td>`;
 
@@ -369,9 +388,9 @@
                 let wBadge=document.getElementById('w-badge');
                 wBadge.innerText=totW; wBadge.className=totW>0?'tab-badge':'tab-badge zero';
 
-                if(cAct===0) tbAct.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر فعالی یافت نشد</td></tr>`;
-                if(cPend===0) tbPend.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر معلقی یافت نشد</td></tr>`;
-                if(cBan===0) tbBan.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر غیرفعالی وجود ندارد</td></tr>`;
+                if(cAct===0) tbAct.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر فعالی یافت نشد</td></tr>`;
+                if(cPend===0) tbPend.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر معلقی یافت نشد</td></tr>`;
+                if(cBan===0) tbBan.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:24px;color:#94a3b8">هیچ کاربر غیرفعالی وجود ندارد</td></tr>`;
 
                 renderWithdrawals(withdrawList);
                 renderReqs(reqList);
@@ -383,11 +402,16 @@
         window.openDetails=uid=>{
             let u=uMap[uid], idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
             let regDate=formatDate(u.createdAt);
+            let refCode = u.referredBy || u.refCode || 'ندارد';
+            let referrerDisplay = (refCode !== 'ندارد' && codeToNameMap[refCode]) ? `${codeToNameMap[refCode]} (${refCode})` : refCode;
+
             document.getElementById('user-details-body').innerHTML=`
                 <div class="detail-row"><span>شناسه:</span><span>${idCode}</span></div>
                 <div class="detail-row"><span>نام و نام خانوادگی:</span><span>${getName(u)}</span></div>
                 <div class="detail-row"><span>ایمیل:</span><span>${u.email||'-'}</span></div>
                 <div class="detail-row"><span>تلفن:</span><span dir="ltr">${u.phone||'-'}</span></div>
+                <div class="detail-row"><span>دعوت‌شده توسط (معرف):</span><span style="color:#c084fc">${referrerDisplay}</span></div>
+                <div class="detail-row"><span>کد دعوت خودش:</span><span style="color:#38bdf8">${u.referralCode||'ندارد'}</span></div>
                 <div class="detail-row"><span>موجودی:</span><span>$${Number(u.balance||0).toLocaleString()}</span></div>
                 <div class="detail-row"><span>سود از پلتفرم:</span><span>$${Number(u.platformProfit || u.profit || 0).toLocaleString()}</span></div>
                 <div class="detail-row"><span>وضعیت تایید:</span><span>${u.adminApprovalStatus||'نامشخص'}</span></div>
