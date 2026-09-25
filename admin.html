@@ -68,7 +68,7 @@
         .modal-close{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:16px}
         .form-group{margin-bottom:12px}
         .form-group label{display:block;font-size:10px;color:#94a3b8;margin-bottom:4px}
-        .form-group input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-size:11px;outline:none}
+        .form-group input, .form-group textarea, .form-group select{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-size:11px;outline:none}
         .btn-save{width:100%;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;border:none;padding:10px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:10px;font-size:12px}
         .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px}
         .detail-row span:first-child{color:#94a3b8}
@@ -113,6 +113,7 @@
             <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> لغو شده</button>
             <button class="tab-btn" onclick="switchTab('t-withdraw', this)"><i class="fas fa-money-bill-transfer"></i> برداشت‌ها <span class="tab-badge zero" id="w-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-reqs', this)"><i class="fas fa-bell"></i> درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
+            <button class="tab-btn" onclick="switchTab('t-messages', this)"><i class="fas fa-paper-plane"></i> ارسال پیام</button>
         </div>
 
         <!-- Tab 1: Active Users Table -->
@@ -222,6 +223,36 @@
                 <div id="req-container"></div>
             </div>
         </div>
+
+        <!-- Tab 6: Messaging Center -->
+        <div id="t-messages" class="tab-content">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:20px;">
+                <!-- Broadcast Form -->
+                <div class="panel-box" style="margin-bottom:0;">
+                    <div class="panel-header"><div class="panel-title"><i class="fas fa-bullhorn"></i> ارسال پیام همگانی به همه کاربران</div></div>
+                    <form id="f-broadcast">
+                        <div class="form-group"><label>موضوع پیام</label><input type="text" id="bc-title" placeholder="موضوع..." required></div>
+                        <div class="form-group"><label>متن پیام</label><textarea id="bc-msg" style="height:110px;resize:vertical;" placeholder="متن پیام همگانی..." required></textarea></div>
+                        <button type="submit" class="btn-save" style="background:linear-gradient(135deg,#0284c7,#0369a1)"><i class="fas fa-paper-plane"></i> ارسال به تمام کاربران</button>
+                    </form>
+                </div>
+                <!-- Single Message Form -->
+                <div class="panel-box" style="margin-bottom:0;">
+                    <div class="panel-header"><div class="panel-title"><i class="fas fa-user-pen"></i> ارسال پیام تکی به یک کاربر</div></div>
+                    <form id="f-single-msg">
+                        <div class="form-group">
+                            <label>انتخاب کاربر</label>
+                            <select id="sm-uid" required style="background:#0f172a">
+                                <option value="">ابتدا یک کاربر را انتخاب کنید...</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>موضوع پیام</label><input type="text" id="sm-title" placeholder="موضوع..." required></div>
+                        <div class="form-group"><label>متن پیام</label><textarea id="sm-msg" style="height:70px;resize:vertical;" placeholder="متن پیام..." required></textarea></div>
+                        <button type="submit" class="btn-save" style="background:linear-gradient(135deg,#059669,#047857)"><i class="fas fa-paper-plane"></i> ارسال پیام به کاربر</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modals -->
@@ -253,7 +284,7 @@
     <script type="module">
         import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import{getFirestore,collection,getDocs,doc,updateDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import{getFirestore,collection,getDocs,doc,updateDoc,addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         
         const db=getFirestore(initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"}));
         const auth=getAuth();
@@ -293,6 +324,9 @@
                 uMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[], withdrawList=[];
                 let cAct=0, cPend=0, cBan=0;
 
+                let smSelect = document.getElementById('sm-uid');
+                if(smSelect) smSelect.innerHTML = '<option value="">انتخاب کاربر...</option>';
+
                 snap.forEach(d=>{
                     let u=d.data(), uid=d.id; uMap[uid]=u; totU++; totB+=Number(u.balance||0);
                     let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
@@ -302,6 +336,10 @@
                     let regStr=formatDate(u.createdAt);
                     let search=`${idCode} ${nameStr} ${emailStr} ${phoneStr} ${regStr}`.toLowerCase();
                     
+                    if(smSelect){
+                        smSelect.innerHTML += `<option value="${uid}">${nameStr} (${idCode} - ${emailStr})</option>`;
+                    }
+
                     let isBanned=(u.status==='cancelled'||u.status==='banned'||u.isBanned===true);
                     let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage||u.adminApprovalStatus==='pending');
 
@@ -378,7 +416,12 @@
                 <div class="detail-row"><span>وضعیت تایید:</span><span>${u.adminApprovalStatus||'نامشخص'}</span></div>
                 <div class="detail-row"><span>تاریخ ثبت‌نام:</span><span>${regDate}</span></div>
             `;
-            document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:8px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات</button>`;
+            document.getElementById('modal-action-btn').innerHTML=`
+                <div style="display:flex;gap:8px;">
+                    <button class="btn-action btn-edit" style="flex:1;justify-content:center;padding:8px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات</button>
+                    <button class="btn-action btn-approve" style="flex:1;justify-content:center;padding:8px" onclick="closeModal('m-details');switchTab('t-messages', document.querySelector('.admin-tabs button:last-child'));document.getElementById('sm-uid').value='${uid}';"><i class="fas fa-paper-plane"></i> ارسال پیام</button>
+                </div>
+            `;
             document.getElementById('m-details').classList.add('show');
         };
 
@@ -457,6 +500,63 @@
                 platformProfit:parseFloat(document.getElementById('e-profit').value)||0
             });
             closeModal('m-edit'); loadData();
+        };
+
+        // Broadcast Message Handler
+        document.getElementById('f-broadcast').onsubmit=async e=>{
+            e.preventDefault();
+            let title = document.getElementById('bc-title').value;
+            let message = document.getElementById('bc-msg').value;
+            let userKeys = Object.keys(uMap);
+            if(userKeys.length === 0){ alert('هیچ کاربری یافت نشد.'); return; }
+            if(!confirm(`ارسال این پیام به تمام کاربران (${userKeys.length} کاربر)؟`)) return;
+            
+            try {
+                let count = 0;
+                for(let uid of userKeys){
+                    await addDoc(collection(db, "notifications"), {
+                        userId: uid,
+                        title: title,
+                        message: message,
+                        createdAt: serverTimestamp(),
+                        read: false
+                    });
+                    count++;
+                }
+                alert(`پیام با موفقیت به ${count} کاربر ارسال شد.`);
+                document.getElementById('bc-title').value = '';
+                document.getElementById('bc-msg').value = '';
+            } catch(err){
+                console.error("Error broadcasting message:", err);
+                alert("خطا در ارسال پیام: " + err.message);
+            }
+        };
+
+        // Single Message Handler
+        document.getElementById('f-single-msg').onsubmit=async e=>{
+            e.preventDefault();
+            let uid = document.getElementById('sm-uid').value;
+            let title = document.getElementById('sm-title').value;
+            let message = document.getElementById('sm-msg').value;
+            if(!uid){ alert('لطفاً یک کاربر را انتخاب کنید.'); return; }
+            if(!confirm('ارسال پیام به این کاربر؟')) return;
+
+            try {
+                await addDoc(collection(db, "notifications"), {
+                    userId: uid,
+                    title: title,
+                    message: message,
+                    createdAt: serverTimestamp(),
+                    read: false
+                });
+                alert('پیام با موفقیت ارسال شد.');
+                document.getElementById('sm-title').value = '';
+                document.getElementById('sm-msg').value = '';
+                document.getElementById('sm-uid').value = '';
+            } catch(err){
+                console.error("Error sending message:", err);
+                alert("خطا در ارسال پیام: " + err.message);
+            }
         };
 
         ['act','pend','ban'].forEach(k=>{
