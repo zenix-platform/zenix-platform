@@ -241,8 +241,9 @@
                     <div class="panel-header"><div class="panel-title"><i class="fas fa-user-pen"></i> ارسال پیام تکی به یک کاربر</div></div>
                     <form id="f-single-msg">
                         <div class="form-group">
-                            <label>انتخاب کاربر</label>
-                            <select id="sm-uid" required style="background:#0f172a">
+                            <label>جستجو و انتخاب کاربر</label>
+                            <input type="text" id="sm-search" placeholder="جستجو بر اساس نام، ایمیل یا شناسه..." style="margin-bottom:6px;">
+                            <select id="sm-uid" required style="background:#0f172a; height: 110px;" size="4">
                                 <option value="">ابتدا یک کاربر را انتخاب کنید...</option>
                             </select>
                         </div>
@@ -316,6 +317,29 @@
             return isNaN(d.getTime())?'نامشخص':`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} | ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
         };
 
+        function updateSelectOptions(filter=""){
+            let smSelect=document.getElementById('sm-uid');
+            if(!smSelect)return;
+            let currentVal=smSelect.value;
+            let html='<option value="">انتخاب کاربر...</option>';
+            let q=filter.toLowerCase();
+            
+            for(let uid in uMap){
+                let u=uMap[uid];
+                let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
+                let nameStr=getName(u);
+                let emailStr=u.email||'-';
+                let phoneStr=u.phone||'-';
+                let searchStr=`${idCode} ${nameStr} ${emailStr} ${phoneStr}`.toLowerCase();
+                
+                if(!q || searchStr.includes(q)){
+                    html+=`<option value="${uid}">${nameStr} (${idCode} - ${emailStr})</option>`;
+                }
+            }
+            smSelect.innerHTML=html;
+            smSelect.value=currentVal;
+        }
+
         async function loadData(){
             try {
                 const snap=await getDocs(collection(db,"users"));
@@ -323,9 +347,6 @@
                 tbAct.innerHTML=""; tbPend.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML="";
                 uMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[], withdrawList=[];
                 let cAct=0, cPend=0, cBan=0;
-
-                let smSelect = document.getElementById('sm-uid');
-                if(smSelect) smSelect.innerHTML = '<option value="">انتخاب کاربر...</option>';
 
                 snap.forEach(d=>{
                     let u=d.data(), uid=d.id; uMap[uid]=u; totU++; totB+=Number(u.balance||0);
@@ -335,10 +356,6 @@
                     let phoneStr=u.phone||'-';
                     let regStr=formatDate(u.createdAt);
                     let search=`${idCode} ${nameStr} ${emailStr} ${phoneStr} ${regStr}`.toLowerCase();
-                    
-                    if(smSelect){
-                        smSelect.innerHTML += `<option value="${uid}">${nameStr} (${idCode} - ${emailStr})</option>`;
-                    }
 
                     let isBanned=(u.status==='cancelled'||u.status==='banned'||u.isBanned===true);
                     let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage||u.adminApprovalStatus==='pending');
@@ -380,6 +397,8 @@
                         tbAct.innerHTML+=rowHtml;
                     }
                 });
+
+                updateSelectOptions(document.getElementById('sm-search')?.value || '');
 
                 document.getElementById('st-users').innerText=totU;
                 document.getElementById('st-bal').innerText='$'+totB.toLocaleString('en-US',{minimumFractionDigits:2});
@@ -502,6 +521,11 @@
             closeModal('m-edit'); loadData();
         };
 
+        // Single Message User Search Filter Input Listener
+        document.getElementById('sm-search').oninput = e => {
+            updateSelectOptions(e.target.value);
+        };
+
         // Broadcast Message Handler
         document.getElementById('f-broadcast').onsubmit=async e=>{
             e.preventDefault();
@@ -553,6 +577,8 @@
                 document.getElementById('sm-title').value = '';
                 document.getElementById('sm-msg').value = '';
                 document.getElementById('sm-uid').value = '';
+                document.getElementById('sm-search').value = '';
+                updateSelectOptions();
             } catch(err){
                 console.error("Error sending message:", err);
                 alert("خطا در ارسال پیام: " + err.message);
