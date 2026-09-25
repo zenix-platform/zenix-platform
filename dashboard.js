@@ -57,8 +57,12 @@ window.openMessageModal = async () => {
 };
 
 window.closeMessageModal = () => document.getElementById('m-msg').classList.remove('show');
+
 window.openHelpModal = () => document.getElementById('m-help').classList.add('show');
 window.closeHelpModal = () => document.getElementById('m-help').classList.remove('show');
+
+window.openAboutModal = () => document.getElementById('m-about').classList.add('show');
+window.closeAboutModal = () => document.getElementById('m-about').classList.remove('show');
 
 document.getElementById('bell-btn').onclick = e => { e.stopPropagation(); openMessageModal(); };
 document.getElementById('help-btn').onclick = e => { e.stopPropagation(); openHelpModal(); };
