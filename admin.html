@@ -1,275 +1,471 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Zenix - Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenix - Next-Gen Admin Dashboard</title>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
     <style>
-        *{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans','Vazirmatn',sans-serif}
-        body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}
-        header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+        *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+        body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column;font-size:12px}
+        header{background:rgba(15,23,42,.85);border-bottom:1px solid rgba(255,255,255,.08);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
         .logo{display:flex;align-items:center;gap:10px}
-        .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#0ea5e9,#9333ea);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;font-style:italic;transform:skewX(-6deg);box-shadow:0 0 15px rgba(14,165,233,.4)}
-        .logo-text{font-family:'Orbitron',sans-serif;font-size:19px;font-weight:900;letter-spacing:2px;font-style:italic;transform:skewX(-6deg);background:linear-gradient(135deg,#38bdf8,#c084fc,#f43f5e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px rgba(56,189,248,0.4)}
-        .hr{display:flex;align-items:center;gap:8px}.wrap{position:relative}
-        .lb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;width:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#38bdf8;text-decoration:none}
-        .badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;font-weight:700}.badge.show{display:flex}
-        .menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:170px;padding:6px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}
-        [dir="rtl"] .wrap .menu{left:0}[dir="ltr"] .wrap .menu{right:0}.menu.show{display:block}
-        .mi{padding:7px 10px;font-size:12px;color:#cbd5e1;cursor:pointer;border-radius:6px;display:flex;align-items:center;gap:8px;text-decoration:none}
-        .mi:hover{background:rgba(56,189,248,.2);color:#38bdf8}
-        .c{max-width:900px;width:100%;margin:15px auto;padding:0 12px;flex:1}
-        .wel{background:linear-gradient(135deg,rgba(2,132,199,.15),rgba(147,51,234,.15));border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-        .wel h1{font-size:16px;margin-bottom:3px}.wel p{color:#94a3b8;font-size:11px}
-        .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px}
-        .sc{border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
-        .sc-bal{background:linear-gradient(135deg,rgba(15,23,42,.95),rgba(14,165,233,.18));border:1px solid rgba(56,189,248,.4)}
-        .sc-ref{background:linear-gradient(135deg,rgba(15,23,42,.95),rgba(168,85,247,.18));border:1px solid rgba(168,85,247,.4)}
-        .sc-bal .si{width:40px;height:40px;background:rgba(56,189,248,.2);border:1px solid #38bdf8;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#38bdf8;font-size:16px}
-        .sc-ref .si{width:40px;height:40px;background:rgba(168,85,247,.2);border:1px solid #a855f7;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#c084fc;font-size:16px}
-        .sn span{font-size:11px;color:#94a3b8;display:block;margin-bottom:2px}.sn h3{font-size:16px;font-weight:800;color:#fff}
-        .banner-box{width:100%;max-height:150px;margin-bottom:12px;border-radius:12px;overflow:hidden;border:1px solid rgba(56,189,248,.35);box-shadow:0 10px 25px rgba(2,132,199,.15)}
-        .banner-box img{width:100%;height:150px;display:block;object-fit:cover}
-        .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
-        .nc{background:rgba(15,23,42,.85);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;text-decoration:none;color:inherit;display:flex;align-items:center;justify-content:space-between}
-        .nc:hover{border-color:#38bdf8;background:rgba(15,23,42,1)}.ncl{display:flex;align-items:center;gap:10px}
-        .nci{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px}
-        .ninf h3{font-size:14px;color:#f8fafc;margin-bottom:2px}.ninf p{font-size:11px;color:#94a3b8}.nca{color:#64748b;font-size:12px}
-        .market-box{background:rgba(15,23,42,.85);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;margin-bottom:12px}
-        #crypto-ticker-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:768px){#crypto-ticker-list{grid-template-columns:1fr}}
-        .crypto-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(255,255,255,0.05);font-size:12px;direction:ltr;transition:all .4s ease}
-        .crypto-info{display:flex;align-items:center;gap:8px}.crypto-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff}
-        .price-up{color:#22c55e!important;font-weight:bold}.price-down{color:#ef4444!important;font-weight:bold}
-        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(2,6,23,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(10px)}.modal.show{display:flex}
-        .modal-content{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(56,189,248,.3);border-radius:20px;width:100%;max-width:440px;max-height:85vh;display:flex;flex-direction:column;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.9)}
-        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:#38bdf8;font-weight:800;font-size:14px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:10px}
-        .modal-close{background:rgba(255,255,255,.05);border:none;color:#94a3b8;cursor:pointer;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-        .modal-close:hover{background:rgba(239,68,68,.2);color:#ef4444}
-        #modal-msg-container{overflow-y:auto;padding-right:4px}
-        .msg-body-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;margin-bottom:10px}
-        .msg-title-text{font-size:13px;font-weight:700;color:#38bdf8;margin-bottom:4px}.msg-desc-text{font-size:12px;color:#cbd5e1;line-height:1.5}
-        footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;max-width:900px;margin:0 auto;width:100%;padding-left:12px;padding-right:12px}
+        .logo h2{font-size:16px;color:#38bdf8;font-weight:800;letter-spacing:1px}
+        .admin-badge{background:rgba(56,189,248,.12);color:#38bdf8;font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid rgba(56,189,248,.25);font-weight:600}
+        .btn-logout{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#ef4444;padding:6px 12px;border-radius:8px;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:6px;font-weight:600;transition:all .2s}
+        .btn-logout:hover{background:rgba(239,68,68,.25)}
+        .c{max-width:1450px;width:100%;margin:20px auto;padding:0 16px;flex:1}
+        
+        /* Stats Grid */
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+        .stat-card{background:linear-gradient(135deg,rgba(15,23,42,.9),rgba(30,41,59,.6));border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+        .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .stat-info span{font-size:11px;color:#94a3b8;display:block;margin-bottom:2px}
+        .stat-info h3{font-size:18px;font-weight:800;color:#f8fafc}
+
+        /* Tabs */
+        .admin-tabs{display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:10px;flex-wrap:wrap}
+        .tab-btn{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);color:#94a3b8;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .25s}
+        .tab-btn.active{background:rgba(56,189,248,.15);border-color:rgba(56,189,248,.4);color:#38bdf8;box-shadow:0 0 15px rgba(56,189,248,.15)}
+        .tab-badge{background:#ef4444;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;font-weight:700}
+        .tab-badge.zero{background:rgba(255,255,255,.08);color:#94a3b8}
+
+        .tab-content{display:none}
+        .tab-content.active{display:block}
+
+        /* Panel Box & Tables */
+        .panel-box{background:rgba(15,23,42,.75);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px;box-shadow:0 8px 30px rgba(0,0,0,.6);margin-bottom:20px;backdrop-filter:blur(10px)}
+        .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px}
+        .panel-title{font-size:14px;color:#38bdf8;font-weight:700;display:flex;align-items:center;gap:8px}
+        .search-box{position:relative;flex:1;max-width:300px}
+        .search-box input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 12px 8px 34px;color:#fff;font-size:12px;outline:none;transition:border-color .2s}
+        .search-box input:focus{border-color:#38bdf8;box-shadow:0 0 8px rgba(56,189,248,.2)}
+        .search-box i{position:absolute;top:10px;left:12px;color:#94a3b8;font-size:12px}
+
+        .table-responsive{width:100%;overflow-x:auto}
+        table{width:100%;border-collapse:collapse;text-align:right;font-size:11px}
+        th,td{padding:10px 10px;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap}
+        th{color:#94a3b8;font-weight:600;background:rgba(255,255,255,.02);font-size:11px}
+        td{color:#cbd5e1}
+        tbody tr:hover{background:rgba(255,255,255,.02)}
+
+        .badge-id{color:#38bdf8;font-weight:700;font-family:monospace;cursor:pointer;padding:3px 8px;background:rgba(56,189,248,.1);border-radius:6px;border:1px solid rgba(56,189,248,.25);font-size:11px}
+        
+        /* Buttons & Actions */
+        .btn-action{padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;border:none;display:inline-flex;align-items:center;gap:4px;transition:opacity .2s}
+        .btn-action:hover{opacity:.85}
+        .btn-edit{background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);color:#38bdf8}
+        .btn-approve{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22c55e}
+        .btn-reject{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#ef4444}
+        .btn-ban{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.4);color:#f87171}
+
+        /* Modals */
+        .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+        .modal.show{display:flex}
+        .modal-content{background:#0f172a;border:1px solid rgba(56,189,248,.3);border-radius:14px;width:100%;max-width:420px;padding:20px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 40px rgba(0,0,0,.9)}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:#38bdf8;font-weight:700;font-size:13px}
+        .modal-close{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:16px}
+        .form-group{margin-bottom:12px}
+        .form-group label{display:block;font-size:10px;color:#94a3b8;margin-bottom:4px}
+        .form-group input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 12px;color:#fff;font-size:11px;outline:none}
+        .btn-save{width:100%;background:linear-gradient(135deg,#0284c7,#0369a1);color:#fff;border:none;padding:10px;border-radius:8px;font-weight:700;cursor:pointer;margin-top:10px;font-size:12px}
+        .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px}
+        .detail-row span:first-child{color:#94a3b8}
+        .detail-row span:last-child{color:#f8fafc;font-weight:600}
+        footer{text-align:center;padding:16px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);margin-top:auto}
     </style>
 </head>
 <body>
     <header>
-        <div class="logo"><div class="logo-icon">Z</div><div class="logo-text">ZENIX</div></div>
-        <div class="hr">
-            <div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell" style="color:#fbbf24"></i><span class="badge" id="bell-badge">0</span></button></div>
-            <div class="wrap"><button type="button" class="lb" id="help-btn" title="راهنمای صفحه داشبورد"><i class="fas fa-circle-question" style="color:#38bdf8"></i></button></div>
-            <a href="support.html" class="lb"><i class="fas fa-headset" style="color:#a855f7"></i></a>
-            <div class="wrap">
-                <button type="button" class="lb" id="lang-btn"><i class="fas fa-globe" style="color:#22c55e"></i></button>
-                <div class="menu" id="lang-menu">
-                    <div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div><div class="mi" data-lang="ru">Русский</div><div class="mi" data-lang="es">Español</div><div class="mi" data-lang="fr">Français</div><div class="mi" data-lang="de">Deutsch</div>
-                </div>
-            </div>
-            <div class="wrap">
-                <button type="button" class="lb" id="menu-btn"><i class="fas fa-bars" style="color:#f43f5e"></i></button>
-                <div class="menu" id="nav-menu">
-                    <a href="dashboard.html" class="mi"><i class="fas fa-home" style="color:#38bdf8"></i><span id="m1">صفحه اصلی</span></a>
-                    <a href="quantification.html" class="mi"><i class="fas fa-robot" style="color:#a855f7"></i><span id="m2">کوانتیفیکیشن</span></a>
-                    <a href="deposit.html" class="mi"><i class="fas fa-arrow-down" style="color:#22c55e"></i><span id="m3">واریز</span></a>
-                    <a href="receive.html" class="mi"><i class="fas fa-arrow-up" style="color:#fbbf24"></i><span id="m4">برداشت</span></a>
-                    <a href="transactions.html" class="mi"><i class="fas fa-history" style="color:#06b6d4"></i><span id="m5">تراکنش</span></a>
-                    <a href="profile.html" class="mi"><i class="fas fa-user-cog" style="color:#ec4899"></i><span id="m6">پروفایل</span></a>
-                    <a href="support.html" class="mi"><i class="fas fa-headset" style="color:#a855f7"></i><span id="m7">پشتیبانی</span></a>
-                    <a href="#" class="mi" onclick="openAboutModal();return false;"><i class="fas fa-info-circle" style="color:#38bdf8"></i><span id="m_about">درباره پلتفرم</span></a>
-                    <a href="index.html" class="mi" id="logout-btn" style="color:#ef4444"><i class="fas fa-power-off"></i><span id="m8">خروج</span></a>
-                </div>
-            </div>
+        <div class="logo">
+            <h2>ZENIX ADMIN</h2>
+            <span class="admin-badge"><i class="fas fa-shield-alt"></i> مدیریت کل پلتفرم</span>
         </div>
+        <button class="btn-logout" id="logout-btn"><i class="fas fa-sign-out-alt"></i> خروج</button>
     </header>
+
     <div class="c">
-        <div class="wel"><div><h1 id="t-wel">خوش آمدید</h1><p id="t-sub">پنل مدیریت کاربری</p></div><div style="font-size:11px;background:rgba(56,189,248,.1);border:1px solid #38bdf8;padding:4px 8px;border-radius:6px;color:#38bdf8"><i class="fas fa-shield-check"></i> <span id="t-st">تایید شده</span></div></div>
-        <div class="stats">
-            <div class="sc sc-bal"><div class="si"><i class="fas fa-wallet" style="color:#38bdf8"></i></div><div class="sn"><span id="ts1">موجودی</span><h3 id="val-balance">$0.00</h3></div></div>
-            <div class="sc sc-ref"><div class="si"><i class="fas fa-users" style="color:#c084fc"></i></div><div class="sn"><span id="ts2">زیرمجموعه</span><h3 id="val-ref">0</h3></div></div>
-        </div>
-        <div class="banner-box"><img src="https://i.postimg.cc/XvHYmsLK/Gemini-Generated-Image-d7mieqd7mieqd7mi.jpg" alt="Zenix Banner"></div>
-        <div class="grid">
-            <a href="quantification.html" class="nc"><div class="ncl"><div class="nci" style="background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);color:#c084fc"><i class="fas fa-robot"></i></div><div class="ninf"><h3 id="c1">کوانتیفیکیشن</h3><p id="d1">معاملات هوشمند</p></div></div><div class="nca"><i class="fas fa-chevron-left" id="i1"></i></div></a>
-            <a href="deposit.html" class="nc"><div class="ncl"><div class="nci" style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#22c55e"><i class="fas fa-arrow-down"></i></div><div class="ninf"><h3 id="c2">واریز</h3><p id="d2">شارژ حساب</p></div></div><div class="nca"><i class="fas fa-chevron-left" id="i2"></i></div></a>
-            <a href="receive.html" class="nc"><div class="ncl"><div class="nci" style="background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:#fbbf24"><i class="fas fa-arrow-up"></i></div><div class="ninf"><h3 id="c3">برداشت</h3><p id="d3">برداشت دارایی</p></div></div><div class="nca"><i class="fas fa-chevron-left" id="i3"></i></div></a>
-            <a href="team.html" class="nc"><div class="ncl"><div class="nci" style="background:rgba(236,72,153,.15);border:1px solid rgba(236,72,153,.3);color:#ec4899"><i class="fas fa-users"></i></div><div class="ninf"><h3 id="c4">تیم</h3><p id="d4">زیرمجموعه‌ها</p></div></div><div class="nca"><i class="fas fa-chevron-left" id="i4"></i></div></a>
-            <a href="transactions.html" class="nc"><div class="ncl"><div class="nci" style="background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.3);color:#06b6d4"><i class="fas fa-history"></i></div><div class="ninf"><h3 id="c5">تراکنش‌ها</h3><p id="d5">تاریخچه مالی</p></div></div><div class="nca"><i class="fas fa-chevron-left" id="i5"></i></div></a>
-            <a href="profile.html" class="nc"><div class="ncl"><div class="nci" style="background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.3);color:#38bdf8"><i class="fas fa-user-cog"></i></div><div class="ninf"><h3 id="c6">پروفایل</h3><p id="d6">تنظیمات امنیت</p></div></div><div class="nca"><i class="fas fa-chevron-left" id="i6"></i></div></a>
-        </div>
-        <div class="market-box">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <h3 style="font-size:13px;color:#38bdf8;" id="t-mkt"><i class="fas fa-chart-line" style="color:#22c55e"></i> بازار ارزهای دیجیتال (۳ ارز برتر از ۳۰ ارز رصد شده)</h3>
-                <span style="font-size:10px;color:#22c55e;background:rgba(34,197,94,0.15);padding:2px 8px;border-radius:10px;font-weight:600;"><i class="fas fa-circle" style="font-size:6px;vertical-align:middle;margin-left:3px;"></i> <span id="t-live">زنده</span></span>
+        <!-- Stats KPIs -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(56,189,248,.15);color:#38bdf8"><i class="fas fa-users"></i></div>
+                <div class="stat-info"><span>کل کاربران</span><h3 id="st-users">0</h3></div>
             </div>
-            <div id="crypto-ticker-list"></div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-wallet"></i></div>
+                <div class="stat-info"><span>موجودی کل</span><h3 id="st-bal">$0.00</h3></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(245,158,11,.15);color:#f59e0b"><i class="fas fa-clock"></i></div>
+                <div class="stat-info"><span>درخواست‌های معلق</span><h3 id="st-req">0</h3></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(239,68,68,.15);color:#ef4444"><i class="fas fa-money-bill-transfer"></i></div>
+                <div class="stat-info"><span>برداشت‌های معلق</span><h3 id="st-w-req">0</h3></div>
+            </div>
         </div>
+
+        <!-- Navigation Tabs -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchTab('t-active', this)"><i class="fas fa-user-check"></i> کاربران فعال</button>
+            <button class="tab-btn" onclick="switchTab('t-pending', this)"><i class="fas fa-user-clock"></i> در انتظار احراز</button>
+            <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> لغو شده</button>
+            <button class="tab-btn" onclick="switchTab('t-withdraw', this)"><i class="fas fa-money-bill-transfer"></i> برداشت‌ها <span class="tab-badge zero" id="w-badge">0</span></button>
+            <button class="tab-btn" onclick="switchTab('t-reqs', this)"><i class="fas fa-bell"></i> درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
+        </div>
+
+        <!-- Tab 1: Active Users Table -->
+        <div id="t-active" class="tab-content active">
+            <div class="panel-box">
+                <div class="panel-header">
+                    <div class="panel-title"><i class="fas fa-user-check"></i> لیست کاربران فعال سیستم</div>
+                    <div class="search-box"><input type="text" id="s-act" placeholder="جستجو..."><i class="fas fa-search"></i></div>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شناسه</th>
+                                <th>نام و نام خانوادگی</th>
+                                <th>ایمیل</th>
+                                <th>تلفن</th>
+                                <th>موجودی</th>
+                                <th>سود از پلتفرم</th>
+                                <th>تاریخ ثبت‌نام</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-act"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Pending Users Table -->
+        <div id="t-pending" class="tab-content">
+            <div class="panel-box">
+                <div class="panel-header">
+                    <div class="panel-title"><i class="fas fa-user-clock"></i> کاربران با درخواست‌های در انتظار</div>
+                    <div class="search-box"><input type="text" id="s-pend" placeholder="جستجو..."><i class="fas fa-search"></i></div>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شناسه</th>
+                                <th>نام و نام خانوادگی</th>
+                                <th>ایمیل</th>
+                                <th>تلفن</th>
+                                <th>موجودی</th>
+                                <th>سود از پلتفرم</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-pend"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Banned Users Table -->
+        <div id="t-banned" class="tab-content">
+            <div class="panel-box">
+                <div class="panel-header">
+                    <div class="panel-title"><i class="fas fa-user-slash"></i> حساب‌های لغو شده</div>
+                    <div class="search-box"><input type="text" id="s-ban" placeholder="جستجو..."><i class="fas fa-search"></i></div>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شناسه</th>
+                                <th>نام و نام خانوادگی</th>
+                                <th>ایمیل</th>
+                                <th>تلفن</th>
+                                <th>موجودی</th>
+                                <th>سود از پلتفرم</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-ban"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Withdrawals Requests -->
+        <div id="t-withdraw" class="tab-content">
+            <div class="panel-box">
+                <div class="panel-header"><div class="panel-title"><i class="fas fa-wallet"></i> مدیریت درخواست‌های برداشت وجه</div></div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شناسه کاربر</th>
+                                <th>نام کاربر</th>
+                                <th>مبلغ ($)</th>
+                                <th>آدرس کیف پول</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-withdraw"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 5: Requests Box -->
+        <div id="t-reqs" class="tab-content">
+            <div class="panel-box">
+                <div class="panel-header"><div class="panel-title"><i class="fas fa-inbox"></i> صندوق درخواست‌ها</div></div>
+                <div id="req-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="m-details">
+        <div class="modal-content">
+            <div class="modal-header"><span>اطلاعات کامل کاربر</span><button class="modal-close" onclick="closeModal('m-details')"><i class="fas fa-times"></i></button></div>
+            <div id="user-details-body"></div>
+            <div id="modal-action-btn" style="margin-top:12px"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="m-edit">
+        <div class="modal-content">
+            <div class="modal-header"><span>ویرایش مشخصات کاربر</span><button class="modal-close" onclick="closeModal('m-edit')"><i class="fas fa-times"></i></button></div>
+            <form id="f-edit">
+                <input type="hidden" id="e-uid">
+                <div class="form-group"><label>نام و نام خانوادگی</label><input type="text" id="e-name"></div>
+                <div class="form-group"><label>ایمیل</label><input type="text" id="e-email"></div>
+                <div class="form-group"><label>تلفن</label><input type="text" id="e-phone"></div>
+                <div class="form-group"><label>موجودی حساب ($)</label><input type="number" step="any" id="e-bal"></div>
+                <div class="form-group"><label>سود از پلتفرم ($)</label><input type="number" step="any" id="e-profit"></div>
+                <button type="submit" class="btn-save">ذخیره تغییرات</button>
+            </form>
+        </div>
+    </div>
+
+    <footer><p>&copy; 2026 Zenix Platform - Enterprise Admin Dashboard</p></footer>
+
+    <script type="module">
+        import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import{getFirestore,collection,getDocs,doc,updateDoc}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         
-        <!-- درباره پلتفرم Zenix روی داشبورد (متن کامل با ۴ بند اصلی) -->
-        <div class="market-box">
-            <h3 style="font-size:15px;color:#38bdf8;margin-bottom:10px;"><i class="fas fa-info-circle" style="color:#a855f7"></i> درباره پلتفرم Zenix (هدف، ماهیت و ساختار)</h3>
-            <p style="font-size:14px;color:#cbd5e1;line-height:1.7;margin-bottom:10px;">پلتفرم Zenix یک اکوسیستم مالی نوین و هوشمند در حوزه ارزهای دیجیتال و پردازش‌های معاملاتی است که با هدف ایجاد بستری امن، خودکار و سودآور برای کاربران طراحی شده است.</p>
-            <ul style="font-size:13px;color:#94a3b8;padding-right:18px;line-height:1.7;margin-bottom:0;">
-                <li style="margin-bottom:6px;"><strong style="color:#f8fafc;">هدف اصلی:</strong> اتوماسیون فرآیندهای معاملاتی از طریق سیستم‌های هوش مصنوعی و الگوریتم‌های کوانتیفیکیشن (Quantification)، به‌طوری‌که کاربران بدون نیاز به تخصص پیچیده در ترید، بتوانند از نوسانات بازار جهانی سود کسب کنند.</li>
-                <li style="margin-bottom:6px;"><strong style="color:#f8fafc;">امنیت و زیرساخت:</strong> متکی بر پروتکل‌های رمزنگاری پیشرفته، اتصال به گره‌های پردازشی ابری پرسرعت و مدیریت یکپارچه دارایی‌ها در بستر پایگاه داده ابری امن (Firebase).</li>
-                <li style="margin-bottom:6px;"><strong style="color:#f8fafc;">ساختار چندسطحی (Referral & Team):</strong> ایجاد یک شبکه پویای معرفی دوستان تا کاربران بتوانند از فعالیت زیرمجموعه‌های خود در چند سطح مختلف پاداش و درآمد پایدار دریافت کنند.</li>
-                <li><strong style="color:#f8fafc;">احساس واقع‌گرایی:</strong> وجود بازار لحظه‌ای رمزارزها، شاخص‌های زنده حجم معاملات، نرخ گاز شبکه و اطلاعیه‌های سیستم به کاربر این اطمینان را می‌دهد که با یک پلتفرم بین‌المللی و زنده سروکار دارد.</li>
-            </ul>
-        </div>
-    </div>
+        const db=getFirestore(initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"}));
+        const auth=getAuth();
+        let uMap={},tUid=null;
 
-    <!-- مدال صندوق پیام‌ها -->
-    <div class="modal" id="m-msg">
-        <div class="modal-content">
-            <div class="modal-header"><span id="t-modal-title">صندوق پیام‌های مدیریت</span><button class="modal-close" onclick="closeMessageModal()"><i class="fas fa-times"></i></button></div>
-            <div id="modal-msg-container"><div style="text-align:center;padding:20px;color:#94a3b8">هیچ پیام جدیدی وجود ندارد.</div></div>
-        </div>
-    </div>
-
-    <!-- مدال درباره پلتفرم Zenix -->
-    <div class="modal" id="m-about">
-        <div class="modal-content">
-            <div class="modal-header"><span id="t-about-title">درباره پلتفرم Zenix (هدف، ماهیت و ساختار)</span><button class="modal-close" onclick="closeAboutModal()"><i class="fas fa-times"></i></button></div>
-            <div style="overflow-y:auto;padding-right:4px">
-                <p style="font-size:13px;color:#cbd5e1;line-height:1.7;margin-bottom:10px;">پلتفرم Zenix یک اکوسیستم مالی نوین و هوشمند در حوزه ارزهای دیجیتال و پردازش‌های معاملاتی است که با هدف ایجاد بستری امن، خودکار و سودآور برای کاربران طراحی شده است.</p>
-                <ul style="font-size:12px;color:#94a3b8;padding-right:18px;line-height:1.7;margin-bottom:0;">
-                    <li style="margin-bottom:6px;"><strong style="color:#f8fafc;">هدف اصلی:</strong> اتوماسیون فرآیندهای معاملاتی از طریق سیستم‌های هوش مصنوعی و الگوریتم‌های کوانتیفیکیشن (Quantification)، به‌طوری‌که کاربران بدون نیاز به تخصص پیچیده در ترید، بتوانند از نوسانات بازار جهانی سود کسب کنند.</li>
-                    <li style="margin-bottom:6px;"><strong style="color:#f8fafc;">امنیت و زیرساخت:</strong> متکی بر پروتکل‌های رمزنگاری پیشرفته، اتصال به گره‌های پردازشی ابری پرسرعت و مدیریت یکپارچه دارایی‌ها در بستر پایگاه داده ابری امن (Firebase).</li>
-                    <li style="margin-bottom:6px;"><strong style="color:#f8fafc;">ساختار چندسطحی (Referral & Team):</strong> ایجاد یک شبکه پویای معرفی دوستان تا کاربران بتوانند از فعالیت زیرمجموعه‌های خود در چند سطح مختلف پاداش و درآمد پایدار دریافت کنند.</li>
-                    <li><strong style="color:#f8fafc;">احساس واقع‌گرایی:</strong> وجود بازار لحظه‌ای رمزارزها، شاخص‌های زنده حجم معاملات، نرخ گاز شبکه و اطلاعیه‌های سیستم به کاربر این اطمینان را می‌دهد که با یک پلتفرم بین‌المللی و زنده سروکار دارد.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- مدال راهنمای اختصاصی صفحه داشبورد -->
-    <div class="modal" id="m-help">
-        <div class="modal-content">
-            <div class="modal-header"><span id="t-help-title">راهنمای صفحه داشبورد</span><button class="modal-close" onclick="closeHelpModal()"><i class="fas fa-times"></i></button></div>
-            <div style="overflow-y:auto;padding-right:4px">
-                <div class="msg-body-box">
-                    <div class="msg-title-text"><i class="fas fa-home" style="color:#38bdf8"></i> کاربرد این صفحه (داشبورد) چیست؟</div>
-                    <div class="msg-desc-text">داشبورد مرکز کنترل و خانه اصلی حساب کاربری شماست. از این صفحه می‌توانید کل دارایی‌ها، وضعیت حساب و وضعیت تیم خود را بررسی کنید و به تمام بخش‌های اصلی پلتفرم دسترسی سریع داشته باشید.</div>
-                </div>
-                <div class="msg-body-box">
-                    <div class="msg-title-text"><i class="fas fa-wallet" style="color:#38bdf8"></i> کارت موجودی و زیرمجموعه‌ها</div>
-                    <div class="msg-desc-text">در این قسمت می‌توانید مجموع کل دارایی‌های دلاری و تعداد اعضای تیم زیرمجموعه خود را به صورت لحظه‌ای مشاهده کنید.</div>
-                </div>
-                <div class="msg-body-box">
-                    <div class="msg-title-text"><i class="fas fa-th-large" style="color:#a855f7"></i> بخش‌های دسترسی سریع</div>
-                    <div class="msg-desc-text">دکمه‌های میانبر (کوانتیفیکیشن، واریز، برداشت، تیم، تراکنش‌ها و پروفایل) برای ورود آنی به بخش‌های مختلف پلتفرم تعبیه شده‌اند.</div>
-                </div>
-                <div class="msg-body-box">
-                    <div class="msg-title-text"><i class="fas fa-chart-line" style="color:#22c55e"></i> بازار زنده ارزهای دیجیتال</div>
-                    <div class="msg-desc-text">نمایش لحظه‌ای تغییرات قیمت و درصد سود برترین ارزهای دیجیتال برای رصد بازار جهانی در یک نگاه.</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; 2026 Zenix. All rights reserved.</p>
-        <p style="color:#22c55e;"><i class="fas fa-circle" style="font-size:6px;"></i> <span id="t-node">سرور فعال (US-East)</span></p>
-    </footer>
-
-    <!-- اسکریپت زنده و هوشمند بدون خطا -->
-    <script>
-        // توابع کنترل مدال‌ها در Scope سراسری
-        window.openAboutModal = function() {
-            var m = document.getElementById('m-about');
-            if (m) m.classList.add('show');
-        };
-        window.closeAboutModal = function() {
-            var m = document.getElementById('m-about');
-            if (m) m.classList.remove('show');
-        };
-        window.closeMessageModal = function() {
-            var m = document.getElementById('m-msg');
-            if (m) m.classList.remove('show');
-        };
-        window.closeHelpModal = function() {
-            var m = document.getElementById('m-help');
-            if (m) m.classList.remove('show');
+        window.switchTab=(id,btn)=>{
+            document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
         };
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // دریافت المان‌های هدر و منوها
-            var bellBtn = document.getElementById('bell-btn');
-            var helpBtn = document.getElementById('help-btn');
-            var langBtn = document.getElementById('lang-btn');
-            var menuBtn = document.getElementById('menu-btn');
-            var langMenu = document.getElementById('lang-menu');
-            var navMenu = document.getElementById('nav-menu');
-
-            // کلیک زنگوله پیام‌ها
-            if (bellBtn) {
-                bellBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    var m = document.getElementById('m-msg');
-                    if (m) m.classList.add('show');
-                });
+        window.closeModal=id=>document.getElementById(id).classList.remove('show');
+        
+        const getName=u=>u.fullname||u.fullName||u.name||(u.firstName?`${u.firstName} ${u.lastName||''}`:null)||u.email?.split('@')[0]||'کاربر بدون نام';
+        
+        const formatDate=ts=>{
+            if(!ts)return 'نامشخص';
+            let d;
+            if(typeof ts.toDate==='function'){
+                d=ts.toDate();
+            } else if(typeof ts==='string'){
+                let cleanStr = ts.replace(/at\s.*UTC.*/i, '').trim();
+                d=new Date(cleanStr);
+                if(isNaN(d.getTime())) d=new Date(ts);
+            } else {
+                d=new Date(ts);
             }
+            return isNaN(d.getTime())?'نامشخص':`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} | ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        };
 
-            // کلیک علامت سوال راهنما
-            if (helpBtn) {
-                helpBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    var m = document.getElementById('m-help');
-                    if (m) m.classList.add('show');
+        async function loadData(){
+            try {
+                const snap=await getDocs(collection(db,"users"));
+                let tbAct=document.getElementById('tb-act'), tbPend=document.getElementById('tb-pend'), tbBan=document.getElementById('tb-ban'), tbW=document.getElementById('tb-withdraw');
+                tbAct.innerHTML=""; tbPend.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML="";
+                uMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[], withdrawList=[];
+                let cAct=0, cPend=0, cBan=0;
+
+                snap.forEach(d=>{
+                    let u=d.data(), uid=d.id; uMap[uid]=u; totU++; totB+=Number(u.balance||0);
+                    let idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
+                    let nameStr=getName(u);
+                    let emailStr=u.email||'-';
+                    let phoneStr=u.phone||'-';
+                    let regStr=formatDate(u.createdAt);
+                    let search=`${idCode} ${nameStr} ${emailStr} ${phoneStr} ${regStr}`.toLowerCase();
+                    
+                    let isBanned=(u.status==='cancelled'||u.status==='banned'||u.isBanned===true);
+                    let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage||u.adminApprovalStatus==='pending');
+
+                    if(u.pendingWithdrawal && u.pendingWithdrawal.status === 'pending'){
+                        totW++;
+                        withdrawList.push({ uid, u, idCode, nameStr, data: u.pendingWithdrawal });
+                    }
+
+                    let balStr = `$${Number(u.balance||0).toLocaleString()}`;
+                    let profitStr = `$${Number(u.platformProfit || u.profit || 0).toLocaleString()}`;
+
+                    let rowHtml=`<tr data-s="${search}">
+                        <td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td>
+                        <td><b>${nameStr}</b></td>
+                        <td>${emailStr}</td>
+                        <td dir="ltr" style="text-align:right">${phoneStr}</td>
+                        <td style="color:#22c55e;font-weight:bold">${balStr}</td>
+                        <td style="color:#38bdf8;font-weight:bold">${profitStr}</td>`;
+
+                    if(isBanned){
+                        cBan++;
+                        rowHtml+=`<td><button class="btn-action btn-approve" onclick="toggleBan('${uid}',false)"><i class="fas fa-undo"></i> فعال‌سازی</button></td></tr>`;
+                        tbBan.innerHTML+=rowHtml;
+                    }else if(hasPend){
+                        cPend++; totR++;
+                        reqList.push({uid, u, time: u.requestTimestamp||u.updatedAt||Date.now()});
+                        rowHtml+=`<td>
+                            <button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||emailStr}')">تایید</button>
+                            <button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button>
+                        </td></tr>`;
+                        tbPend.innerHTML+=rowHtml;
+                    }else{
+                        cAct++;
+                        rowHtml+=`<td>${regStr}</td>
+                        <td>
+                            <button class="btn-action btn-ban" onclick="toggleBan('${uid}',true)">لغو کاربر</button>
+                        </td></tr>`;
+                        tbAct.innerHTML+=rowHtml;
+                    }
                 });
-            }
 
-            // منوی انتخاب زبان
-            if (langBtn && langMenu) {
-                langBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    langMenu.classList.toggle('show');
-                    if (navMenu) navMenu.classList.remove('show');
-                });
-            }
+                document.getElementById('st-users').innerText=totU;
+                document.getElementById('st-bal').innerText='$'+totB.toLocaleString('en-US',{minimumFractionDigits:2});
+                document.getElementById('st-req').innerText=totR;
+                document.getElementById('st-w-req').innerText=totW;
+                
+                let badge=document.getElementById('req-badge');
+                badge.innerText=totR; badge.className=totR>0?'tab-badge':'tab-badge zero';
 
-            // منوی اصلی (سه خط)
-            if (menuBtn && navMenu) {
-                menuBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    navMenu.classList.toggle('show');
-                    if (langMenu) langMenu.classList.remove('show');
-                });
-            }
+                let wBadge=document.getElementById('w-badge');
+                wBadge.innerText=totW; wBadge.className=totW>0?'tab-badge':'tab-badge zero';
 
-            // بستن منوها با کلیک روی هرجای صفحه
-            document.addEventListener('click', function() {
-                if (langMenu) langMenu.classList.remove('show');
-                if (navMenu) navMenu.classList.remove('show');
+                if(cAct===0) tbAct.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربر فعالی یافت نشد</td></tr>`;
+                if(cPend===0) tbPend.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربر معلقی یافت نشد</td></tr>`;
+                if(cBan===0) tbBan.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربر لغو شده‌ای وجود ندارد</td></tr>`;
+
+                renderWithdrawals(withdrawList);
+                renderReqs(reqList);
+            } catch(err) {
+                console.error("Error loading users:", err);
+            }
+        }
+
+        window.openDetails=uid=>{
+            let u=uMap[uid], idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
+            let regDate=formatDate(u.createdAt);
+            document.getElementById('user-details-body').innerHTML=`
+                <div class="detail-row"><span>شناسه:</span><span>${idCode}</span></div>
+                <div class="detail-row"><span>نام و نام خانوادگی:</span><span>${getName(u)}</span></div>
+                <div class="detail-row"><span>ایمیل:</span><span>${u.email||'-'}</span></div>
+                <div class="detail-row"><span>تلفن:</span><span dir="ltr">${u.phone||'-'}</span></div>
+                <div class="detail-row"><span>موجودی:</span><span>$${Number(u.balance||0).toLocaleString()}</span></div>
+                <div class="detail-row"><span>سود از پلتفرم:</span><span>$${Number(u.platformProfit || u.profit || 0).toLocaleString()}</span></div>
+                <div class="detail-row"><span>وضعیت تایید:</span><span>${u.adminApprovalStatus||'نامشخص'}</span></div>
+                <div class="detail-row"><span>تاریخ ثبت‌نام:</span><span>${regDate}</span></div>
+            `;
+            document.getElementById('modal-action-btn').innerHTML=`<button class="btn-action btn-edit" style="width:100%;justify-content:center;padding:8px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات</button>`;
+            document.getElementById('m-details').classList.add('show');
+        };
+
+        function renderWithdrawals(list){
+            let box=document.getElementById('tb-withdraw');
+            if(list.length===0){box.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست برداشتی وجود ندارد.</td></tr>`;return;}
+            let html='';
+            list.forEach(i=>{
+                let amt = Number(i.data.amount||0);
+                html+=`<tr>
+                    <td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td>
+                    <td><b>${i.nameStr}</b></td>
+                    <td style="color:#22c55e;font-weight:bold">$${amt.toLocaleString()}</td>
+                    <td dir="ltr">${i.data.address||i.data.wallet||'-'}</td>
+                    <td>
+                        <button class="btn-action btn-approve" onclick="handleWithdraw('${i.uid}', true, ${amt})"><i class="fas fa-check"></i></button>
+                        <button class="btn-action btn-reject" onclick="handleWithdraw('${i.uid}', false, ${amt})"><i class="fas fa-times"></i></button>
+                    </td>
+                </tr>`;
             });
+            box.innerHTML=html;
+        }
 
-            // رندر لحظه‌ای ۳ رمزارز برتر در باکس بازار
-            var cryptoList = document.getElementById('crypto-ticker-list');
-            if (cryptoList) {
-                var cryptos = [
-                    { name: 'Bitcoin', symbol: 'BTC/USDT', price: '$95,420.50', change: '+2.4%', up: true, bg: '#f7931a', icon: 'fa-bitcoin' },
-                    { name: 'Ethereum', symbol: 'ETH/USDT', price: '$3,480.12', change: '+1.8%', up: true, bg: '#627eea', icon: 'fa-ethereum' },
-                    { name: 'Tether', symbol: 'USDT/TRX', price: '$1.00', change: '+0.01%', up: true, bg: '#26a17b', icon: 'fa-dollar-sign' }
-                ];
-
-                var html = '';
-                for (var i = 0; i < cryptos.length; i++) {
-                    var c = cryptos[i];
-                    html += '<div class="crypto-row">' +
-                        '<div class="crypto-info">' +
-                            '<div class="crypto-icon" style="background:' + c.bg + '"><i class="fab ' + c.icon + '"></i></div>' +
-                            '<div><div style="font-weight:bold;color:#fff;">' + c.symbol + '</div><div style="font-size:10px;color:#94a3b8;">' + c.name + '</div></div>' +
-                        '</div>' +
-                        '<div style="text-align:left;">' +
-                            '<div style="font-weight:bold;color:#f8fafc;">' + c.price + '</div>' +
-                            '<div class="' + (c.up ? 'price-up' : 'price-down') + '">' + c.change + '</div>' +
-                        '</div>' +
-                    '</div>';
-                }
-                cryptoList.innerHTML = html;
+        window.handleWithdraw=async(uid, approve, amount)=>{
+            let u = uMap[uid];
+            if(approve){
+                if(!confirm(`تایید برداشت به مبلغ $${amount}؟`)) return;
+                await updateDoc(doc(db,"users",uid), { pendingWithdrawal: null });
+                alert('تایید شد.');
+            } else {
+                if(!confirm(`لغو برداشت و بازگشت مبلغ $${amount} به موجودی؟`)) return;
+                await updateDoc(doc(db,"users",uid), { balance: Number(u.balance || 0) + amount, pendingWithdrawal: null });
+                alert('لغو و مبلغ عودت داده شد.');
             }
+            loadData();
+        };
+
+        function renderReqs(list){
+            let box=document.getElementById('req-container');
+            if(list.length===0){box.innerHTML=`<div style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست معلقی وجود ندارد.</div>`;return;}
+            let html=`<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام کاربر</th><th>ایمیل جدید</th><th>تاریخ</th><th>عملیات</th></tr></thead><tbody>`;
+            list.forEach(i=>{
+                let u=i.u, uid=i.uid, idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
+                html+=`<tr><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${getName(u)}</b></td><td style="color:#f59e0b">${u.pendingEmail||u.newEmail||'-'}</td><td>${formatDate(u.createdAt)}</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button></td></tr>`;
+            });
+            box.innerHTML=html+`</tbody></table></div>`;
+        }
+
+        window.toggleBan=async(uid,ban)=>{
+            if(!confirm(ban?'مسدودسازی این حساب؟':'فعال‌سازی مجدد حساب؟'))return;
+            await updateDoc(doc(db,"users",uid),{status:ban?"cancelled":"active",isBanned:ban});
+            loadData();
+        };
+
+        window.appEm=async(uid,email)=>{await updateDoc(doc(db,"users",uid),{email,pendingEmail:"",newEmail:"",selfieImage:"",adminApprovalStatus:"approved"});loadData();};
+        window.rejEm=async(uid)=>{await updateDoc(doc(db,"users",uid),{adminApprovalStatus:"rejected"});loadData();};
+
+        window.openE=uid=>{
+            let u=uMap[uid];
+            document.getElementById('e-uid').value=uid;
+            document.getElementById('e-name').value=getName(u);
+            document.getElementById('e-email').value=u.email||'';
+            document.getElementById('e-phone').value=u.phone||'';
+            document.getElementById('e-bal').value=u.balance||0;
+            document.getElementById('e-profit').value=u.platformProfit || u.profit || 0;
+            document.getElementById('m-edit').classList.add('show');
+        };
+
+        document.getElementById('f-edit').onsubmit=async e=>{
+            e.preventDefault();
+            await updateDoc(doc(db,"users",document.getElementById('e-uid').value),{
+                fullname:document.getElementById('e-name').value,
+                email:document.getElementById('e-email').value,
+                phone:document.getElementById('e-phone').value,
+                balance:parseFloat(document.getElementById('e-bal').value)||0,
+                platformProfit:parseFloat(document.getElementById('e-profit').value)||0
+            });
+            closeModal('m-edit'); loadData();
+        };
+
+        ['act','pend','ban'].forEach(k=>{
+            let inp = document.getElementById(`s-${k}`);
+            if(inp) inp.oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll(`#tb-${k} tr`).forEach(r=>r.style.display=r.dataset.s.includes(q)?'':'none');};
         });
+
+        onAuthStateChanged(auth,u=>{if(!u)window.location.href='index.html';else loadData();});
+        document.getElementById('logout-btn').onclick=async()=>{await signOut(auth);window.location.href='index.html';};
     </script>
-    <script type="module" src="dashboard.js"></script>
 </body>
 </html>
