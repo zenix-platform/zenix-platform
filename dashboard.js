@@ -2,26 +2,33 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// تابع کمکی برای استخراج درست پیام‌ها با هر نام فیلدی که پنل ادمین ذخیره کرده باشد
+function parseAdminMessages(data) {
+    let raw = data.adminMessage || data.adminMessages || data.messages || data.notifications;
+    if (!raw) return [];
+    let arr = Array.isArray(raw) ? raw : [raw];
+    return arr.map(m => ({
+        subject: m.subject || m.title || 'Announcement',
+        body: m.body || m.message || m.text || '',
+        time: m.time || m.date || m.createdAt || new Date().toISOString(),
+        read: !!m.read
+    }));
+}
+
 // اتصال توابع مدال به window در بالاترین سطح جهت اجرا در همه حالات
 window.openMessageModal = async () => {
     let c = document.getElementById('modal-msg-container'), t = ld[currLang] || ld.fa;
     
-    // دریافت آخرین پیام‌ها از دیتابیس به محض کلیک روی زنگوله برای نمایش پیام‌های جدید ادمین
     if (currentUserId) {
         try {
             let userDoc = await getDoc(doc(db, "users", currentUserId));
             if (userDoc.exists()) {
-                let data = userDoc.data();
-                if (data.adminMessage) {
-                    allMessages = Array.isArray(data.adminMessage) ? data.adminMessage : [data.adminMessage];
-                    let unread = allMessages.filter(m => !m.read).length;
-                    let b = document.getElementById('bell-badge');
-                    if (b) {
-                        if (unread > 0) { b.textContent = unread; b.classList.add('show'); }
-                        else { b.textContent = '0'; b.classList.remove('show'); }
-                    }
-                } else {
-                    allMessages = [];
+                allMessages = parseAdminMessages(userDoc.data());
+                let unread = allMessages.filter(m => !m.read).length;
+                let b = document.getElementById('bell-badge');
+                if (b) {
+                    if (unread > 0) { b.textContent = unread; b.classList.add('show'); }
+                    else { b.textContent = '0'; b.classList.remove('show'); }
                 }
             }
         } catch (e) { console.error(e); }
@@ -153,14 +160,14 @@ try {
                 setLang(currLang);
                 const elBal = document.getElementById('val-balance');
                 if (elBal) elBal.textContent = `$${Number(data.balance !== undefined && data.balance !== null ? data.balance : (data.depositAmount || 0)).toFixed(2)}`;
-                if (data.adminMessage) {
-                    allMessages = Array.isArray(data.adminMessage) ? data.adminMessage : [data.adminMessage];
-                    let unread = allMessages.filter(m => !m.read).length;
-                    if (unread > 0) {
-                        let b = document.getElementById('bell-badge');
-                        if (b) { b.textContent = unread; b.classList.add('show'); }
-                    }
+                
+                allMessages = parseAdminMessages(data);
+                let unread = allMessages.filter(m => !m.read).length;
+                if (unread > 0) {
+                    let b = document.getElementById('bell-badge');
+                    if (b) { b.textContent = unread; b.classList.add('show'); }
                 }
+
                 let totalRef = 0, refCode = data.referralCode;
                 if (refCode) {
                     const snapAll = await getDocs(collection(db, "users"));
