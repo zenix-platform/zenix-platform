@@ -2,17 +2,26 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// تابع کمکی برای استخراج درست پیام‌ها با هر نام فیلدی که پنل ادمین ذخیره کرده باشد
-function parseAdminMessages(data) {
-    let raw = data.adminMessage || data.adminMessages || data.messages || data.notifications;
-    if (!raw) return [];
-    let arr = Array.isArray(raw) ? raw : [raw];
-    return arr.map(m => ({
-        subject: m.subject || m.title || 'Announcement',
-        body: m.body || m.message || m.text || '',
-        time: m.time || m.date || m.createdAt || new Date().toISOString(),
-        read: !!m.read
-    }));
+// تابع کمکی برای دریافت پیام‌ها از ساب‌کالکشن notifications کاربر
+async function fetchUserMessages(userId) {
+    try {
+        let notifSnap = await getDocs(collection(db, "users", userId, "notifications"));
+        let msgs = [];
+        notifSnap.forEach(docSnap => {
+            let data = docSnap.data();
+            msgs.push({
+                id: docSnap.id,
+                subject: data.title || data.subject || 'Announcement',
+                body: data.message || data.text || data.body || '',
+                time: data.createdAt || data.timestamp || data.time || new Date().toISOString(),
+                read: data.read === true || data.isRead === true
+            });
+        });
+        return msgs;
+    } catch (e) {
+        console.error("Error fetching messages:", e);
+        return [];
+    }
 }
 
 // اتصال توابع مدال به window در بالاترین سطح جهت اجرا در همه حالات
@@ -20,18 +29,13 @@ window.openMessageModal = async () => {
     let c = document.getElementById('modal-msg-container'), t = ld[currLang] || ld.fa;
     
     if (currentUserId) {
-        try {
-            let userDoc = await getDoc(doc(db, "users", currentUserId));
-            if (userDoc.exists()) {
-                allMessages = parseAdminMessages(userDoc.data());
-                let unread = allMessages.filter(m => !m.read).length;
-                let b = document.getElementById('bell-badge');
-                if (b) {
-                    if (unread > 0) { b.textContent = unread; b.classList.add('show'); }
-                    else { b.textContent = '0'; b.classList.remove('show'); }
-                }
-            }
-        } catch (e) { console.error(e); }
+        allMessages = await fetchUserMessages(currentUserId);
+        let unread = allMessages.filter(m => !m.read).length;
+        let b = document.getElementById('bell-badge');
+        if (b) {
+            if (unread > 0) { b.textContent = unread; b.classList.add('show'); }
+            else { b.textContent = '0'; b.classList.remove('show'); }
+        }
     }
 
     if (allMessages.length > 0) {
@@ -48,8 +52,8 @@ function renderMessageList() {
     allMessages.forEach((m, idx) => {
         let dTime = '';
         if (m.time) {
-            let d = new Date(m.time);
-            dTime = isNaN(d.getTime()) ? m.time : d.toUTCString();
+            let d = (typeof m.time.toDate === 'function') ? m.time.toDate() : new Date(m.time);
+            dTime = isNaN(d.getTime()) ? String(m.time) : d.toUTCString();
         }
         let isUnread = !m.read;
         html += `<div class="msg-body-box" style="cursor:pointer;border-right: ${isUnread ? '3px solid #38bdf8' : '1px solid rgba(255,255,255,.08)'};" onclick="window.readAdminMessage(${idx})">
@@ -69,10 +73,13 @@ window.readAdminMessage = async (idx) => {
     let m = allMessages[idx];
     if (!m) return;
     
-    if (!m.read && currentUserId) {
+    if (!m.read && currentUserId && m.id) {
         allMessages[idx].read = true;
         try {
-            await updateDoc(doc(db, "users", currentUserId), { "adminMessage": allMessages });
+            await updateDoc(doc(db, "users", currentUserId, "notifications", m.id), { 
+                read: true, 
+                isRead: true 
+            });
             let unreadCount = allMessages.filter(item => !item.read).length;
             let b = document.getElementById('bell-badge');
             if (b) {
@@ -90,8 +97,8 @@ window.readAdminMessage = async (idx) => {
     let c = document.getElementById('modal-msg-container'), t = ld[currLang] || ld.fa;
     let dTime = '';
     if (m.time) {
-        let d = new Date(m.time);
-        dTime = isNaN(d.getTime()) ? m.time : d.toUTCString();
+        let d = (typeof m.time.toDate === 'function') ? m.time.toDate() : new Date(m.time);
+        dTime = isNaN(d.getTime()) ? String(m.time) : d.toUTCString();
     }
     c.innerHTML = `
         <button onclick="window.openMessageModal()" style="background:none;border:none;color:#38bdf8;cursor:pointer;font-size:12px;margin-bottom:12px;display:flex;align-items:center;gap:5px;padding:0;"><i class="fas fa-arrow-right"></i> بازگشت به لیست پیام‌ها</button>
@@ -161,7 +168,8 @@ try {
                 const elBal = document.getElementById('val-balance');
                 if (elBal) elBal.textContent = `$${Number(data.balance !== undefined && data.balance !== null ? data.balance : (data.depositAmount || 0)).toFixed(2)}`;
                 
-                allMessages = parseAdminMessages(data);
+                // خواندن و نمایش تعداد پیام‌های خوانده‌نشده از ساب‌کالکشن
+                allMessages = await fetchUserMessages(u.uid);
                 let unread = allMessages.filter(m => !m.read).length;
                 if (unread > 0) {
                     let b = document.getElementById('bell-badge');
