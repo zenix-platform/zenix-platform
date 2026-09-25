@@ -77,6 +77,10 @@
         .detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px}
         .detail-row span:first-child{color:#94a3b8}
         .detail-row span:last-child{color:#f8fafc;font-weight:600}
+        
+        /* Toast Notification Banner */
+        #toast-notification{position:fixed;bottom:24px;left:24px;background:#0f172a;border:1px solid rgba(56,189,248,.4);color:#f8fafc;padding:12px 20px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;gap:10px;transform:translateY(100px);opacity:0;transition:all .3s ease}
+        
         footer{text-align:center;padding:16px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);margin-top:auto}
     </style>
 </head>
@@ -244,13 +248,26 @@
                 <div class="panel-box" style="margin-bottom:0;">
                     <div class="panel-header"><div class="panel-title"><i class="fas fa-user-pen"></i> ارسال پیام تکی به یک کاربر</div></div>
                     <form id="f-single-msg">
-                        <div class="form-group">
+                        <input type="hidden" id="target-uid-hidden" required>
+                        
+                        <!-- Selected User Display Card (Appears at top when user is selected) -->
+                        <div id="selected-user-card" style="display:none; background:rgba(56,189,248,.12); border:1px solid rgba(56,189,248,.35); border-radius:10px; padding:10px 14px; margin-bottom:12px; align-items:center; justify-content:space-between;">
+                            <div>
+                                <span style="font-size:10px; color:#38bdf8; display:block; font-weight:600;"><i class="fas fa-user-check"></i> کاربر گیرنده انتخاب‌شده:</span>
+                                <span id="sel-user-name" style="font-weight:700; color:#f8fafc; font-size:12px;">-</span>
+                            </div>
+                            <button type="button" onclick="clearSelectedUser()" style="background:rgba(239,68,68,.2); border:1px solid rgba(239,68,68,.4); color:#ef4444; border-radius:6px; padding:4px 8px; font-size:10px; cursor:pointer;"><i class="fas fa-times"></i> تغییر کاربر</button>
+                        </div>
+
+                        <!-- User Selector Box -->
+                        <div class="form-group" id="sm-uid-container">
                             <label>جستجو و انتخاب کاربر</label>
                             <input type="text" id="sm-search" placeholder="جستجو بر اساس نام، ایمیل یا شناسه..." style="margin-bottom:6px;">
-                            <select id="sm-uid" required style="background:#0f172a; height: 110px;" size="4">
-                                <option value="">ابتدا یک کاربر را انتخاب کنید...</option>
+                            <select id="sm-uid" style="background:#0f172a; height: 100px;" size="4">
+                                <option value="">ابتدا یک کاربر را از لیست جستجو انتخاب کنید...</option>
                             </select>
                         </div>
+
                         <div class="form-group"><label>موضوع پیام</label><input type="text" id="sm-title" placeholder="موضوع..." required></div>
                         <div class="form-group"><label>متن پیام</label><textarea id="sm-msg" style="height:70px;resize:vertical;" placeholder="متن پیام..." required></textarea></div>
                         <button type="submit" class="btn-save" style="background:linear-gradient(135deg,#059669,#047857)"><i class="fas fa-paper-plane"></i> ارسال پیام به کاربر</button>
@@ -284,6 +301,12 @@
         </div>
     </div>
 
+    <!-- Toast Notification Banner -->
+    <div id="toast-notification">
+        <i id="toast-icon" class="fas fa-check-circle" style="color:#22c55e; font-size:16px;"></i>
+        <span id="toast-text" style="font-size:12px; font-weight:600;">عملیات با موفقیت انجام شد.</span>
+    </div>
+
     <footer><p>&copy; 2026 Zenix Platform - Enterprise Admin Dashboard</p></footer>
 
     <script type="module">
@@ -304,6 +327,22 @@
 
         window.closeModal=id=>document.getElementById(id).classList.remove('show');
         
+        function showToast(text, type='success'){
+            let t = document.getElementById('toast-notification');
+            let icon = document.getElementById('toast-icon');
+            let txt = document.getElementById('toast-text');
+            txt.innerText = text;
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            icon.style.color = type === 'success' ? '#22c55e' : '#ef4444';
+            t.style.borderColor = type === 'success' ? 'rgba(34,197,94,.4)' : 'rgba(239,68,68,.4)';
+            t.style.transform = 'translateY(0)';
+            t.style.opacity = '1';
+            setTimeout(() => {
+                t.style.transform = 'translateY(100px)';
+                t.style.opacity = '0';
+            }, 3500);
+        }
+
         const getName=u=>u.fullname||u.fullName||u.name||(u.firstName?`${u.firstName} ${u.lastName||''}`:null)||u.email?.split('@')[0]||'کاربر بدون نام';
         
         const formatDate=ts=>{
@@ -343,6 +382,24 @@
             smSelect.innerHTML=html;
             smSelect.value=currentVal;
         }
+
+        window.selectUserForMessage = uid => {
+            let u = uMap[uid];
+            if(!u) return;
+            let idCode = `MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
+            let nameStr = getName(u);
+            document.getElementById('sel-user-name').innerText = `${nameStr} (${idCode} - ${u.email || '-'})`;
+            document.getElementById('selected-user-card').style.display = 'flex';
+            document.getElementById('sm-uid-container').style.display = 'none';
+            document.getElementById('target-uid-hidden').value = uid;
+        };
+
+        window.clearSelectedUser = () => {
+            document.getElementById('selected-user-card').style.display = 'none';
+            document.getElementById('sm-uid-container').style.display = 'block';
+            document.getElementById('sm-uid').value = '';
+            document.getElementById('target-uid-hidden').value = '';
+        };
 
         async function loadData(){
             try {
@@ -442,7 +499,7 @@
             document.getElementById('modal-action-btn').innerHTML=`
                 <div style="display:flex;gap:8px;">
                     <button class="btn-action btn-edit" style="flex:1;justify-content:center;padding:8px" onclick="closeModal('m-details');openE('${uid}')"><i class="fas fa-edit"></i> ویرایش مشخصات</button>
-                    <button class="btn-action btn-approve" style="flex:1;justify-content:center;padding:8px" onclick="closeModal('m-details');switchTab('t-messages', document.querySelector('.admin-tabs button:last-child'));document.getElementById('sm-uid').value='${uid}';"><i class="fas fa-paper-plane"></i> ارسال پیام</button>
+                    <button class="btn-action btn-approve" style="flex:1;justify-content:center;padding:8px" onclick="closeModal('m-details');switchTab('t-messages', document.querySelector('.admin-tabs button:last-child'));selectUserForMessage('${uid}');"><i class="fas fa-paper-plane"></i> ارسال پیام</button>
                 </div>
             `;
             document.getElementById('m-details').classList.add('show');
@@ -473,11 +530,11 @@
             if(approve){
                 if(!confirm(`تایید برداشت به مبلغ $${amount}؟`)) return;
                 await updateDoc(doc(db,"users",uid), { pendingWithdrawal: null });
-                alert('تایید شد.');
+                showToast('تایید برداشت با موفقیت انجام شد.');
             } else {
                 if(!confirm(`لغو برداشت و بازگشت مبلغ $${amount} به موجودی؟`)) return;
                 await updateDoc(doc(db,"users",uid), { balance: Number(u.balance || 0) + amount, pendingWithdrawal: null });
-                alert('لغو و مبلغ عودت داده شد.');
+                showToast('برداشت لغو و مبلغ به کاربر عودت داده شد.');
             }
             loadData();
         };
@@ -496,11 +553,12 @@
         window.toggleBan=async(uid,ban)=>{
             if(!confirm(ban?'مسدودسازی این حساب؟':'فعال‌سازی مجدد حساب؟'))return;
             await updateDoc(doc(db,"users",uid),{status:ban?"cancelled":"active",isBanned:ban});
+            showToast(ban ? 'حساب کاربر با موفقیت مسدود شد.' : 'حساب کاربر فعال شد.');
             loadData();
         };
 
-        window.appEm=async(uid,email)=>{await updateDoc(doc(db,"users",uid),{email,pendingEmail:"",newEmail:"",selfieImage:"",adminApprovalStatus:"approved"});loadData();};
-        window.rejEm=async(uid)=>{await updateDoc(doc(db,"users",uid),{adminApprovalStatus:"rejected"});loadData();};
+        window.appEm=async(uid,email)=>{await updateDoc(doc(db,"users",uid),{email,pendingEmail:"",newEmail:"",selfieImage:"",adminApprovalStatus:"approved"});showToast('درخواست تایید شد.');loadData();};
+        window.rejEm=async(uid)=>{await updateDoc(doc(db,"users",uid),{adminApprovalStatus:"rejected"});showToast('درخواست رد شد.');loadData();};
 
         window.openE=uid=>{
             let u=uMap[uid];
@@ -522,12 +580,19 @@
                 balance:parseFloat(document.getElementById('e-bal').value)||0,
                 platformProfit:parseFloat(document.getElementById('e-profit').value)||0
             });
-            closeModal('m-edit'); loadData();
+            closeModal('m-edit'); 
+            showToast('اطلاعات کاربر با موفقیت ویرایش شد.');
+            loadData();
         };
 
         // Single Message User Search Filter Input Listener
         document.getElementById('sm-search').oninput = e => {
             updateSelectOptions(e.target.value);
+        };
+
+        document.getElementById('sm-uid').onchange = e => {
+            let uid = e.target.value;
+            if(uid) selectUserForMessage(uid);
         };
 
         // Broadcast Message Handler
@@ -536,56 +601,83 @@
             let title = document.getElementById('bc-title').value;
             let message = document.getElementById('bc-msg').value;
             let userKeys = Object.keys(uMap);
-            if(userKeys.length === 0){ alert('هیچ کاربری یافت نشد.'); return; }
+            if(userKeys.length === 0){ showToast('هیچ کاربری یافت نشد.', 'error'); return; }
             if(!confirm(`ارسال این پیام به تمام کاربران (${userKeys.length} کاربر)؟`)) return;
             
             try {
                 let count = 0;
                 for(let uid of userKeys){
+                    // Write to root notifications collection (supporting both read/isRead and message/text fields)
                     await addDoc(collection(db, "notifications"), {
                         userId: uid,
                         title: title,
                         message: message,
+                        text: message,
                         createdAt: serverTimestamp(),
-                        read: false
+                        timestamp: serverTimestamp(),
+                        read: false,
+                        isRead: false
+                    });
+                    // Also write to user subcollection if used by client dashboard bell
+                    await addDoc(collection(db, `users/${uid}/notifications`), {
+                        title: title,
+                        message: message,
+                        text: message,
+                        createdAt: serverTimestamp(),
+                        timestamp: serverTimestamp(),
+                        read: false,
+                        isRead: false
                     });
                     count++;
                 }
-                alert(`پیام با موفقیت به ${count} کاربر ارسال شد.`);
+                showToast(`پیام همگانی با موفقیت به ${count} کاربر ارسال شد.`);
                 document.getElementById('bc-title').value = '';
                 document.getElementById('bc-msg').value = '';
             } catch(err){
                 console.error("Error broadcasting message:", err);
-                alert("خطا در ارسال پیام: " + err.message);
+                showToast("خطا در ارسال پیام: " + err.message, 'error');
             }
         };
 
         // Single Message Handler
         document.getElementById('f-single-msg').onsubmit=async e=>{
             e.preventDefault();
-            let uid = document.getElementById('sm-uid').value;
+            let uid = document.getElementById('target-uid-hidden').value;
             let title = document.getElementById('sm-title').value;
             let message = document.getElementById('sm-msg').value;
-            if(!uid){ alert('لطفاً یک کاربر را انتخاب کنید.'); return; }
-            if(!confirm('ارسال پیام به این کاربر؟')) return;
+            if(!uid){ showToast('لطفاً یک کاربر را انتخاب کنید.', 'error'); return; }
 
             try {
+                // Save to root notifications collection and subcollection with all field variations (read/isRead, message/text)
                 await addDoc(collection(db, "notifications"), {
                     userId: uid,
                     title: title,
                     message: message,
+                    text: message,
                     createdAt: serverTimestamp(),
-                    read: false
+                    timestamp: serverTimestamp(),
+                    read: false,
+                    isRead: false
                 });
-                alert('پیام با موفقیت ارسال شد.');
+
+                await addDoc(collection(db, `users/${uid}/notifications`), {
+                    title: title,
+                    message: message,
+                    text: message,
+                    createdAt: serverTimestamp(),
+                    timestamp: serverTimestamp(),
+                    read: false,
+                    isRead: false
+                });
+
+                showToast('پیام با موفقیت به کاربر ارسال شد و در زنگوله داشبورد قرار گرفت.');
                 document.getElementById('sm-title').value = '';
                 document.getElementById('sm-msg').value = '';
-                document.getElementById('sm-uid').value = '';
-                document.getElementById('sm-search').value = '';
+                clearSelectedUser();
                 updateSelectOptions();
             } catch(err){
                 console.error("Error sending message:", err);
-                alert("خطا در ارسال پیام: " + err.message);
+                showToast("خطا در ارسال پیام: " + err.message, 'error');
             }
         };
 
