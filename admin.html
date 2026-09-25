@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Zenix - Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -126,7 +128,7 @@
         </div>
     </div>
 
-    <!-- مدال درباره پلتفرم Zenix (باز شونده از طریق گزینه درباره پلتفرم در منوی سه خط) -->
+    <!-- مدال درباره پلتفرم Zenix -->
     <div class="modal" id="m-about">
         <div class="modal-content">
             <div class="modal-header"><span id="t-about-title">درباره پلتفرم Zenix (هدف، ماهیت و ساختار)</span><button class="modal-close" onclick="closeAboutModal()"><i class="fas fa-times"></i></button></div>
@@ -142,7 +144,7 @@
         </div>
     </div>
 
-    <!-- مدال راهنمای اختصاصی صفحه داشبورد (باز شونده با علامت سوال هدر) -->
+    <!-- مدال راهنمای اختصاصی صفحه داشبورد -->
     <div class="modal" id="m-help">
         <div class="modal-content">
             <div class="modal-header"><span id="t-help-title">راهنمای صفحه داشبورد</span><button class="modal-close" onclick="closeHelpModal()"><i class="fas fa-times"></i></button></div>
@@ -171,6 +173,68 @@
         <p>&copy; 2026 Zenix. All rights reserved.</p>
         <p style="color:#22c55e;"><i class="fas fa-circle" style="font-size:6px;"></i> <span id="t-node">سرور فعال (US-East)</span></p>
     </footer>
+
+    <!-- اسکریپت پشتیبان کنترل مدال‌ها و هدر جهت جلوگیری از عدم بارگذاری صفحه -->
+    <script>
+        window.openAboutModal = function() {
+            var m = document.getElementById('m-about');
+            if (m) m.classList.add('show');
+        };
+        window.closeAboutModal = function() {
+            var m = document.getElementById('m-about');
+            if (m) m.classList.remove('show');
+        };
+        window.closeMessageModal = function() {
+            var m = document.getElementById('m-msg');
+            if (m) m.classList.remove('show');
+        };
+        window.closeHelpModal = function() {
+            var m = document.getElementById('m-help');
+            if (m) m.classList.remove('show');
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var bellBtn = document.getElementById('bell-btn');
+            var helpBtn = document.getElementById('help-btn');
+            var langBtn = document.getElementById('lang-btn');
+            var menuBtn = document.getElementById('menu-btn');
+
+            var langMenu = document.getElementById('lang-menu');
+            var navMenu = document.getElementById('nav-menu');
+
+            if (bellBtn) {
+                bellBtn.addEventListener('click', function() {
+                    var m = document.getElementById('m-msg');
+                    if (m) m.classList.add('show');
+                });
+            }
+            if (helpBtn) {
+                helpBtn.addEventListener('click', function() {
+                    var m = document.getElementById('m-help');
+                    if (m) m.classList.add('show');
+                });
+            }
+            if (langBtn && langMenu) {
+                langBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    langMenu.classList.toggle('show');
+                    if (navMenu) navMenu.classList.remove('show');
+                });
+            }
+            if (menuBtn && navMenu) {
+                menuBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navMenu.classList.toggle('show');
+                    if (langMenu) langMenu.classList.remove('show');
+                });
+            }
+
+            document.addEventListener('click', function() {
+                if (langMenu) langMenu.classList.remove('show');
+                if (navMenu) navMenu.classList.remove('show');
+            });
+        });
+    </script>
     <script type="module" src="dashboard.js"></script>
 </body>
 </html>
