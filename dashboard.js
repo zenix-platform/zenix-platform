@@ -225,22 +225,60 @@ window.addEventListener('scroll', () => [nMenu, lMenu].forEach(x => x?.classList
 document.querySelectorAll('.menu').forEach(m => m.addEventListener('click', e => e.stopPropagation()));
 
 function setLang(l) {
-  currLang = l; localStorage.setItem('zenix_lang', l);
+  currLang = l; 
+  localStorage.setItem('zenix_lang', l);
   [nMenu, lMenu].forEach(x => x?.classList.remove('show'));
-  let t = ld[l] || ld.fa, r = l === 'fa' || l === 'ar';
+  let t = ld[l] || ld.fa;
+  let r = l === 'fa' || l === 'ar';
+  
   document.documentElement.setAttribute('dir', r ? 'rtl' : 'ltr');
   document.documentElement.setAttribute('lang', l);
-  for (let i = 1; i <= 6; i++) { let el = document.getElementById(`i${i}`); if (el) el.className = r ? 'fas fa-chevron-left' : 'fas fa-chevron-right'; }
-  let elWel = document.getElementById('t-wel'); if (elWel) elWel.textContent = uName ? `${t.wel}، ${uName}` : t.wel;
-  ['t-sub', 't-st', 'ts1', 'ts2'].forEach((id, idx) => { let el = document.getElementById(id); if (el) el.textContent = t[['sub', 'st', 's1', 's2'][idx]]; });
-  if (document.getElementById('t-mkt')) document.getElementById('t-mkt').innerHTML = `<i class="fas fa-chart-line" style="color:#22c55e"></i> ${t.tMkt}`;
-  if (document.getElementById('t-live')) document.getElementById('t-live').textContent = t.tLive;
-  if (document.getElementById('t-node')) document.getElementById('t-node').textContent = t.tNode;
-  if (document.getElementById('t-modal-title')) document.getElementById('t-modal-title').textContent = t.modalTitle;
-  if (document.getElementById('m_about')) document.getElementById('m_about').textContent = t.m_about;
-  for (let i = 1; i <= 6; i++) { let c = document.getElementById(`c${i}`), d = document.getElementById(`d${i}`); if (c) c.textContent = t[`c${i}`] || ''; if (d) d.textContent = t[`d${i}`] || ''; }
-  for (let i = 1; i <= 8; i++) { let m = document.getElementById(`m${i}`); if (m) m.textContent = t[`m${i}`] || ''; }
+  
+  for (let i = 1; i <= 6; i++) { 
+    let el = document.getElementById('i' + i); 
+    if (el) el.className = r ? 'fas fa-chevron-left' : 'fas fa-chevron-right'; 
+  }
+  
+  let elWel = document.getElementById('t-wel'); 
+  if (elWel) {
+    elWel.textContent = uName ? (t.wel + '، ' + uName) : t.wel;
+  }
+  
+  const subKeys = ['sub', 'st', 's1', 's2'];
+  const subIds = ['t-sub', 't-st', 'ts1', 'ts2'];
+  subIds.forEach((id, idx) => {
+    let el = document.getElementById(id);
+    if (el) el.textContent = t[subKeys[idx]];
+  });
+
+  let elMkt = document.getElementById('t-mkt');
+  if (elMkt) elMkt.innerHTML = '<i class="fas fa-chart-line" style="color:#22c55e"></i> ' + t.tMkt;
+  
+  let elLive = document.getElementById('t-live');
+  if (elLive) elLive.textContent = t.tLive;
+  
+  let elNode = document.getElementById('t-node');
+  if (elNode) elNode.textContent = t.tNode;
+  
+  let elModalTitle = document.getElementById('t-modal-title');
+  if (elModalTitle) elModalTitle.textContent = t.modalTitle;
+  
+  let elAbout = document.getElementById('m_about');
+  if (elAbout) elAbout.textContent = t.m_about;
+
+  for (let i = 1; i <= 6; i++) { 
+    let c = document.getElementById('c' + i);
+    let d = document.getElementById('d' + i); 
+    if (c) c.textContent = t['c' + i] || ''; 
+    if (d) d.textContent = t['d' + i] || ''; 
+  }
+  
+  for (let i = 1; i <= 8; i++) { 
+    let m = document.getElementById('m' + i); 
+    if (m) m.textContent = t['m' + i] || ''; 
+  }
 }
+
 document.querySelectorAll('#lang-menu .mi').forEach(i => i.addEventListener('click', () => setLang(i.dataset.lang)));
 
 document.getElementById('logout-btn')?.addEventListener('click', async e => {
