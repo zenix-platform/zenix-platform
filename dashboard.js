@@ -131,13 +131,13 @@ db = getFirestore(app);
 let uName = "", currLang = localStorage.getItem('zenix_lang') || 'fa', allMessages = [], currentUserId = null;
 
 const ld = {
-    fa: {wel:'خوش آمدید',sub:'پنل مدیریت کاربری',st:'تایید شده',s1:'موجودی',s2:'زیرمجموعه',c1:'کوانتیفیکیشن',d1:'معاملات هوشمند',c2:'واریز',d2:'شارژ حساب',c3:'برداشت',d3:'برداشت دارایی',c4:'تیم',d4:'زیرمجموعه‌ها',c5:'تراکنش‌ها',d5:'تاریخچه مالی',c6:'پروفایل',d6:'تنظیمات امنیت',m1:'صفحه اصلی',m2:'کوانتیفیکیشن',m3:'واریز',m4:'برداشت',m5:'تراکنش',m6:'پروفایل',m7:'پشتیبانی',m_about:'درباره پلتفرم',m8:'خروج',tMkt:'بازار ارزهای دیجیتال (۳ ارز برتر از ۳۰ ارز رصد شده)',tLive:'زنده',tNode:'سرور فعال (US-East)',phoneErr:'وارد کردن شماره تلفن الزامی است.',modalTitle:'صندوق پیام‌های مدیریت',noMsg:'هیچ پیام جدیدی از طرف مدیریت وجود ندارد.'},
-    en: {wel:'Welcome',sub:'User Panel',st:'Verified',s1:'Balance',s2:'Referrals',c1:'Quantification',d1:'Smart trading',c2:'Deposit',d2:'Fund account',c3:'Withdraw',d3:'Withdraw assets',c4:'Team',d4:'Referrals',c5:'Transactions',d5:'History',c6:'Profile',d6:'Settings',m1:'Home',m2:'Quantification',m3:'Deposit',m4:'Withdraw',m5:'Transactions',m6:'Profile',m7:'Support',m_about:'About Platform',m8:'Logout',tMkt:'Crypto Market (Top 3 out of 30 Monitored)',tLive:'LIVE',tNode:'Node Active (US-East)',phoneErr:'Phone number is required.',modalTitle:'Admin Messages',noMsg:'No new messages from admin.'},
+    fa: {wel:'خوش آمدید',sub:'پنل مدیریت کاربری',st:'تایید شده',s1:'موجودی',s2:'زیرمجموعه',c1:'کوانتیفیکیشن',d1:'معاملات هوشمند',c2:'واریز',d2:'شارژ حساب',c3:'برداشت',d3:'برداشت دارایی',c4:'تیم',d4:'زیرمجموعه‌ها',c5:'تراکنش‌ها',d5:'تاریخچه مالی',c6:'پروفایل',d6:'تنظیمات امنیت',m1:'صفحه اصلی',m2:'کوانتیفیکیشن',m3:'واریز',m4:'برداشت',m5:'تراکنش',m6:'پروفایل',m7:'پشتیبانی',m_about:'درباره پلتفرم',m8:'خروج',tMkt:'بازار ارزهای دیجیتال (۳ ارز برتر از ۵۰ ارز رصد شده)',tLive:'زنده',tNode:'سرور فعال (US-East)',phoneErr:'وارد کردن شماره تلفن الزامی است.',modalTitle:'صندوق پیام‌های مدیریت',noMsg:'هیچ پیام جدیدی از طرف مدیریت وجود ندارد.'},
+    en: {wel:'Welcome',sub:'User Panel',st:'Verified',s1:'Balance',s2:'Referrals',c1:'Quantification',d1:'Smart trading',c2:'Deposit',d2:'Fund account',c3:'Withdraw',d3:'Withdraw assets',c4:'Team',d4:'Referrals',c5:'Transactions',d5:'History',c6:'Profile',d6:'Settings',m1:'Home',m2:'Quantification',m3:'Deposit',m4:'Withdraw',m5:'Transactions',m6:'Profile',m7:'Support',m_about:'About Platform',m8:'Logout',tMkt:'Crypto Market (Top 3 out of 50 Monitored)',tLive:'LIVE',tNode:'Node Active (US-East)',phoneErr:'Phone number is required.',modalTitle:'Admin Messages',noMsg:'No new messages from admin.'},
     ar: {wel:'أهلاً بك',sub:'لوحة التحكم',st:'موثق',s1:'الرصيد',s2:'الإحالات',c1:'الكمية',d1:'التداول الذكي',c2:'إيداع',d2:'شحن الرصيد',c3:'سحب',d3:'سحب الأصول',c4:'الفريق',d4:'الإحالات',c5:'المعاملات',d5:'السجل',c6:'الملف',d6:'الإعدادات',m1:'الرئيسية',m2:'الكمية',m3:'إيداع',m4:'سحب',m5:'المعاملات',m6:'الملف الشخصي',m7:'الدعم',m_about:'عن المنصة',m8:'خروج',tMkt:'سوق العملات',tLive:'مباشر',tNode:'خادم نشط',phoneErr:'رقم الهاتف مطلوب.',modalTitle:'رسائل الإدارة',noMsg:'لا توجد رسائل جديدة من الإدارة.'},
     tr: {wel:'Hoş Geldiniz',sub:'Kullanıcı Paneli',st:'Doğrulanmış',s1:'Bakiye',s2:'Referans',c1:'Kantifikasyon',d1:'Akıllı ticaret',c2:'Para Yatırma',d2:'Bakiye yükle',c3:'Çek',d3:'Varlık çek',c4:'Takım',d4:'Referanslar',c5:'İşlemler',c6:'Profil',d6:'Ayarlar',m1:'Ana Sayfa',m2:'Kantifikasyon',m3:'Para Yatırma',m4:'Çek',m5:'İşlem',m6:'Profil',m7:'Destek',m_about:'Platform Hakkında',m8:'Çıkış',tMkt:'Kripto Piyasası',tLive:'CANLI',tNode:'Aktif Sunucu',phoneErr:'Telefon numarası gereklidir.',modalTitle:'Yönetici Mesajları',noMsg:'Yöneticiden yeni mesaj yok.'},
     ru: {wel:'Добро пожаловать',sub:'Панель',st:'Проверено',s1:'Баланс',s2:'Рефералы',c1:'Квантификация',d1:'Умная торговля',c2:'Депозит',d2:'Пополнение',c3:'Вывод',d3:'Вывод',c4:'Команда',d4:'Рефералы',c5:'Транзакции',d5:'История',c6:'Профиль',d6:'Настройки',m1:'Главная',m2:'Квантификация',m3:'Депозит',m4:'Вывод',m5:'Транзакция',m6:'Профиль',m7:'Поддержка',m_about:'О платформе',m8:'Выйти',tMkt:'Крипто Рынок',tLive:'LIVE',tNode:'Сервер активен',phoneErr:'Номер телефона обязателен.',modalTitle:'Сообщения админа',noMsg:'Нет новых сообщений от администратора.'},
     es: {wel:'Bienvenido',sub:'Panel',st:'Verificado',s1:'Saldo',s2:'Referidos',c1:'Cuantificación',d1:'Trading inteligente',c2:'Depósito',d2:'Fondear',c3:'Retirar',d3:'Retirar',c4:'Equipo',d4:'Referidos',c5:'Transacciones',d5:'Historial',c6:'Perfil',d6:'Ajustes',m1:'Inicio',m2:'Cuantificación',m3:'Depósito',m4:'Retirar',m5:'Transacción',m6:'Perfil',m7:'Soporte',m_about:'Acerca de',m8:'Salir',tMkt:'Mercado Cripto',tLive:'EN VIVO',tNode:'Servidor Activo',phoneErr:'El número de teléfono es obligatorio.',modalTitle:'Mensajes del Admin',noMsg:'No hay mensajes nuevos del admin.'},
-    fr: {wel:'Bienvenue',sub:'Tableau',st:'Vérifié',s1:'Solde',s2:'Filleuls',c1:'Quantification',d1:'Trading intelligent',c2:'Dépôt',d2:'Alimenter',c3:'Retirer',d3:'Retirer',c4:'Équipe',d4:'Filleuls',c5:'Transactions',d5:'Historique',c6:'Profil',d6:'Paramètres',m1:'Accueil',m2:'Quantification',m3:'Dépôt',m4:'Retirer',m5:'Transaction',m6:'Profil',m7:'Support',m_about:'À propos',m8:'Sortie',tMkt:'Marché Crypto',tLive:'EN DIRECT',tNode:'Serveur Actif',phoneErr:'Le numéro de téléphone est obligatoire.',modalTitle:'Messages Admin',noMsg:'Aucun nouveau message de l’administrateur.'},
+    fr: {wel:'Bienvenue',sub:'Tableau',st:'Vérifié',s1:'Solde',s2:'Filleuls',c1:'Quantification',d1:'Trading intelligent',c2:'Dépôt',d2:'Alimenter',c3:'Retirer',d3:'Retirer',c4:'Équipe',d4:'Filleuls',c5:'Transactions',d5:'Historique',c6:'Profil',d6:'Paramètres',m1:'Accueil',m2:'Quantification',m3:'Dépôt',m4:'Retirer',m5:'Transaction',m6:'Profil',m7:'Support',m_about:'À propos',m8:'Sortie',tMkt:'Marché Crypto',tLive:'EN DIRECT',tNode:'Serveur Actif',phoneErr:'Le numéro de teléfono est obligatoire.',modalTitle:'Messages Admin',noMsg:'Aucun nouveau message de l’administrateur.'},
     de: {wel:'Willkommen',sub:'Dashboard',st:'Verifiziert',s1:'Guthaben',s2:'Empfehlungen',c1:'Quantifizierung',d1:'Intelligenter Handel',c2:'Einzahlen',d2:'Konto aufladen',c3:'Abheben',d3:'Abheben',c4:'Team',d4:'Empfehlungen',c5:'Transaktionen',d5:'Historie',c6:'Profil',d6:'Einstellungen',m1:'Startseite',m2:'Quantifizierung',m3:'Einzahlen',m4:'Abheben',m5:'Transaktion',m6:'Profil',m7:'Support',m_about:'Über uns',m8:'Abmelden',tMkt:'Krypto-Markt',tLive:'LIVE',tNode:'Server Aktiv',phoneErr:'Telefonnummer ist erforderlich.',modalTitle:'Admin-Nachrichten',noMsg:'Keine neuen Nachrichten vom Admin.'}
 };
 
@@ -267,6 +267,7 @@ if (logoutBtn) {
 
 setLang(currLang);
 
+// استخر کامل ۵۰ ارز دیجیتال برتر جهت رصد زنده سوددهی و جابجایی رتبه‌ها
 const cryptoPool = [
     {id:'btc', name:'Bitcoin', symbol:'BTC', price:94517.19, cls:'fab fa-bitcoin', color:'#f7931a', change:1.85},
     {id:'eth', name:'Ethereum', symbol:'ETH', price:3480.20, cls:'fab fa-ethereum', color:'#627eea', change:2.12},
@@ -275,7 +276,46 @@ const cryptoPool = [
     {id:'xrp', name:'XRP', symbol:'XRP', price:1.45, cls:'fas fa-bolt', color:'#23292f', change:4.20},
     {id:'doge', name:'Dogecoin', symbol:'DOGE', price:0.38, cls:'fas fa-dog', color:'#c2a633', change:5.65},
     {id:'ada', name:'Cardano', symbol:'ADA', price:0.75, cls:'fas fa-circle-nodes', color:'#0033ad', change:1.10},
-    {id:'avax', name:'Avalanche', symbol:'AVAX', price:32.40, cls:'fas fa-mountain', color:'#e84142', change:2.30}
+    {id:'avax', name:'Avalanche', symbol:'AVAX', price:32.40, cls:'fas fa-mountain', color:'#e84142', change:2.30},
+    {id:'link', name:'Chainlink', symbol:'LINK', price:18.50, cls:'fas fa-link', color:'#375bd2', change:2.80},
+    {id:'matic', name:'Polygon', symbol:'MATIC', price:0.55, cls:'fas fa-chess-board', color:'#8247e5', change:1.50},
+    {id:'uni', name:'Uniswap', symbol:'UNI', price:8.20, cls:'fas fa-code-branch', color:'#ff007a', change:0.40},
+    {id:'dot', name:'Polkadot', symbol:'DOT', price:7.10, cls:'fas fa-circle', color:'#e6007a', change:-0.50},
+    {id:'ltc', name:'Litecoin', symbol:'LTC', price:85.40, cls:'fas fa-litecoin', color:'#345d9d', change:1.20},
+    {id:'bch', name:'Bitcoin Cash', symbol:'BCH', price:380.00, cls:'fab fa-bitcoin', color:'#8dc351', change:3.10},
+    {id:'near', name:'NEAR Protocol', symbol:'NEAR', price:5.40, cls:'fas fa-network-wired', color:'#000000', change:4.50},
+    {id:'apt', name:'Aptos', symbol:'APT', price:9.20, cls:'fas fa-layer-group', color:'#222222', change:2.10},
+    {id:'sui', name:'Sui', symbol:'SUI', price:3.10, cls:'fas fa-water', color:'#3d70b2', change:6.20},
+    {id:'atom', name:'Cosmos', symbol:'ATOM', price:6.50, cls:'fas fa-globe', color:'#2e3148', change:-1.20},
+    {id:'arb', name:'Arbitrum', symbol:'ARB', price:0.75, cls:'fas fa-feather', color:'#28a0f0', change:1.80},
+    {id:'op', name:'Optimism', symbol:'OP', price:1.80, cls:'fas fa-shield-alt', color:'#ff0420', change:2.40},
+    {id:'inj', name:'Injective', symbol:'INJ', price:24.50, cls:'fas fa-syringe', color:'#00f2fe', change:5.10},
+    {id:'render', name:'Render', symbol:'RENDER', price:7.80, cls:'fas fa-server', color:'#b53636', change:3.80},
+    {id:'fet', name:'Artificial Superintelligence', symbol:'FET', price:1.40, cls:'fas fa-brain', color:'#1d2859', change:4.10},
+    {id:'tao', name:'Bittensor', symbol:'TAO', price:450.00, cls:'fas fa-brain', color:'#ffffff', change:7.50},
+    {id:'shib', name:'Shiba Inu', symbol:'SHIB', price:0.000025, cls:'fas fa-dog', color:'#e4a81d', change:3.20},
+    {id:'pepe', name:'Pepe', symbol:'PEPE', price:0.000012, cls:'fas fa-frog', color:'#3d9970', change:8.40},
+    {id:'bonk', name:'Bonk', symbol:'BONK', price:0.000022, cls:'fas fa-bone', color:'#e65c00', change:5.90},
+    {id:'floki', name:'Floki', symbol:'FLOKI', price:0.00015, cls:'fas fa-shield-dog', color:'#b8860b', change:2.60},
+    {id:'trx', name:'TRON', symbol:'TRX', price:0.24, cls:'fas fa-gem', color:'#ff0000', change:0.80},
+    {id:'xlm', name:'Stellar', symbol:'XLM', price:0.35, cls:'fas fa-star', color:'#14b6eb', change:1.90},
+    {id:'etc', name:'Ethereum Classic', symbol:'ETC', price:28.90, cls:'fab fa-ethereum', color:'#3cfa70', change:-0.40},
+    {id:'fil', name:'Filecoin', symbol:'FIL', price:5.20, cls:'fas fa-file', color:'#0090ff', change:1.30},
+    {id:'algo', name:'Algorand', symbol:'ALGO', price:0.28, cls:'fas fa-project-diagram', color:'#000000', change:2.20},
+    {id:'hbar', name:'Hedera', symbol:'HBAR', price:0.18, cls:'fas fa-cube', color:'#222222', change:3.50},
+    {id:'vet', name:'VeChain', symbol:'VET', price:0.035, cls:'fas fa-check-double', color:'#15abd8', change:0.60},
+    {id:'grt', name:'The Graph', symbol:'GRT', price:0.21, cls:'fas fa-project-diagram', color:'#6f4cff', change:2.50},
+    {id:'ftm', name:'Fantom', symbol:'FTM', price:0.72, cls:'fas fa-ghost', color:'#1969ff', change:4.80},
+    {id:'mkr', name:'Maker', symbol:'MKR', price:2100.00, cls:'fas fa-coins', color:'#1aab9b', change:0.30},
+    {id:'aave', name:'Aave', symbol:'AAVE', price:180.00, cls:'fas fa-ghost', color:'#b6509e', change:3.60},
+    {id:'kava', name:'Kava', symbol:'KAVA', price:0.62, cls:'fas fa-shield-alt', color:'#ff433e', change:1.40},
+    {id:'crv', name:'Curve DAO', symbol:'CRV', price:0.42, cls:'fas fa-chart-pie', color:'#ff3333', change:-0.80},
+    {id:'snx', name:'Synthetix', symbol:'SNX', price:1.90, cls:'fas fa-wave-square', color:'#00d1b2', change:2.00},
+    {id:'comp', name:'Compound', symbol:'COMP', price:58.00, cls:'fas fa-university', color:'#00d395', change:0.90},
+    {id:'cake', name:'PancakeSwap', symbol:'CAKE', price:2.40, cls:'fas fa-birthday-cake', color:'#d18844', change:1.70},
+    {id:'flow', name:'Flow', symbol:'FLOW', price:0.75, cls:'fas fa-water', color:'#00ef8b', change:2.30},
+    {id:'sand', name:'The Sandbox', symbol:'SAND', price:0.38, cls:'fas fa-cube', color:'#0084ff', change:3.90},
+    {id:'mana', name:'Decentraland', symbol:'MANA', price:0.39, cls:'fas fa-vr-cardboard', color:'#ff2d55', change:1.60}
 ];
 
 function initCryptoTicker() {
@@ -286,24 +326,41 @@ function initCryptoTicker() {
 function renderTop3() {
     const c = document.getElementById('crypto-ticker-list');
     if (!c) return;
+    
+    // مرتب‌سازی کل ۵۰ ارز بر اساس بیشترین سوددهی (نزولی)
     cryptoPool.sort((a, b) => b.change - a.change);
+    
+    // استخراج ۳ ارز برتر اول لیست
     const top3 = cryptoPool.slice(0, 3);
+    
     c.innerHTML = '';
     top3.forEach(coin => {
         const r = document.createElement('div');
         r.className = 'crypto-row';
         r.id = `crypto-row-${coin.id}`;
         const up = coin.change >= 0, pCls = up ? 'price-up' : 'price-down';
-        r.innerHTML = `<div class="crypto-info"><div class="crypto-icon" style="background:${coin.color};"><i class="${coin.cls}"></i></div><div><div style="font-weight:bold;color:#f8fafc;">${coin.symbol}</div><div style="font-size:10px;color:#94a3b8;">${coin.name}</div></div></div><div style="text-align:right;"><div id="p-${coin.id}" class="${pCls}">$${coin.price < 1 ? coin.price.toFixed(6) : (coin.price < 10 ? coin.price.toFixed(3) : coin.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}))}</div><div id="ch-${coin.id}" style="font-size:10px;" class="${pCls}">${up ? '+' : ''}${coin.change.toFixed(2)}%</div></div>`;
+        r.innerHTML = `
+            <div class="crypto-info">
+                <div class="crypto-icon" style="background:${coin.color};"><i class="${coin.cls}"></i></div>
+                <div>
+                    <div style="font-weight:bold;color:#f8fafc;">${coin.symbol}</div>
+                    <div style="font-size:10px;color:#94a3b8;">${coin.name}</div>
+                </div>
+            </div>
+            <div style="text-align:right;">
+                <div id="p-${coin.id}" class="${pCls}">$${coin.price < 1 ? coin.price.toFixed(6) : (coin.price < 10 ? coin.price.toFixed(3) : coin.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}))}</div>
+                <div id="ch-${coin.id}" style="font-size:10px;" class="${pCls}">${up ? '+' : ''}${coin.change.toFixed(2)}%</div>
+            </div>`;
         c.appendChild(r);
     });
 }
 
 function updateLivePrices() {
+    // تغییر نوسانات تصادفی قیمت و درصد سود برای تمامی ارزها جهت جابجایی پویای جایگاه‌ها
     cryptoPool.forEach(coin => {
         const delta = (Math.random() - 0.48) * (coin.price * 0.001);
         coin.price = Math.max(0.000001, coin.price + delta);
-        coin.change += (Math.random() - 0.48) * 0.05;
+        coin.change += (Math.random() - 0.47) * 0.15;
     });
     renderTop3();
 }
