@@ -6,85 +6,29 @@ import { getFirestore, doc, getDoc, updateDoc, collection, getDocs } from "https
 window.openMessageModal = async () => {
     let c = document.getElementById('modal-msg-container'), t = ld[currLang] || ld.fa;
     if (allMessages.length > 0) {
-        renderMessageList();
+        let html = '';
+        allMessages.forEach(m => {
+            let dTime = '';
+            if (m.time) {
+                let d = new Date(m.time);
+                dTime = isNaN(d.getTime()) ? m.time : d.toUTCString();
+            }
+            html += `<div class="msg-body-box"><div class="msg-title-text"><i class="fas fa-envelope-open-text"></i> ${m.subject || 'Announcement'}</div><div class="msg-desc-text">${m.body || ''}</div><div style="font-size:10px;color:#64748b;margin-top:8px;text-align:left" dir="ltr">${dTime}</div></div>`;
+        });
+        c.innerHTML = html;
+        if (currentUserId) {
+            try {
+                let upd = allMessages.map(m => ({ ...m, read: true }));
+                await updateDoc(doc(db, "users", currentUserId), { "adminMessage": upd });
+                allMessages = upd;
+                let b = document.getElementById('bell-badge');
+                if (b) { b.textContent = '0'; b.classList.remove('show'); }
+            } catch (e) { console.error(e); }
+        }
     } else {
         c.innerHTML = `<div style="text-align:center;padding:20px;color:#94a3b8">${t.noMsg}</div>`;
     }
     const m = document.getElementById('m-msg'); if (m) m.classList.add('show');
-};
-
-function renderMessageList() {
-    let c = document.getElementById('modal-msg-container');
-    let html = '<div id="msg-list-view">';
-    allMessages.forEach((m, idx) => {
-        let dTime = '';
-        if (m.time) {
-            let d = new Date(m.time);
-            dTime = isNaN(d.getTime()) ? m.time : d.toUTCString();
-        }
-        let unreadStyle = !m.read ? 'border-right: 4px solid #22c55e; background: rgba(34, 197, 94, 0.05);' : '';
-        html += `<div class="msg-body-box" onclick="window.openSingleMessage(${idx})" style="cursor:pointer; ${unreadStyle} transition: all 0.2s;">
-            <div class="msg-title-text" style="display: flex; justify-content: space-between; align-items: center;">
-                <span><i class="fas fa-envelope-open-text"></i> ${m.subject || 'Announcement'}</span>
-                ${!m.read ? '<span style="background:#22c55e; width:8px; height:8px; border-radius:50%; display:inline-block;"></span>' : ''}
-            </div>
-            <div class="msg-desc-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 5px;">${m.body || ''}</div>
-            <div style="font-size:10px;color:#64748b;margin-top:8px;text-align:left" dir="ltr">${dTime}</div>
-        </div>`;
-    });
-    html += '</div>';
-    c.innerHTML = html;
-}
-
-window.openSingleMessage = async (idx) => {
-    let m = allMessages[idx];
-    if (!m) return;
-
-    if (!m.read) {
-        allMessages[idx].read = true;
-        if (currentUserId) {
-            try {
-                await updateDoc(doc(db, "users", currentUserId), { "adminMessage": allMessages });
-                let unread = allMessages.filter(item => !item.read).length;
-                let b = document.getElementById('bell-badge');
-                if (b) {
-                    if (unread > 0) {
-                        b.textContent = unread;
-                        b.classList.add('show');
-                    } else {
-                        b.textContent = '0';
-                        b.classList.remove('show');
-                    }
-                }
-            } catch (e) { console.error(e); }
-        }
-    }
-
-    let c = document.getElementById('modal-msg-container');
-    let dTime = '';
-    if (m.time) {
-        let d = new Date(m.time);
-        dTime = isNaN(d.getTime()) ? m.time : d.toUTCString();
-    }
-
-    c.innerHTML = `
-        <div style="margin-bottom: 15px;">
-            <button onclick="window.backToMessageList()" style="background: none; border: none; color: #38bdf8; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 5px; padding: 0;">
-                <i class="fas fa-arrow-right"></i> بازگشت به لیست پیام‌ها
-            </button>
-        </div>
-        <div class="msg-body-box" style="border: none; background: transparent; padding: 0;">
-            <div class="msg-title-text" style="font-size: 16px; margin-bottom: 10px;">
-                <i class="fas fa-envelope-open-text"></i> ${m.subject || 'Announcement'}
-            </div>
-            <div class="msg-desc-text" style="white-space: pre-wrap; line-height: 1.6; color: #cbd5e1;">${m.body || ''}</div>
-            <div style="font-size:11px;color:#64748b;margin-top:15px;text-align:left" dir="ltr">${dTime}</div>
-        </div>
-    `;
-};
-
-window.backToMessageList = () => {
-    renderMessageList();
 };
 
 window.closeMessageModal = () => { const m = document.getElementById('m-msg'); if (m) m.classList.remove('show'); };
