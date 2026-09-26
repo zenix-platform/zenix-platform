@@ -2,18 +2,24 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Zenix - واریز خودکار</title>
+<title>Zenix - واریز هوشمند</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans','Vazirmatn',sans-serif}
 body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}
-header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
-.logo h2{font-size:18px;color:#38bdf8;font-weight:800}
+header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#0ea5e9,#9333ea);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;font-style:italic;transform:skewX(-6deg);box-shadow:0 0 15px rgba(14,165,233,.4)}
+.logo-text{font-family:'Orbitron',sans-serif;font-size:19px;font-weight:900;letter-spacing:2px;font-style:italic;transform:skewX(-6deg);background:linear-gradient(135deg,#38bdf8,#c084fc,#f43f5e);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px rgba(56,189,248,.4)}
 .hr{display:flex;align-items:center;gap:8px}
 .wrap{position:relative}
 .lb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;width:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#38bdf8;text-decoration:none}
 .badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
-.menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:160px;max-height:240px;overflow-y:auto;padding:6px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}
+.menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:170px;padding:6px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}
 [dir="rtl"] .wrap .menu{left:0}
 [dir="ltr"] .wrap .menu{right:0}
 .menu.show{display:block}
@@ -28,39 +34,38 @@ footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1p
 </head>
 <body>
 <header>
-<div class="logo"><h2>ZENIX</h2></div>
+<div class="logo"><div class="logo-icon">Z</div><div class="logo-text">ZENIX</div></div>
 <div class="hr">
-<div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell"></i><span class="badge">1</span></button>
+<div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell" style="color:#fbbf24"></i><span class="badge" id="bell-badge" style="display:none">0</span></button>
 <div class="menu" id="bell-menu">
-<div style="padding:6px 10px;font-size:11px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold;" data-i18n="adminMsg">پیام مدیریت</div>
-<div style="padding:8px 10px;font-size:11px;color:#cbd5e1;" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div>
+<div style="padding:6px 10px;font-size:11px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:700" data-i18n="adminMsg">پیام مدیریت</div>
+<div style="padding:8px 10px;font-size:11px;color:#cbd5e1" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div>
 </div></div>
-<a href="support.html" class="lb"><i class="fas fa-headset"></i></a>
-<div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe"></i></button>
+<a href="support.html" class="lb"><i class="fas fa-headset" style="color:#a855f7"></i></a>
+<div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe" style="color:#22c55e"></i></button>
 <div class="menu" id="lang-menu">
-<div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div>
+<div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div><div class="mi" data-lang="ru">Русский</div><div class="mi" data-lang="es">Español</div><div class="mi" data-lang="fr">Français</div><div class="mi" data-lang="de">Deutsch</div>
 </div></div>
-<div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars"></i></button>
+<div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars" style="color:#f43f5e"></i></button>
 <div class="menu" id="nav-menu">
-<a href="dashboard.html" class="mi"><i class="fas fa-home"></i><span data-i18n="home">صفحه اصلی</span></a>
-<a href="quantification.html" class="mi"><i class="fas fa-robot"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a>
-<a href="deposit.html" class="mi" style="color:#38bdf8;"><i class="fas fa-arrow-up-right-dots"></i><span data-i18n="deposit">واریز</span></a>
-<a href="receive.html" class="mi"><i class="fas fa-arrow-down-left-and-arrow-up-right-to-center"></i><span data-i18n="receive">برداشت</span></a>
-<a href="transactions.html" class="mi"><i class="fas fa-history"></i><span data-i18n="transactions">تراکنش</span></a>
-<a href="profile.html" class="mi"><i class="fas fa-user-cog"></i><span data-i18n="profile">پروفایل</span></a>
-<a href="support.html" class="mi"><i class="fas fa-headset"></i><span data-i18n="support">پشتیبانی</span></a>
-<a href="#" class="mi" id="logout-btn" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a>
+<a href="dashboard.html" class="mi"><i class="fas fa-home" style="color:#38bdf8"></i><span data-i18n="home">صفحه اصلی</span></a>
+<a href="quantification.html" class="mi"><i class="fas fa-robot" style="color:#a855f7"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a>
+<a href="deposit.html" class="mi" style="color:#38bdf8;"><i class="fas fa-arrow-down" style="color:#22c55e"></i><span data-i18n="deposit">واریز</span></a>
+<a href="receive.html" class="mi"><i class="fas fa-arrow-up" style="color:#fbbf24"></i><span data-i18n="receive">برداشت</span></a>
+<a href="transactions.html" class="mi"><i class="fas fa-history" style="color:#06b6d4"></i><span data-i18n="transactions">تراکنش</span></a>
+<a href="profile.html" class="mi"><i class="fas fa-user-cog" style="color:#ec4899"></i><span data-i18n="profile">پروفایل</span></a>
+<a href="#" class="mi" id="logout-btn" style="color:#ef4444"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a>
 </div></div></div>
 </header>
 
 <div class="c">
 <div class="wel">
 <div><h1 data-i18n="depositTitle">واریز هوشمند ارز</h1><p data-i18n="depositSub">شارژ آنی و اتوماتیک از شبکه بلاکچین</p></div>
-<div style="font-size:11px;background:rgba(34,197,94,.1);border:1px solid #22c55e;padding:4px 8px;border-radius:6px;color:#22c55e;font-weight:600;"><i class="fas fa-bolt"></i> فعال</div>
+<div style="font-size:11px;background:rgba(34,197,94,.1);border:1px solid #22c55e;padding:4px 8px;border-radius:6px;color:#22c55e;font-weight:600;"><i class="fas fa-bolt"></i> <span data-i18n="activeStatus">فعال</span></div>
 </div>
 <div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:16px;margin-top:12px;">
 <div id="status-box" style="display:none;padding:10px;border-radius:8px;font-size:11px;margin-bottom:12px;text-align:center;font-weight:600;"></div>
-<div style="font-size:13px;color:#38bdf8;font-weight:bold;margin-bottom:12px;"><i class="fas fa-network-wired"></i> انتخاب شبکه و آدرس</div>
+<div style="font-size:13px;color:#38bdf8;font-weight:bold;margin-bottom:12px;"><i class="fas fa-network-wired"></i> <span data-i18n="selectNetwork">انتخاب شبکه و آدرس</span></div>
 <div style="display:flex;gap:10px;margin-bottom:14px;">
 <div id="net-trc20" onclick="setNetwork('TRC20')" style="flex:1;background:rgba(56,189,248,0.15);border:1px solid #38bdf8;padding:10px;border-radius:8px;text-align:center;font-size:12px;color:#f8fafc;font-weight:bold;cursor:pointer;">USDT (TRC20)</div>
 <div id="net-bep20" onclick="setNetwork('BEP20')" style="flex:1;background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.1);padding:10px;border-radius:8px;text-align:center;font-size:12px;color:#94a3b8;cursor:pointer;">USDT (BEP20)</div>
@@ -69,28 +74,50 @@ footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1p
 <div style="background:#fff;display:inline-block;padding:10px;border-radius:8px;margin-bottom:8px;">
 <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=TMkUAe5kzL3PdfkwV2vKot3dL3kkDD9z4Y" alt="QR Code" style="display:block;">
 </div>
-<div style="font-size:11px;color:#94a3b8;">اسکن جهت واریز مستقیم</div>
+<div style="font-size:11px;color:#94a3b8;" data-i18n="scanQr">اسکن جهت واریز مستقیم</div>
 </div>
 <div style="margin-bottom:16px;">
 <label id="wallet-label" style="font-size:11px;color:#94a3b8;display:block;margin-bottom:4px;">آدرس کیف پول (TRC20):</label>
 <div style="display:flex;background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;">
 <input type="text" id="wallet-address" value="TMkUAe5kzL3PdfkwV2vKot3dL3kkDD9z4Y" readonly style="width:100%;background:transparent;border:none;color:#f8fafc;padding:10px;font-size:12px;outline:none;direction:ltr;text-align:left;">
-<button type="button" onclick="copyAddress()" style="background:#38bdf8;border:none;color:#0f172a;padding:0 14px;cursor:pointer;font-weight:bold;font-size:12px;"><i class="fas fa-copy"></i> کپی</button>
+<button type="button" onclick="copyAddress()" style="background:#38bdf8;border:none;color:#0f172a;padding:0 14px;cursor:pointer;font-weight:bold;font-size:12px;"><i class="fas fa-copy"></i> <span data-i18n="copyBtn">کپی</span></button>
 </div>
 </div>
-<button type="button" onclick="checkAutoDeposit()" style="width:100%;background:#22c55e;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:13px;"><i class="fas fa-sync-alt"></i> استعلام و دریافت خودکار واریزی</button>
+<button type="button" onclick="checkAutoDeposit()" style="width:100%;background:#22c55e;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:13px;"><i class="fas fa-sync-alt"></i> <span data-i18n="inquiryBtn">استعلام و دریافت خودکار واریزی</span></button>
 </div>
 <div style="margin-top:16px;background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;font-size:11px;color:#94a3b8;line-height:1.6;">
-<div style="color:#38bdf8;font-weight:bold;margin-bottom:6px;"><i class="fas fa-shield-alt"></i> راهنمای امنیتی:</div>
-* لطفاً از واریز هرگونه ارزی غیر از USDT خودداری فرمایید.<br>
-* تراکنش‌ها به صورت خودکار پس از تایید گره‌های شبکه اعمال می‌شوند.
+<div style="color:#38bdf8;font-weight:bold;margin-bottom:6px;"><i class="fas fa-shield-alt"></i> <span data-i18n="securityGuide">راهنمای امنیتی:</span></div>
+<span data-i18n="sec1">* لطفاً از واریز هرگونه ارزی غیر از USDT خودداری فرمایید.</span><br>
+<span data-i18n="sec2">* تراکنش‌ها به صورت خودکار پس از تایید گره‌های شبکه اعمال می‌شوند.</span>
 </div>
 </div>
 
 <footer><p>&copy; 2026 Zenix</p></footer>
 
 <script>
+const LD={
+  fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',support:'پشتیبانی',logout:'خروج',depositTitle:'واریز هوشمند ارز',depositSub:'شارژ آنی و اتوماتیک از شبکه بلاکچین',activeStatus:'فعال',selectNetwork:'انتخاب شبکه و آدرس',scanQr:'اسکن جهت واریز مستقیم',copyBtn:'کپی',inquiryBtn:'استعلام و دریافت خودکار واریزی',securityGuide:'راهنمای امنیتی:',sec1:'* لطفاً از واریز هرگونه ارزی غیر از USDT خودداری فرمایید.',sec2:'* تراکنش‌ها به صورت خودکار پس از تایید گره‌های شبکه اعمال می‌شوند.',copiedMsg:'📋 آدرس کیف پول با موفقیت در کلیپ‌بورد کپی شد.',loginErr:'❌ لطفاً ابتدا وارد حساب کاربری خود شوید.',successMsg:'✅ تراکنش بلاکچین تایید شد. مبلغ {amount} USDT به موجودی شما افزوده شد.',netLbl:'آدرس کیف پول'},
+  en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',support:'Support',logout:'Logout',depositTitle:'Smart Crypto Deposit',depositSub:'Instant & automatic top-up from blockchain network',activeStatus:'Active',selectNetwork:'Select Network & Address',scanQr:'Scan for direct deposit',copyBtn:'Copy',inquiryBtn:'Inquire & Receive Auto-Deposit',securityGuide:'Security Guide:',sec1:'* Please refrain from depositing any currency other than USDT.',sec2:'* Transactions are automatically processed after network node confirmation.',copiedMsg:'📋 Wallet address successfully copied to clipboard.',loginErr:'❌ Please log in to your account first.',successMsg:'✅ Blockchain transaction confirmed. {amount} USDT added to your balance.',netLbl:'Wallet Address'},
+  ar:{dir:'rtl',adminMsg:'رسالة الإدارة',welcomeText:'مرحباً بكم في منصة زينكس.',home:'الرئيسية',quantification:'التداول الكمي',deposit:'إيداع',receive:'سحب',transactions:'المعاملات',profile:'الملف الشخصي',support:'الدعم',logout:'تسجيل خروج',depositTitle:'إيداع العملات الذكي',depositSub:'شحن فوري وتلقائي من شبكة البلوكشين',activeStatus:'نشط',selectNetwork:'اختر الشبكة والعنوان',scanQr:'امحُ للإيداع المباشر',copyBtn:'نسخ',inquiryBtn:'الاستعلام واستلام الإيداع التلقائي',securityGuide:'دليل الأمان:',sec1:'* يرجى عدم إيداع أي عملة أخرى غير USDT.',sec2:'* تتم المعاملات تلقائياً بعد تأكيد عقد الشبكة.',copiedMsg:'📋 تم نسخ عنوان المحافظة بنجاح.',loginErr:'❌ يرجى تسجيل الدخول أولاً.',successMsg:'✅ تم تأكيد معاملة البلوكشين. تمت إضافة {amount} USDT إلى رصيدك.',netLbl:'عنوان المحفظة'},
+  tr:{dir:'ltr',adminMsg:'Yönetici Mesajı',welcomeText:'Zenix platformuna hoş geldiniz.',home:'Ana Sayfa',quantification:'Kantifikasyon',deposit:'Yatır',receive:'Çek',transactions:'İşlemler',profile:'Profil',support:'Destek',logout:'Çıkış Yap',depositTitle:'Akıllı Kripto Yatırma',depositSub:'Blokzincir ağından anında ve otomatik yükleme',activeStatus:'Aktif',selectNetwork:'Ağ ve Adres Seçin',scanQr:'Doğrudan yatırım için tarayın',copyBtn:'Kopyala',inquiryBtn:'Sorgula ve Otomatik Yatırımı Al',securityGuide:'Güvenlik Rehberi:',sec1:'* Lütfen USDT dışında herhangi bir para yatırmaktan kaçının.',sec2:'* İşlemler ağ düğümü onayından sonra otomatik olarak gerçekleşir.',copiedMsg:'📋 Cüzdan adresi başarıyla kopyalandı.',loginErr:'❌ Lütfen önce hesabınıza giriş yapın.',successMsg:'✅ Blokzincir işlemi onaylandı. Bakiyenize {amount} USDT eklendi.',netLbl:'Cüzdan Adresi'},
+  ru:{dir:'ltr',adminMsg:'Сообщение админа',welcomeText:'Добро пожаловать на платформу Zenix.',home:'Главная',quantification:'Квантификация',deposit:'Депозит',receive:'Вывод',transactions:'Транзакции',profile:'Профиль',support:'Поддержка',logout:'Выйти',depositTitle:'Умный депозит',depositSub:'Мгновенное пополнение из блокчейна',activeStatus:'Активен',selectNetwork:'Выберите сеть и адрес',scanQr:'Сканируйте для депозита',copyBtn:'Копировать',inquiryBtn:'Запросить и получить депозит',securityGuide:'Руководство по безопасности:',sec1:'* Пожалуйста, не вносите валюту отличную от USDT.',sec2:'* Транзакции обрабатываются автоматически.',copiedMsg:'📋 Адрес кошелька скопирован.',loginErr:'❌ Сначала войдите в систему.',successMsg:'✅ Транзакция подтверждена. Зачислено {amount} USDT.',netLbl:'Адрес кошелька'},
+  es:{dir:'ltr',adminMsg:'Mensaje de administración',welcomeText:'Bienvenido a la plataforma Zenix.',home:'Inicio',quantification:'Cuantificación',deposit:'Depósito',receive:'Retiro',transactions:'Transacciones',profile:'Perfil',support:'Soporte',logout:'Cerrar sesión',depositTitle:'Depósito inteligente',depositSub:'Recarga instantánea desde la red',activeStatus:'Activo',selectNetwork:'Seleccionar red y dirección',scanQr:'Escanear para depositar',copyBtn:'Copiar',inquiryBtn:'Consultar y recibir depósito',securityGuide:'Guía de seguridad:',sec1:'* Evite depositar otra moneda que no sea USDT.',sec2:'* Las transacciones se procesan automáticamente.',copiedMsg:'📋 Dirección copiada al portapapeles.',loginErr:'❌ Inicie sesión primero.',successMsg:'✅ Transacción confirmada. Se añadieron {amount} USDT.',netLbl:'Dirección de billetera'},
+  fr:{dir:'ltr',adminMsg:'Message d\'administration',welcomeText:'Bienvenue sur la plateforme Zenix.',home:'Accueil',quantification:'Quantification',deposit:'Dépôt',receive:'Retrait',transactions:'Transactions',profile:'Profil',support:'Support',logout:'Déconnexion',depositTitle:'Dépôt intelligent',depositSub:'Recharge instantanée depuis la blockchain',activeStatus:'Actif',selectNetwork:'Sélectionner le réseau',scanQr:'Scanner pour déposer',copyBtn:'Copier',inquiryBtn:'Vérifier et recevoir le dépôt',securityGuide:'Guide de sécurité:',sec1:'* Veuillez ne pas déposer d\'autre devise que l\'USDT.',sec2:'* Les transactions sont traitées automatiquement.',copiedMsg:'📋 Adresse copiée dans le presse-papiers.',loginErr:'❌ Veuillez vous connecter d\'abord.',successMsg:'✅ Transaction confirmée. {amount} USDT ajoutés.',netLbl:'Adresse du portefeuille'},
+  de:{dir:'ltr',adminMsg:'Admin-Nachricht',welcomeText:'Willkommen auf der Zenix-Plattform.',home:'Startseite',quantification:'Quantifizierung',deposit:'Einzahlung',receive:'Auszahlung',transactions:'Transaktionen',profile:'Profil',support:'Support',logout:'Abmelden',depositTitle:'Intelligente Einzahlung',depositSub:'Sofortiges Aufladen über Blockchain',activeStatus:'Aktiv',selectNetwork:'Netzwerk & Adresse wählen',scanQr:'Zum Einzahlen scannen',copyBtn:'Kopieren',inquiryBtn:'Einzahlung abfragen',securityGuide:'Sicherheitsleitfaden:',sec1:'* Bitte zahlen Sie nur USDT ein.',sec2:'* Transaktionen werden automatisch verarbeitet.',copiedMsg:'📋 Wallet-Adresse kopiert.',loginErr:'❌ Bitte zuerst einloggen.',successMsg:'✅ Transaktion bestätigt. {amount} USDT hinzugefügt.',netLbl:'Wallet-Adresse'}
+};
+
+function setLang(l){
+  const t=LD[l]||LD.fa;document.documentElement.dir=t.dir;document.documentElement.lang=l;localStorage.setItem('zenix_lang',l);
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k])el.innerText=t[k];});
+  window.currentLangData=t;
+  const net=window.currentNetwork||'TRC20';
+  const lbl=document.getElementById('wallet-label');
+  if(lbl) lbl.textContent = `${t.netLbl} (${net}):`;
+}
+setLang(localStorage.getItem('zenix_lang')||'fa');
+
 const mB=document.getElementById('menu-btn'),nM=document.getElementById('nav-menu'),lB=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu'),bB=document.getElementById('bell-btn'),bM=document.getElementById('bell-menu');
+document.querySelectorAll('#lang-menu .mi').forEach(el=>{el.onclick=(e)=>{e.stopPropagation();setLang(el.dataset.lang);lMenu.classList.remove('show');};});
 function tM(o,e){e.stopPropagation();[nM,lMenu,bM].forEach(m=>{if(m!==o)m.classList.remove('show');});o.classList.toggle('show');}
 if(mB)mB.onclick=(e)=>tM(nM,e);if(lB)lB.onclick=(e)=>tM(lMenu,e);if(bB)bB.onclick=(e)=>tM(bM,e);
 document.onclick=()=>{[nM,lMenu,bM].forEach(m=>m.classList.remove('show'));};document.querySelectorAll('.menu').forEach(m=>m.onclick=(e)=>e.stopPropagation());
@@ -103,12 +130,12 @@ import{getFirestore,doc,updateDoc,increment}from"https://www.gstatic.com/firebas
 
 const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
 
-// آدرس‌های جدید کیف پول شما برای شبکه‌ها
 const wallets={
   TRC20:"TMkUAe5kzL3PdfkwV2vKot3dL3kkDD9z4Y",
   BEP20:"0x9eA4B9aCa9B7505E63BA436d3240718A21574dc4"
 };
 let currentUser=null;
+window.currentNetwork='TRC20';
 
 function showMsg(text,isErr){
   const box=document.getElementById('status-box');
@@ -120,7 +147,9 @@ function showMsg(text,isErr){
 }
 
 window.setNetwork=function(net){
+  window.currentNetwork=net;
   const trc=document.getElementById('net-trc20'),bep=document.getElementById('net-bep20'),addr=document.getElementById('wallet-address'),lbl=document.getElementById('wallet-label'),qr=document.getElementById('qr-code-img');
+  const t=window.currentLangData||LD.fa;
   if(net==='TRC20'){
     trc.style.background='rgba(56,189,248,0.15)';trc.style.borderColor='#38bdf8';trc.style.color='#f8fafc';
     bep.style.background='rgba(15,23,42,0.6)';bep.style.borderColor='rgba(255,255,255,0.1)';bep.style.color='#94a3b8';
@@ -129,19 +158,21 @@ window.setNetwork=function(net){
     trc.style.background='rgba(15,23,42,0.6)';trc.style.borderColor='rgba(255,255,255,0.1)';trc.style.color='#94a3b8';
   }
   addr.value=wallets[net];
-  lbl.textContent=`آدرس کیف پول (${net}):`;
+  lbl.textContent=`${t.netLbl} (${net}):`;
   qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${wallets[net]}`;
 }
 
 window.copyAddress=function(){
   const c=document.getElementById("wallet-address");
   c.select();navigator.clipboard.writeText(c.value);
-  showMsg("📋 آدرس کیف پول با موفقیت در کلیپ‌بورد کپی شد.", false);
+  const t=window.currentLangData||LD.fa;
+  showMsg(t.copiedMsg, false);
 }
 
 window.checkAutoDeposit=async function(){
+  const t=window.currentLangData||LD.fa;
   if(!currentUser){
-    showMsg("❌ لطفاً ابتدا وارد حساب کاربری خود شوید.", true);
+    showMsg(t.loginErr, true);
     return;
   }
   const detectedAmount=100;
@@ -151,7 +182,7 @@ window.checkAutoDeposit=async function(){
       balance: increment(detectedAmount),
       depositAmount: increment(detectedAmount)
     });
-    showMsg(`✅ تراکنش بلاکچین تایید شد. مبلغ ${detectedAmount} USDT به موجودی شما افزوده شد.`, false);
+    showMsg(t.successMsg.replace('{amount}', detectedAmount), false);
   } catch(err) {
     console.error(err);
     showMsg("❌ خطا در اتصال به سرور جهت بروزرسانی موجودی.", true);
