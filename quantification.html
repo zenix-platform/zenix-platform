@@ -271,9 +271,9 @@
 window.openHelpModal=()=>document.getElementById('m-help')?.classList.add('show');
 window.closeHelpModal=()=>document.getElementById('m-help')?.classList.remove('show');
 
-let showAllHistory=false;
+window.showAllHistory=false;
 window.toggleHistory=function(){
-  showAllHistory=!showAllHistory;
+  window.showAllHistory=!window.showAllHistory;
   if(window.renderHistory)window.renderHistory();
 };
 
@@ -505,6 +505,19 @@ let todayNY=getNYDateStr();
 let cCnt=0;
 let allTradesArray=[];
 
+function formatTradeDate(item){
+  if(item.timestamp){
+    const d=new Date(item.timestamp);
+    const YYYY=d.getFullYear();
+    const MM=String(d.getMonth()+1).padStart(2,'0');
+    const DD=String(d.getDate()).padStart(2,'0');
+    const hh=String(d.getHours()).padStart(2,'0');
+    const mm=String(d.getMinutes()).padStart(2,'0');
+    return `${YYYY}/${MM}/${DD} - ${hh}:${mm}`;
+  }
+  return item.dateStr||'';
+}
+
 function uC(){
   const dateStr=getNYDateStr();
   if(dateStr!==todayNY){
@@ -547,17 +560,18 @@ window.renderHistory=function(){
   
   if(btn){
     btn.style.display=allTradesArray.length>4?'flex':'none';
-    if(btnTxt)btnTxt.innerText=showAllHistory?(t.showLess||'بستن تاریخچه'):(t.showFullHistory||'مشاهده کامل تاریخچه');
-    if(btnIcon)btnIcon.className=showAllHistory?'fas fa-chevron-up':'fas fa-list-ul';
+    if(btnTxt)btnTxt.innerText=window.showAllHistory?(t.showLess||'بستن تاریخچه'):(t.showFullHistory||'مشاهده کامل تاریخچه');
+    if(btnIcon)btnIcon.className=window.showAllHistory?'fas fa-chevron-up':'fas fa-list-ul';
   }
   
-  const tradesToDisplay=showAllHistory?allTradesArray:allTradesArray.slice(0,4);
+  const tradesToDisplay=window.showAllHistory?allTradesArray:allTradesArray.slice(0,4);
   
   let htmlStr='';
   tradesToDisplay.forEach(item=>{
+    const formattedDate=formatTradeDate(item);
     htmlStr+=`<div style="background:rgba(255,255,255,0.03);padding:10px 12px;border-radius:8px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;border:1px solid rgba(255,255,255,0.05);">
       <span style="color:#22c55e;font-weight:bold;font-size:12px;">+$${item.profit.toFixed(2)}</span>
-      <span style="color:#94a3b8;font-size:10px;">${item.dateStr}</span>
+      <span style="color:#94a3b8;font-size:10px;font-family:monospace;">${formattedDate}</span>
       <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${item.name} (${item.symbol})</span><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${item.color};color:#fff;font-size:11px;"><i class="${item.cls}"></i></span></span>
     </div>`;
   });
@@ -605,7 +619,13 @@ if(qB){
       tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${t.success} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> ${rc.symbol} | ${t.prof}: <span style="color:#22c55e;">+$${p.toFixed(2)}</span>`;
       
       const now=new Date();
-      const dateStr=now.toLocaleDateString('en-GB')+' - '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      const YYYY=now.getFullYear();
+      const MM=String(now.getMonth()+1).padStart(2,'0');
+      const DD=String(now.getDate()).padStart(2,'0');
+      const hh=String(now.getHours()).padStart(2,'0');
+      const mm=String(now.getMinutes()).padStart(2,'0');
+      const dateStr=`${YYYY}/${MM}/${DD} - ${hh}:${mm}`;
+
       const tradeObj={name:rc.name,symbol:rc.symbol,cls:rc.cls,color:rc.color,profit:p,dateStr:dateStr,timestamp:now.getTime()};
       allTradesArray.unshift(tradeObj);
       window.renderHistory();
