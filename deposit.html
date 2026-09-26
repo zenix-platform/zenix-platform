@@ -82,10 +82,10 @@ footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1p
 <div style="margin-bottom:16px;">
 <label id="wallet-label" style="font-size:11px;color:#94a3b8;display:block;margin-bottom:4px;">آدرس کیف پول (TRC20):</label>
 <div style="display:flex;background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;">
-<input type="text" id="wallet-address" value="TMkUAe5kzL3PdfkwV2vKot3dL3kkDD9z4Y" readonly style="width:100%;background:transparent;border:none;color:#f8fafc;padding:10px;font-size:12px;outline:none;direction:ltr;text-align:left;user-select:none;-webkit-user-select:none;" oncopy="return false;">
+<input type="text" id="wallet-address" value="" placeholder="ابتدا مبلغ واریزی را وارد کنید..." readonly style="width:100%;background:transparent;border:none;color:#f8fafc;padding:10px;font-size:12px;outline:none;direction:ltr;text-align:left;user-select:none;-webkit-user-select:none;">
 <button type="button" id="copy-btn" onclick="copyAddress()" disabled style="background:#475569;border:none;color:#94a3b8;padding:0 14px;cursor:not-allowed;font-weight:bold;font-size:12px;transition:0.3s;"><i class="fas fa-copy"></i> <span data-i18n="copyBtn">کپی</span></button>
 </div>
-<div id="copy-warning" style="font-size:10px;color:#ef4444;margin-top:4px;" data-i18n="copyWarning">⚠️ برای فعال شدن قابلیت کپی، ابتدا مبلغ واریزی را وارد کنید.</div>
+<div id="copy-warning" style="font-size:10px;color:#ef4444;margin-top:4px;" data-i18n="copyWarning">⚠️ برای نمایش و کپی آدرس کیف پول، ابتدا مبلغ واریزی را وارد کنید.</div>
 </div>
 
 <!-- بخش محاسبه مبلغ واریزی و هش تراکنش -->
@@ -116,10 +116,16 @@ footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1p
 <footer><p>&copy; 2026 Zenix</p></footer>
 
 <script>
+const wallets={
+  TRC20:"TMkUAe5kzL3PdfkwV2vKot3dL3kkDD9z4Y",
+  BEP20:"0x9eA4B9aCa9B7505E63BA436d3240718A21574dc4"
+};
+window.currentNetwork='TRC20';
+
 const LD={
-  fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',support:'پشتیبانی',logout:'خروج',depositTitle:'واریز هوشمند ارز',depositSub:'شارژ آنی و اتوماتیک از شبکه بلاکچین',activeStatus:'فعال',calcTitle:'محاسبه مبلغ واریزی',finalCalcText:'مبلغ واریزی نهایی:',txHashTitle:'هش تراکنش (TxID)',selectNetwork:'انتخاب شبکه و آدرس',scanQr:'اسکن جهت واریز مستقیم',copyBtn:'کپی',copyWarning:'⚠️ برای فعال شدن قابلیت کپی، ابتدا مبلغ واریزی را وارد کنید.',inquiryBtn:'استعلام و واریزی',securityGuide:'راهنمای امنیتی:',sec1:'* لطفاً از واریز هرگونه ارزی غیر از USDT خودداری فرمایید.',sec2:'* تراکنش‌ها به صورت خودکار پس از تایید گره‌های شبکه اعمال می‌شوند.',copiedMsg:'📋 آدرس کیف پول با موفقیت در کلیپ‌بورد کپی شد.',loginErr:'❌ لطفاً ابتدا وارد حساب کاربری خود شوید.',fillReqErr:'❌ لطفاً مبلغ و هش تراکنش را به طور کامل وارد کنید.',successMsg:'✅ تراکنش بلاکچین تایید شد. مبلغ {amount} USDT به موجودی شما افزوده شد.',netLbl:'آدرس کیف پول'},
-  en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',support:'Support',logout:'Logout',depositTitle:'Smart Crypto Deposit',depositSub:'Instant & automatic top-up from blockchain network',activeStatus:'Active',calcTitle:'Deposit Calculator',finalCalcText:'Final deposit amount:',txHashTitle:'Transaction Hash (TxID)',selectNetwork:'Select Network & Address',scanQr:'Scan for direct deposit',copyBtn:'Copy',copyWarning:'⚠️ Please enter the deposit amount first to enable copying.',inquiryBtn:'Inquire & Deposit',securityGuide:'Security Guide:',sec1:'* Please refrain from depositing any currency other than USDT.',sec2:'* Transactions are automatically processed after network node confirmation.',copiedMsg:'📋 Wallet address successfully copied to clipboard.',loginErr:'❌ Please log in to your account first.',fillReqErr:'❌ Please fill in both the amount and transaction hash.',successMsg:'✅ Blockchain transaction confirmed. {amount} USDT added to your balance.',netLbl:'Wallet Address'},
-  ar:{dir:'rtl',adminMsg:'رسالة الإدارة',welcomeText:'مرحباً بكم في منصة زينكس.',home:'الرئيسية',quantification:'التداول الكمي',deposit:'إيداع',receive:'سحب',transactions:'المعاملات',profile:'الملف الشخصي',support:'الدعم',logout:'تسجيل خروج',depositTitle:'إيداع العملات الذكي',depositSub:'شحن فوري وتلقائي من شبكة البلوكشين',activeStatus:'نشط',calcTitle:'حاسبة مبلغ الإيداع',finalCalcText:'مبلغ الإيداع النهائي:',txHashTitle:'هش تراکنش (TxID)',selectNetwork:'اختر الشبكة والعنوان',scanQr:'امحُ للإيداع المباشر',copyBtn:'نسخ',copyWarning:'⚠️ يرجى إدخال مبلغ الإيداع أولاً لتفعيل النسخ.',inquiryBtn:'استعلام و واریزی',securityGuide:'دليل الأمان:',sec1:'* يرجى عدم إيداع أي عملة أخرى غير USDT.',sec2:'* تتم المعاملات تلقائياً بعد تأكيد عقد الشبكة.',copiedMsg:'📋 تم نسخ عنوان المحافظة بنجاح.',loginErr:'❌ يرجى تسجيل الدخول أولاً.',fillReqErr:'❌ يرجى ملء مبلغ الإيداع وهش المعاملة.',successMsg:'✅ تم تأكيد معاملة البلوكشين. تمت إضافة {amount} USDT إلى رصيدك.',netLbl:'عنوان المحفظة'}
+  fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',support:'پشتیبانی',logout:'خروج',depositTitle:'واریز هوشمند ارز',depositSub:'شارژ آنی و اتوماتیک از شبکه بلاکچین',activeStatus:'فعال',calcTitle:'محاسبه مبلغ واریزی',finalCalcText:'مبلغ واریزی نهایی:',txHashTitle:'هش تراکنش (TxID)',selectNetwork:'انتخاب شبکه و آدرس',scanQr:'اسکن جهت واریز مستقیم',copyBtn:'کپی',copyWarning:'⚠️ برای نمایش و کپی آدرس کیف پول، ابتدا مبلغ واریزی را وارد کنید.',inquiryBtn:'استعلام و واریزی',securityGuide:'راهنمای امنیتی:',sec1:'* لطفاً از واریز هرگونه ارزی غیر از USDT خودداری فرمایید.',sec2:'* تراکنش‌ها به صورت خودکار پس از تایید گره‌های شبکه اعمال می‌شوند.',copiedMsg:'📋 آدرس کیف پول با موفقیت در کلیپ‌بورد کپی شد.',loginErr:'❌ لطفاً ابتدا وارد حساب کاربری خود شوید.',fillReqErr:'❌ لطفاً مبلغ و هش تراکنش را به طور کامل وارد کنید.',successMsg:'✅ تراکنش بلاکچین تایید شد. مبلغ {amount} USDT به موجودی شما افزوده شد.',netLbl:'آدرس کیف پول'},
+  en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',support:'Support',logout:'Logout',depositTitle:'Smart Crypto Deposit',depositSub:'Instant & automatic top-up from blockchain network',activeStatus:'Active',calcTitle:'Deposit Calculator',finalCalcText:'Final deposit amount:',txHashTitle:'Transaction Hash (TxID)',selectNetwork:'Select Network & Address',scanQr:'Scan for direct deposit',copyBtn:'Copy',copyWarning:'⚠️ Please enter the deposit amount first to display and copy the wallet address.',inquiryBtn:'Inquire & Deposit',securityGuide:'Security Guide:',sec1:'* Please refrain from depositing any currency other than USDT.',sec2:'* Transactions are automatically processed after network node confirmation.',copiedMsg:'📋 Wallet address successfully copied to clipboard.',loginErr:'❌ Please log in to your account first.',fillReqErr:'❌ Please fill in both the amount and transaction hash.',successMsg:'✅ Blockchain transaction confirmed. {amount} USDT added to your balance.',netLbl:'Wallet Address'},
+  ar:{dir:'rtl',adminMsg:'رسالة الإدارة',welcomeText:'مرحباً بكم في منصة زينكس.',home:'الرئيسية',quantification:'التداول الكمي',deposit:'إيداع',receive:'سحب',transactions:'المعاملات',profile:'الملف الشخصي',support:'الدعم',logout:'تسجيل خروج',depositTitle:'إيداع العملات الذكي',depositSub:'شحن فوري وتلقائي من شبكة البلوكشين',activeStatus:'نشط',calcTitle:'حاسبة مبلغ الإيداع',finalCalcText:'مبلغ الإيداع النهائي:',txHashTitle:'هش تراکنش (TxID)',selectNetwork:'اختر الشبكة والعنوان',scanQr:'امحُ للإيداع المباشر',copyBtn:'نسخ',copyWarning:'⚠️ يرجى إدخال مبلغ الإيداع أولاً لعرض ونسخ عنوان المحفظة.',inquiryBtn:'استعلام و واریزی',securityGuide:'دليل الأمان:',sec1:'* يرجى عدم إيداع أي عملة أخرى غير USDT.',sec2:'* تتم المعاملات تلقائياً بعد تأكيد عقد الشبكة.',copiedMsg:'📋 تم نسخ عنوان المحافظة بنجاح.',loginErr:'❌ يرجى تسجيل الدخول أولاً.',fillReqErr:'❌ يرجى ملء مبلغ الإيداع وهش المعاملة.',successMsg:'✅ تم تأكيد معاملة البلوكشين. تمت إضافة {amount} USDT إلى رصيدك.',netLbl:'عنوان المحفظة'}
 };
 
 function setLang(l){
@@ -148,8 +154,8 @@ function checkInputs(){
   const copyWarning = document.getElementById('copy-warning');
   const inquiryBtn = document.getElementById('inquiry-btn');
 
-  // کنترل فعال‌سازی دکمه و قابلیت کپی آدرس کیف پول
   if(calcVal > 0){
+    walletInput.value = wallets[window.currentNetwork];
     copyBtn.disabled = false;
     copyBtn.style.background = '#38bdf8';
     copyBtn.style.color = '#0f172a';
@@ -158,6 +164,7 @@ function checkInputs(){
     walletInput.style.webkitUserSelect = 'text';
     copyWarning.style.display = 'none';
   } else {
+    walletInput.value = "";
     copyBtn.disabled = true;
     copyBtn.style.background = '#475569';
     copyBtn.style.color = '#94a3b8';
@@ -167,7 +174,6 @@ function checkInputs(){
     copyWarning.style.display = 'block';
   }
 
-  // کنترل دکمه استعلام (نیاز به مبلغ و هش تراکنش دارد)
   if(calcVal > 0 && txVal.length > 0){
     inquiryBtn.disabled = false;
     inquiryBtn.style.background = '#22c55e';
@@ -179,6 +185,40 @@ function checkInputs(){
     inquiryBtn.style.color = '#94a3b8';
     inquiryBtn.style.cursor = 'not-allowed';
   }
+}
+
+window.setNetwork=function(net){
+  window.currentNetwork=net;
+  const trc=document.getElementById('net-trc20'),bep=document.getElementById('net-bep20'),addr=document.getElementById('wallet-address'),lbl=document.getElementById('wallet-label'),qr=document.getElementById('qr-code-img');
+  const t=window.currentLangData||LD.fa;
+  if(net==='TRC20'){
+    trc.style.background='rgba(56,189,248,0.15)';trc.style.borderColor='#38bdf8';trc.style.color='#f8fafc';
+    bep.style.background='rgba(15,23,42,0.6)';bep.style.borderColor='rgba(255,255,255,0.1)';bep.style.color='#94a3b8';
+  }else{
+    bep.style.background='rgba(56,189,248,0.15)';bep.style.borderColor='#38bdf8';bep.style.color='#f8fafc';
+    trc.style.background='rgba(15,23,42,0.6)';trc.style.borderColor='rgba(255,255,255,0.1)';trc.style.color='#94a3b8';
+  }
+  lbl.textContent=`${t.netLbl} (${net}):`;
+  qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${wallets[net]}`;
+  
+  const calcVal = parseFloat(document.getElementById('calc-input').value) || 0;
+  if(calcVal > 0){
+    addr.value = wallets[net];
+  }
+}
+
+window.copyAddress=function(){
+  const calcVal = parseFloat(document.getElementById('calc-input').value) || 0;
+  if(calcVal <= 0) return;
+  const c=document.getElementById("wallet-address");
+  c.select();navigator.clipboard.writeText(c.value);
+  const t=window.currentLangData||LD.fa;
+  const box=document.getElementById('status-box');
+  box.style.display='block';
+  box.style.background='rgba(34,197,94,0.15)';
+  box.style.border='1px solid #22c55e';
+  box.style.color='#22c55e';
+  box.innerHTML=t.copiedMsg;
 }
 
 const mB=document.getElementById('menu-btn'),nM=document.getElementById('nav-menu'),lB=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu'),bB=document.getElementById('bell-btn'),bM=document.getElementById('bell-menu');
@@ -195,12 +235,7 @@ import{getFirestore,doc,updateDoc,increment}from"https://www.gstatic.com/firebas
 
 const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
 
-const wallets={
-  TRC20:"TMkUAe5kzL3PdfkwV2vKot3dL3kkDD9z4Y",
-  BEP20:"0x9eA4B9aCa9B7505E63BA436d3240718A21574dc4"
-};
 let currentUser=null;
-window.currentNetwork='TRC20';
 
 function showMsg(text,isErr){
   const box=document.getElementById('status-box');
@@ -209,31 +244,6 @@ function showMsg(text,isErr){
   box.style.border=isErr?'1px solid #ef4444':'1px solid #22c55e';
   box.style.color=isErr?'#ef4444':'#22c55e';
   box.innerHTML=text;
-}
-
-window.setNetwork=function(net){
-  window.currentNetwork=net;
-  const trc=document.getElementById('net-trc20'),bep=document.getElementById('net-bep20'),addr=document.getElementById('wallet-address'),lbl=document.getElementById('wallet-label'),qr=document.getElementById('qr-code-img');
-  const t=window.currentLangData||LD.fa;
-  if(net==='TRC20'){
-    trc.style.background='rgba(56,189,248,0.15)';trc.style.borderColor='#38bdf8';trc.style.color='#f8fafc';
-    bep.style.background='rgba(15,23,42,0.6)';bep.style.borderColor='rgba(255,255,255,0.1)';bep.style.color='#94a3b8';
-  }else{
-    bep.style.background='rgba(56,189,248,0.15)';bep.style.borderColor='#38bdf8';bep.style.color='#f8fafc';
-    trc.style.background='rgba(15,23,42,0.6)';trc.style.borderColor='rgba(255,255,255,0.1)';trc.style.color='#94a3b8';
-  }
-  addr.value=wallets[net];
-  lbl.textContent=`${t.netLbl} (${net}):`;
-  qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${wallets[net]}`;
-}
-
-window.copyAddress=function(){
-  const calcVal = parseFloat(document.getElementById('calc-input').value) || 0;
-  if(calcVal <= 0) return;
-  const c=document.getElementById("wallet-address");
-  c.select();navigator.clipboard.writeText(c.value);
-  const t=window.currentLangData||LD.fa;
-  showMsg(t.copiedMsg, false);
 }
 
 window.checkAutoDeposit=async function(){
