@@ -180,36 +180,69 @@ onAuthStateChanged(auth, async u => {
   try {
     let d = await getDoc(doc(db, "users", u.uid));
     if (d.exists()) {
-      let data = d.data(), phone = data.phone || data.phoneNumber;
-      if (!phone) {
-        localStorage.setItem('profile_error', (ld[currLang] || ld.fa).phoneErr);
-        window.location.replace('profile.html'); return;
-      }
+      let data = d.data();
+      
       uName = data.fullName || data.fullname || data.name || "";
       setLang(currLang);
-      let elBal = document.getElementById('val-balance');
-      if (elBal) elBal.textContent = `$${Number(data.balance ?? data.depositAmount || 0).toFixed(2)}`;
 
+      // ۱. استخراج و نمایش ایمن موجودی
+      let rawBalance = data.balance ?? data.depositAmount ?? data.wallet ?? data.amount ?? 0;
+      let numericBalance = parseFloat(rawBalance);
+      if (isNaN(numericBalance)) numericBalance = 0;
+      
+      let elBal = document.getElementById('val-balance');
+      if (elBal) elBal.textContent = `$${numericBalance.toFixed(2)}`;
+
+      // ۲. محاسبه زیرمجموعه‌ها (همراه با مدیریت خطای دسترسی کل کاربران)
+      let totalRef = 0;
+      let refCode = data.referralCode;
+
+      if (refCode) {
+        try {
+          let snapAll = await getDocs(collection(db, "users"));
+          let allUsers = [];
+          snapAll.forEach(ds => allUsers.push(ds.data()));
+          
+          let l1 = allUsers.filter(i => i.referredBy === refCode),
+              l1c = l1.map(i => i.referralCode).filter(Boolean),
+              l2 = allUsers.filter(i => l1c.includes(i.referredBy)),
+              l2c = l2.map(i => i.referralCode).filter(Boolean),
+              l3 = allUsers.filter(i => l2c.includes(i.referredBy));
+          
+          totalRef = l1.length + l2.length + l3.length;
+        } catch (refErr) {
+          // در صورت بلاک شدن توسط قوانین فایربیس، از مقادیر ذخیره شده سند کاربر استفاده می‌شود
+          totalRef = Number(data.totalReferrals || data.refCount || 0) ||
+                     (Number(data.gen1Count || data.generation1 || 0) + 
+                      Number(data.gen2Count || data.generation2 || 0) + 
+                      Number(data.gen3Count || data.generation3 || 0));
+        }
+      } else {
+        totalRef = Number(data.totalReferrals || data.refCount || 0) ||
+                   (Number(data.gen1Count || data.generation1 || 0) + 
+                    Number(data.gen2Count || data.generation2 || 0) + 
+                    Number(data.gen3Count || data.generation3 || 0));
+      }
+
+      let elRef = document.getElementById('val-ref'); 
+      if (elRef) elRef.textContent = totalRef;
+
+      // ۳. دریافت پیام‌ها
       allMessages = await fetchUserMessages(u.uid);
       let unread = allMessages.filter(m => !m.read).length, b = document.getElementById('bell-badge');
       if (b && unread > 0) { b.textContent = unread; b.classList.add('show'); }
 
-      let totalRef = 0, refCode = data.referralCode;
-      if (refCode) {
-        let snapAll = await getDocs(collection(db, "users")), allUsers = [];
-        snapAll.forEach(ds => allUsers.push(ds.data()));
-        let l1 = allUsers.filter(i => i.referredBy === refCode),
-            l1c = l1.map(i => i.referralCode).filter(Boolean),
-            l2 = allUsers.filter(i => l1c.includes(i.referredBy)),
-            l2c = l2.map(i => i.referralCode).filter(Boolean),
-            l3 = allUsers.filter(i => l2c.includes(i.referredBy));
-        totalRef = l1.length + l2.length + l3.length;
-      } else {
-        totalRef = Number(data.gen1Count || data.generation1 || 0) + Number(data.gen2Count || data.generation2 || 0) + Number(data.gen3Count || data.generation3 || 0);
+      // ۴. بررسی شماره تلفن پس از نمایش اطلاعات
+      let phone = data.phone || data.phoneNumber;
+      if (!phone) {
+        localStorage.setItem('profile_error', (ld[currLang] || ld.fa).phoneErr);
+        window.location.replace('profile.html'); 
+        return;
       }
-      let elRef = document.getElementById('val-ref'); if (elRef) elRef.textContent = totalRef;
     }
-  } catch (e) { console.error(e); }
+  } catch (e) { 
+    console.error("خطا در دریافت اطلاعات کاربر:", e); 
+  }
 });
 
 const mBtn = document.getElementById('menu-btn'), nMenu = document.getElementById('nav-menu'), lBtn = document.getElementById('lang-btn'), lMenu = document.getElementById('lang-menu');
