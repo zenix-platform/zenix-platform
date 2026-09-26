@@ -43,7 +43,7 @@
         <div class="logo"><h2>ZENIX AI SUPPORT</h2></div>
         <div class="header-actions">
             <button class="clear-btn" onclick="clearChatHistory()" title="پاک کردن حافظه چت"><i class="fas fa-trash-alt"></i> پاک کردن چت</button>
-            <a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-right"></i> بازگشت</a>
+            <a href="javascript:void(0);" onclick="goBackToPreviousPage()" class="back-btn"><i class="fas fa-arrow-right"></i> بازگشت</a>
         </div>
     </header>
     <div class="c">
@@ -71,6 +71,18 @@
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-msg-btn');
 
+        // تابع هوشمند برای برگشت به صفحه قبلی
+        function goBackToPreviousPage() {
+            const prevPage = sessionStorage.getItem('zenix_return_page');
+            if (prevPage) {
+                window.location.href = prevPage;
+            } else if (document.referrer && document.referrer !== window.location.href) {
+                window.history.back();
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        }
+
         // بارگذاری تاریخچه از حافظه مرورگر هنگام باز شدن صفحه
         window.addEventListener('DOMContentLoaded', () => {
             loadChatHistory();
@@ -85,7 +97,6 @@
         function loadChatHistory() {
             let history = JSON.parse(localStorage.getItem('zenix_chat_history')) || [];
             if (history.length === 0) {
-                // اگر حافظه خالی بود، پیام خوشامدگویی اولیه را نشان بده و ذخیره کن
                 const initialMsg = `درود! من دستیار هوشمند پلتفرم **Zenix** هستم. درباره هر بخش از پلتفرم (واریز، برداشت، تغییر رمز، تغییر ایمیل، پروفایل، کوانتیفیکیشن و تیم) سوالی دارید بپرسید.<br>امروز چطور می‌توانم کمکتان کنم?
                 <div class="options-container">
                     <button class="opt-btn" onclick="sendQuickQuery('چطور رمز عبور یا جمیل حسابم رو تغییر بدم؟')"><i class="fas fa-user-cog"></i> تغییر رمز و ایمیل حساب</button>
@@ -94,7 +105,6 @@
                 </div>`;
                 addMessage(initialMsg, 'bot', false);
             } else {
-                // نمایش تمام پیام‌های ذخیره شده قبلی
                 chatBody.innerHTML = '';
                 history.forEach(item => {
                     addMessage(item.text, item.sender, false);
