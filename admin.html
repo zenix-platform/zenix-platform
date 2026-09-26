@@ -79,7 +79,7 @@
         .detail-row span:last-child{color:#f8fafc;font-weight:600}
         
         /* Toast Notification Banner */
-        .toast-notification{position:fixed;bottom:24px;left:24px;background:#0f172a;border:1px solid rgba(56,189,248,.4);color:#f8fafc;padding:12px 20px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;gap:10px;transform:translateY(100px);opacity:0;transition:all .3s ease}
+        #toast-notification{position:fixed;bottom:24px;left:24px;background:#0f172a;border:1px solid rgba(56,189,248,.4);color:#f8fafc;padding:12px 20px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.8);z-index:9999;display:flex;align-items:center;gap:10px;transform:translateY(100px);opacity:0;transition:all .3s ease}
         
         footer{text-align:center;padding:16px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);margin-top:auto}
     </style>
@@ -120,7 +120,6 @@
             <button class="tab-btn" onclick="switchTab('t-pending', this)"><i class="fas fa-user-clock"></i> در انتظار احراز</button>
             <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> لغو شده</button>
             <button class="tab-btn" onclick="switchTab('t-withdraw', this)"><i class="fas fa-money-bill-transfer"></i> برداشت‌ها <span class="tab-badge zero" id="w-badge">0</span></button>
-            <button class="tab-btn" onclick="switchTab('t-deposit', this)"><i class="fas fa-arrow-down" style="color:#22c55e"></i> واریزی‌ها <span class="tab-badge zero" id="dep-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-reqs', this)"><i class="fas fa-bell"></i> درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-messages', this)"><i class="fas fa-paper-plane"></i> ارسال پیام</button>
         </div>
@@ -225,31 +224,6 @@
             </div>
         </div>
 
-        <!-- Tab جدید: Deposit Requests (واریزی‌ها) -->
-        <div id="t-deposit" class="tab-content">
-            <div class="panel-box">
-                <div class="panel-header"><div class="panel-title"><i class="fas fa-arrow-down" style="color:#22c55e"></i> مدیریت درخواست‌های واریز کاربران</div></div>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>شناسه کاربر</th>
-                                <th>نام کاربر</th>
-                                <th>مبلغ واریزی ($)</th>
-                                <th>شبکه</th>
-                                <th>هش تراکنش (TxID)</th>
-                                <th>تاریخ / وضعیت</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tb-deposit">
-                            <tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست واریزی یافت نشد</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
         <!-- Tab 5: Requests Box -->
         <div id="t-reqs" class="tab-content">
             <div class="panel-box">
@@ -276,6 +250,7 @@
                     <form id="f-single-msg">
                         <input type="hidden" id="target-uid-hidden" required>
                         
+                        <!-- Selected User Display Card (Appears at top when user is selected) -->
                         <div id="selected-user-card" style="display:none; background:rgba(56,189,248,.12); border:1px solid rgba(56,189,248,.35); border-radius:10px; padding:10px 14px; margin-bottom:12px; align-items:center; justify-content:space-between;">
                             <div>
                                 <span style="font-size:10px; color:#38bdf8; display:block; font-weight:600;"><i class="fas fa-user-check"></i> کاربر گیرنده انتخاب‌شده:</span>
@@ -284,6 +259,7 @@
                             <button type="button" onclick="clearSelectedUser()" style="background:rgba(239,68,68,.2); border:1px solid rgba(239,68,68,.4); color:#ef4444; border-radius:6px; padding:4px 8px; font-size:10px; cursor:pointer;"><i class="fas fa-times"></i> تغییر کاربر</button>
                         </div>
 
+                        <!-- User Selector Box -->
                         <div class="form-group" id="sm-uid-container">
                             <label>جستجو و انتخاب کاربر</label>
                             <input type="text" id="sm-search" placeholder="جستجو بر اساس نام، ایمیل یا شناسه..." style="margin-bottom:6px;">
@@ -326,7 +302,7 @@
     </div>
 
     <!-- Toast Notification Banner -->
-    <div class="toast-notification" id="toast-notification">
+    <div id="toast-notification">
         <i id="toast-icon" class="fas fa-check-circle" style="color:#22c55e; font-size:16px;"></i>
         <span id="toast-text" style="font-size:12px; font-weight:600;">عملیات با موفقیت انجام شد.</span>
     </div>
@@ -528,6 +504,190 @@
             `;
             document.getElementById('m-details').classList.add('show');
         };
+
+        function renderWithdrawals(list){
+            let box=document.getElementById('tb-withdraw');
+            if(list.length===0){box.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست برداشتی وجود ندارد.</td></tr>`;return;}
+            let html='';
+            list.forEach(i=>{
+                let amt = Number(i.data.amount||0);
+                html+=`<tr>
+                    <td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td>
+                    <td><b>${i.nameStr}</b></td>
+                    <td style="color:#22c55e;font-weight:bold">$${amt.toLocaleString()}</td>
+                    <td dir="ltr">${i.data.address||i.data.wallet||'-'}</td>
+                    <td>
+                        <button class="btn-action btn-approve" onclick="handleWithdraw('${i.uid}', true, ${amt})"><i class="fas fa-check"></i></button>
+                        <button class="btn-action btn-reject" onclick="handleWithdraw('${i.uid}', false, ${amt})"><i class="fas fa-times"></i></button>
+                    </td>
+                </tr>`;
+            });
+            box.innerHTML=html;
+        }
+
+        window.handleWithdraw=async(uid, approve, amount)=>{
+            let u = uMap[uid];
+            if(approve){
+                if(!confirm(`تایید برداشت به مبلغ $${amount}؟`)) return;
+                await updateDoc(doc(db,"users",uid), { pendingWithdrawal: null });
+                showToast('تایید برداشت با موفقیت انجام شد.');
+            } else {
+                if(!confirm(`لغو برداشت و بازگشت مبلغ $${amount} به موجودی؟`)) return;
+                await updateDoc(doc(db,"users",uid), { balance: Number(u.balance || 0) + amount, pendingWithdrawal: null });
+                showToast('برداشت لغو و مبلغ به کاربر عودت داده شد.');
+            }
+            loadData();
+        };
+
+        function renderReqs(list){
+            let box=document.getElementById('req-container');
+            if(list.length===0){box.innerHTML=`<div style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست معلقی وجود ندارد.</div>`;return;}
+            let html=`<div class="table-responsive"><table><thead><tr><th>شناسه</th><th>نام کاربر</th><th>ایمیل جدید</th><th>تاریخ</th><th>عملیات</th></tr></thead><tbody>`;
+            list.forEach(i=>{
+                let u=i.u, uid=i.uid, idCode=`MS-${(uid.replace(/\D/g,'')+"123").substring(0,6)}`;
+                html+=`<tr><td><span class="badge-id" onclick="openDetails('${uid}')">${idCode}</span></td><td><b>${getName(u)}</b></td><td style="color:#f59e0b">${u.pendingEmail||u.newEmail||'-'}</td><td>${formatDate(u.createdAt)}</td><td><button class="btn-action btn-approve" onclick="appEm('${uid}','${u.pendingEmail||u.newEmail||''}')">تایید</button><button class="btn-action btn-reject" onclick="rejEm('${uid}')">رد</button></td></tr>`;
+            });
+            box.innerHTML=html+`</tbody></table></div>`;
+        }
+
+        window.toggleBan=async(uid,ban)=>{
+            if(!confirm(ban?'مسدودسازی این حساب؟':'فعال‌سازی مجدد حساب؟'))return;
+            await updateDoc(doc(db,"users",uid),{status:ban?"cancelled":"active",isBanned:ban});
+            showToast(ban ? 'حساب کاربر با موفقیت مسدود شد.' : 'حساب کاربر فعال شد.');
+            loadData();
+        };
+
+        window.appEm=async(uid,email)=>{await updateDoc(doc(db,"users",uid),{email,pendingEmail:"",newEmail:"",selfieImage:"",adminApprovalStatus:"approved"});showToast('درخواست تایید شد.');loadData();};
+        window.rejEm=async(uid)=>{await updateDoc(doc(db,"users",uid),{adminApprovalStatus:"rejected"});showToast('درخواست رد شد.');loadData();};
+
+        window.openE=uid=>{
+            let u=uMap[uid];
+            document.getElementById('e-uid').value=uid;
+            document.getElementById('e-name').value=getName(u);
+            document.getElementById('e-email').value=u.email||'';
+            document.getElementById('e-phone').value=u.phone||'';
+            document.getElementById('e-bal').value=u.balance||0;
+            document.getElementById('e-profit').value=u.platformProfit || u.profit || 0;
+            document.getElementById('m-edit').classList.add('show');
+        };
+
+        document.getElementById('f-edit').onsubmit=async e=>{
+            e.preventDefault();
+            await updateDoc(doc(db,"users",document.getElementById('e-uid').value),{
+                fullname:document.getElementById('e-name').value,
+                email:document.getElementById('e-email').value,
+                phone:document.getElementById('e-phone').value,
+                balance:parseFloat(document.getElementById('e-bal').value)||0,
+                platformProfit:parseFloat(document.getElementById('e-profit').value)||0
+            });
+            closeModal('m-edit'); 
+            showToast('اطلاعات کاربر با موفقیت ویرایش شد.');
+            loadData();
+        };
+
+        // Single Message User Search Filter Input Listener
+        document.getElementById('sm-search').oninput = e => {
+            updateSelectOptions(e.target.value);
+        };
+
+        document.getElementById('sm-uid').onchange = e => {
+            let uid = e.target.value;
+            if(uid) selectUserForMessage(uid);
+        };
+
+        // Broadcast Message Handler
+        document.getElementById('f-broadcast').onsubmit=async e=>{
+            e.preventDefault();
+            let title = document.getElementById('bc-title').value;
+            let message = document.getElementById('bc-msg').value;
+            let userKeys = Object.keys(uMap);
+            if(userKeys.length === 0){ showToast('هیچ کاربری یافت نشد.', 'error'); return; }
+            if(!confirm(`ارسال این پیام به تمام کاربران (${userKeys.length} کاربر)؟`)) return;
+            
+            try {
+                let count = 0;
+                for(let uid of userKeys){
+                    // Write to root notifications collection (supporting both read/isRead and message/text fields)
+                    await addDoc(collection(db, "notifications"), {
+                        userId: uid,
+                        title: title,
+                        message: message,
+                        text: message,
+                        createdAt: serverTimestamp(),
+                        timestamp: serverTimestamp(),
+                        read: false,
+                        isRead: false
+                    });
+                    // Also write to user subcollection if used by client dashboard bell
+                    await addDoc(collection(db, `users/${uid}/notifications`), {
+                        title: title,
+                        message: message,
+                        text: message,
+                        createdAt: serverTimestamp(),
+                        timestamp: serverTimestamp(),
+                        read: false,
+                        isRead: false
+                    });
+                    count++;
+                }
+                showToast(`پیام همگانی با موفقیت به ${count} کاربر ارسال شد.`);
+                document.getElementById('bc-title').value = '';
+                document.getElementById('bc-msg').value = '';
+            } catch(err){
+                console.error("Error broadcasting message:", err);
+                showToast("خطا در ارسال پیام: " + err.message, 'error');
+            }
+        };
+
+        // Single Message Handler
+        document.getElementById('f-single-msg').onsubmit=async e=>{
+            e.preventDefault();
+            let uid = document.getElementById('target-uid-hidden').value;
+            let title = document.getElementById('sm-title').value;
+            let message = document.getElementById('sm-msg').value;
+            if(!uid){ showToast('لطفاً یک کاربر را انتخاب کنید.', 'error'); return; }
+
+            try {
+                // Save to root notifications collection and subcollection with all field variations (read/isRead, message/text)
+                await addDoc(collection(db, "notifications"), {
+                    userId: uid,
+                    title: title,
+                    message: message,
+                    text: message,
+                    createdAt: serverTimestamp(),
+                    timestamp: serverTimestamp(),
+                    read: false,
+                    isRead: false
+                });
+
+                await addDoc(collection(db, `users/${uid}/notifications`), {
+                    title: title,
+                    message: message,
+                    text: message,
+                    createdAt: serverTimestamp(),
+                    timestamp: serverTimestamp(),
+                    read: false,
+                    isRead: false
+                });
+
+                showToast('پیام با موفقیت به کاربر ارسال شد و در زنگوله داشبورد قرار گرفت.');
+                document.getElementById('sm-title').value = '';
+                document.getElementById('sm-msg').value = '';
+                clearSelectedUser();
+                updateSelectOptions();
+            } catch(err){
+                console.error("Error sending message:", err);
+                showToast("خطا در ارسال پیام: " + err.message, 'error');
+            }
+        };
+
+        ['act','pend','ban'].forEach(k=>{
+            let inp = document.getElementById(`s-${k}`);
+            if(inp) inp.oninput=e=>{let q=e.target.value.toLowerCase();document.querySelectorAll(`#tb-${k} tr`).forEach(r=>r.style.display=r.dataset.s.includes(q)?'':'none');};
+        });
+
+        onAuthStateChanged(auth,u=>{if(!u)window.location.href='index.html';else loadData();});
+        document.getElementById('logout-btn').onclick=async()=>{await signOut(auth);window.location.href='index.html';};
     </script>
 </body>
 </html>
