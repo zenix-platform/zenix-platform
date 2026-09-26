@@ -1,554 +1,134 @@
-<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zenix - کوانتیفیکیشن</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet"><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript><style>*{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans','Vazirmatn',sans-serif}body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}.logo{display:flex;align-items:center;gap:10px}.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#0ea5e9,#9333ea);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;font-style:italic;transform:skewX(-6deg);box-shadow:0 0 15px rgba(14,165,233,.4)}.logo-text{font-family:'Orbitron',sans-serif;font-size:19px;font-weight:900;letter-spacing:2px;font-style:italic;transform:skewX(-6deg);background:linear-gradient(135deg,#38bdf8,#c084fc,#f43f5e);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px rgba(56,189,248,0.4)}.hr{display:flex;align-items:center;gap:8px}.wrap{position:relative}.lb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;width:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#38bdf8;text-decoration:none}.badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}.menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:170px;padding:6px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}[dir="rtl"] .wrap .menu{left:0}[dir="ltr"] .wrap .menu{right:0}.menu.show{display:block}.mi{padding:7px 10px;font-size:12px;color:#cbd5e1;cursor:pointer;border-radius:6px;display:flex;align-items:center;gap:8px;text-decoration:none}.mi:hover{background:rgba(56,189,248,.2);color:#38bdf8}.c{max-width:800px;width:100%;margin:15px auto;padding:0 12px;flex:1}.wel{background:linear-gradient(135deg,rgba(2,132,199,.15),rgba(147,51,234,.15));border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}.wel h1{font-size:16px;margin-bottom:3px}.wel p{color:#94a3b8;font-size:11px}.quant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}.q-card{background:linear-gradient(145deg,rgba(15,23,42,0.9),rgba(30,41,59,0.8));border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:12px;box-shadow:0 4px 15px rgba(0,0,0,0.3);transition:all 0.25s ease}.q-card:hover{border-color:rgba(56,189,248,0.4);transform:translateY(-2px);box-shadow:0 6px 20px rgba(14,165,233,0.15)}.q-header{display:flex;justify-content:center;align-items:center;position:relative;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:6px}.q-header h3{font-size:14px;font-weight:800;color:#38bdf8;display:flex;align-items:center;justify-content:center;gap:6px;text-align:center}.q-header .badge-active,.q-header .badge-lock{position:absolute;left:0}.badge-active{background:rgba(34,197,94,.15);color:#22c55e;font-size:10px;padding:2px 8px;border-radius:6px;font-weight:bold;border:1px solid rgba(34,197,94,0.3)}.badge-lock{background:rgba(239,68,68,.15);color:#ef4444;font-size:10px;padding:2px 8px;border-radius:6px;border:1px solid rgba(239,68,68,0.3)}.q-desc{font-size:11px;color:#cbd5e1;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04)}.q-desc-title{display:flex;align-items:center;gap:6px;color:#94a3b8}.q-icon{width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}.main-quant-box{text-align:center;margin:15px 0}.main-quant-btn{background:linear-gradient(135deg,#0284c7,#9333ea);color:#fff;border:none;padding:12px 24px;font-size:14px;font-weight:bold;border-radius:10px;cursor:pointer;width:100%}.profit-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.profit-card{background:rgba(15,23,42,.85);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px}.p-title{font-size:10px;color:#94a3b8;display:block}.p-val{font-size:14px;font-weight:700;color:#fff}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(2,6,23,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(10px)}.modal.show{display:flex}.modal-content{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(56,189,248,.3);border-radius:20px;width:100%;max-width:460px;max-height:85vh;display:flex;flex-direction:column;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.9)}.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:#38bdf8;font-weight:800;font-size:14px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:10px}.modal-close{background:rgba(255,255,255,.05);border:none;color:#94a3b8;cursor:pointer;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center}.modal-close:hover{background:rgba(239,68,68,.2);color:#ef4444}.msg-body-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;margin-bottom:10px}.msg-title-text{font-size:13px;font-weight:700;color:#38bdf8;margin-bottom:6px}.msg-desc-text{font-size:12px;color:#cbd5e1;line-height:1.5}.vip-level-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}.vip-level-item{background:rgba(15,23,42,0.6);border:1px solid rgba(56,189,248,0.2);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px}.vip-level-header{display:flex;justify-content:center;align-items:center;border-bottom:1px dashed rgba(255,255,255,0.1);padding-bottom:5px}.vip-level-title{font-size:13px;font-weight:800;color:#38bdf8;display:flex;align-items:center;justify-content:center;gap:6px}.vip-level-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:11px}.vip-cell{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;color:#cbd5e1}.vip-cell span{color:#94a3b8;font-size:10.5px;display:flex;align-items:center;gap:4px}.vip-cell b{color:#f8fafc;font-weight:700}footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05)}</style></head><body>
-<header><div class="logo"><div class="logo-icon">Z</div><div class="logo-text">ZENIX</div></div><div class="hr"><div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell" style="color:#fbbf24"></i><span class="badge" id="bell-badge" style="display:none;">0</span></button><div class="menu" id="bell-menu"><div style="padding:6px 10px;font-size:11px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:bold;" data-i18n="adminMsg">پیام مدیریت</div><div style="padding:8px 10px;font-size:11px;color:#cbd5e1;" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div></div></div><div class="wrap"><button type="button" class="lb" id="help-btn" title="راهنمای بخش کوانتیفیکیشن" onclick="window.openHelpModal()"><i class="fas fa-circle-question" style="color:#38bdf8"></i></button></div><a href="support.html" class="lb"><i class="fas fa-headset" style="color:#a855f7"></i></a><div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe" style="color:#22c55e"></i></button><div class="menu" id="lang-menu"><div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div><div class="mi" data-lang="ru">Русский</div><div class="mi" data-lang="es">Español</div><div class="mi" data-lang="fr">Français</div><div class="mi" data-lang="de">Deutsch</div></div></div><div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars" style="color:#f43f5e"></i></button><div class="menu" id="nav-menu"><a href="dashboard.html" class="mi"><i class="fas fa-home" style="color:#38bdf8"></i><span data-i18n="home">صفحه اصلی</span></a><a href="quantification.html" class="mi"><i class="fas fa-robot" style="color:#a855f7"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a><a href="deposit.html" class="mi"><i class="fas fa-arrow-down" style="color:#22c55e"></i><span data-i18n="deposit">واریز</span></a><a href="receive.html" class="mi"><i class="fas fa-arrow-up" style="color:#fbbf24"></i><span data-i18n="receive">برداشت</span></a><a href="transactions.html" class="mi"><i class="fas fa-history" style="color:#06b6d4"></i><span data-i18n="transactions">تراکنش</span></a><a href="profile.html" class="mi"><i class="fas fa-user-cog" style="color:#ec4899"></i><span data-i18n="profile">پروفایل</span></a><a href="#" class="mi" id="logout-btn" style="color:#ef4444;"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a></div></div></div></header>
-<div class="c"><div class="wel"><div><h1 data-i18n="tradingLevels">سطوح معاملاتی</h1><p data-i18n="subWel">سطح خود را بررسی و ربات را فعال کنید</p></div><div id="status-badge" style="font-size:11px;background:rgba(239,68,68,.1);border:1px solid #ef4444;padding:4px 8px;border-radius:6px;color:#ef4444;font-weight:600;"><i class="fas fa-lock"></i> <span data-i18n="inactive">غیرفعال (موجودی کمتر از $20)</span></div></div>
-<div style="background:rgba(30,41,59,0.9);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;"><div style="background:rgba(56,189,248,0.15);color:#38bdf8;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;"><i class="fas fa-wallet"></i></div><div><div style="font-size:10px;color:#94a3b8;" data-i18n="totalBalance">موجودی کل حساب</div><div id="total-balance-val" style="font-size:16px;font-weight:bold;color:#f8fafc;">$0.00</div></div></div>
-<div style="background:rgba(30,41,59,0.8);border:1px solid rgba(56,189,248,0.3);border-radius:12px;padding:14px;margin-bottom:12px;text-align:center;"><div style="font-size:11px;color:#94a3b8;margin-bottom:4px;"><i class="fas fa-clock" style="color:#38bdf8;"></i> <span data-i18n="nyTime">ساعت نیویورک</span></div><div id="ny-clock-val" style="font-size:24px;color:#38bdf8;font-weight:bold;letter-spacing:1px;">--:--:--</div></div>
-
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Zenix - کوانتیفیکیشن</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet"><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript><style>*{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans','Vazirmatn',sans-serif}body{background:#030712;min-height:100vh;color:#f8fafc;display:flex;flex-direction:column}header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1);padding:10px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}.logo{display:flex;align-items:center;gap:10px}.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#0ea5e9,#9333ea);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;font-style:italic;transform:skewX(-6deg);box-shadow:0 0 15px rgba(14,165,233,.4)}.logo-text{font-family:'Orbitron',sans-serif;font-size:19px;font-weight:900;letter-spacing:2px;font-style:italic;transform:skewX(-6deg);background:linear-gradient(135deg,#38bdf8,#c084fc,#f43f5e);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 20px rgba(56,189,248,.4)}.hr{display:flex;align-items:center;gap:8px}.wrap{position:relative}.lb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;width:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#38bdf8;text-decoration:none}.badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}.menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:170px;padding:6px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}[dir="rtl"] .wrap .menu{left:0}[dir="ltr"] .wrap .menu{right:0}.menu.show{display:block}.mi{padding:7px 10px;font-size:12px;color:#cbd5e1;cursor:pointer;border-radius:6px;display:flex;align-items:center;gap:8px;text-decoration:none}.mi:hover{background:rgba(56,189,248,.2);color:#38bdf8}.c{max-width:800px;width:100%;margin:15px auto;padding:0 12px;flex:1}.wel{background:linear-gradient(135deg,rgba(2,132,199,.15),rgba(147,51,234,.15));border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}.wel h1{font-size:16px;margin-bottom:3px}.wel p{color:#94a3b8;font-size:11px}.quant-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}.q-card{background:linear-gradient(145deg,rgba(15,23,42,.9),rgba(30,41,59,.8));border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:12px;box-shadow:0 4px 15px rgba(0,0,0,.3);transition:all .25s ease}.q-card:hover{border-color:rgba(56,189,248,.4);transform:translateY(-2px);box-shadow:0 6px 20px rgba(14,165,233,.15)}.q-header{display:flex;justify-content:center;align-items:center;position:relative;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:6px}.q-header h3{font-size:14px;font-weight:800;color:#38bdf8;display:flex;align-items:center;justify-content:center;gap:6px;text-align:center}.q-header .badge-active,.q-header .badge-lock{position:absolute;left:0}.badge-active{background:rgba(34,197,94,.15);color:#22c55e;font-size:10px;padding:2px 8px;border-radius:6px;font-weight:700;border:1px solid rgba(34,197,94,.3)}.badge-lock{background:rgba(239,68,68,.15);color:#ef4444;font-size:10px;padding:2px 8px;border-radius:6px;border:1px solid rgba(239,68,68,.3)}.q-desc{font-size:11px;color:#cbd5e1;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.04)}.q-desc-title{display:flex;align-items:center;gap:6px;color:#94a3b8}.q-icon{width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}.main-quant-box{text-align:center;margin:15px 0}.main-quant-btn{background:linear-gradient(135deg,#0284c7,#9333ea);color:#fff;border:none;padding:12px 24px;font-size:14px;font-weight:700;border-radius:10px;cursor:pointer;width:100%}.profit-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.profit-card{background:rgba(15,23,42,.85);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px}.p-title{font-size:10px;color:#94a3b8;display:block}.p-val{font-size:14px;font-weight:700;color:#fff}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(2,6,23,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(10px)}.modal.show{display:flex}.modal-content{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(56,189,248,.3);border-radius:20px;width:100%;max-width:460px;max-height:85vh;display:flex;flex-direction:column;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.9)}.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:#38bdf8;font-weight:800;font-size:14px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:10px}.modal-close{background:rgba(255,255,255,.05);border:none;color:#94a3b8;cursor:pointer;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center}.modal-close:hover{background:rgba(239,68,68,.2);color:#ef4444}.msg-body-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;margin-bottom:10px}.msg-title-text{font-size:13px;font-weight:700;color:#38bdf8;margin-bottom:6px}.msg-desc-text{font-size:12px;color:#cbd5e1;line-height:1.5}.vip-level-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}.vip-level-item{background:rgba(15,23,42,.6);border:1px solid rgba(56,189,248,.2);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px}.vip-level-header{display:flex;justify-content:center;align-items:center;border-bottom:1px dashed rgba(255,255,255,.1);padding-bottom:5px}.vip-level-title{font-size:13px;font-weight:800;color:#38bdf8;display:flex;align-items:center;justify-content:center;gap:6px}.vip-level-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:11px}.vip-cell{background:rgba(255,255,255,.03);padding:6px 8px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;color:#cbd5e1}.vip-cell span{color:#94a3b8;font-size:10.5px;display:flex;align-items:center;gap:4px}.vip-cell b{color:#f8fafc;font-weight:700}footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05)}</style></head><body>
+<header><div class="logo"><div class="logo-icon">Z</div><div class="logo-text">ZENIX</div></div><div class="hr"><div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell" style="color:#fbbf24"></i><span class="badge" id="bell-badge" style="display:none">0</span></button><div class="menu" id="bell-menu"><div style="padding:6px 10px;font-size:11px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:700" data-i18n="adminMsg">پیام مدیریت</div><div style="padding:8px 10px;font-size:11px;color:#cbd5e1" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div></div></div><div class="wrap"><button type="button" class="lb" id="help-btn" title="راهنمای بخش کوانتیفیکیشن" onclick="window.openHelpModal()"><i class="fas fa-circle-question" style="color:#38bdf8"></i></button></div><a href="support.html" class="lb"><i class="fas fa-headset" style="color:#a855f7"></i></a><div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe" style="color:#22c55e"></i></button><div class="menu" id="lang-menu"><div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div><div class="mi" data-lang="ru">Русский</div><div class="mi" data-lang="es">Español</div><div class="mi" data-lang="fr">Français</div><div class="mi" data-lang="de">Deutsch</div></div></div><div class="wrap"><button type="button" class="lb" id="menu-btn"><i class="fas fa-bars" style="color:#f43f5e"></i></button><div class="menu" id="nav-menu"><a href="dashboard.html" class="mi"><i class="fas fa-home" style="color:#38bdf8"></i><span data-i18n="home">صفحه اصلی</span></a><a href="quantification.html" class="mi"><i class="fas fa-robot" style="color:#a855f7"></i><span data-i18n="quantification">کوانتیفیکیشن</span></a><a href="deposit.html" class="mi"><i class="fas fa-arrow-down" style="color:#22c55e"></i><span data-i18n="deposit">واریز</span></a><a href="receive.html" class="mi"><i class="fas fa-arrow-up" style="color:#fbbf24"></i><span data-i18n="receive">برداشت</span></a><a href="transactions.html" class="mi"><i class="fas fa-history" style="color:#06b6d4"></i><span data-i18n="transactions">تراکنش</span></a><a href="profile.html" class="mi"><i class="fas fa-user-cog" style="color:#ec4899"></i><span data-i18n="profile">پروفایل</span></a><a href="#" class="mi" id="logout-btn" style="color:#ef4444"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a></div></div></div></header>
+<div class="c"><div class="wel"><div><h1 data-i18n="tradingLevels">سطوح معاملاتی</h1><p data-i18n="subWel">سطح خود را بررسی و ربات را فعال کنید</p></div><div id="status-badge" style="font-size:11px;background:rgba(239,68,68,.1);border:1px solid #ef4444;padding:4px 8px;border-radius:6px;color:#ef4444;font-weight:600"><i class="fas fa-lock"></i> <span data-i18n="inactive">غیرفعال (موجودی کمتر از $20)</span></div></div>
+<div style="background:rgba(30,41,59,.9);border:1px solid rgba(56,189,248,.3);border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px"><div style="background:rgba(56,189,248,.15);color:#38bdf8;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px"><i class="fas fa-wallet"></i></div><div><div style="font-size:10px;color:#94a3b8" data-i18n="totalBalance">موجودی کل حساب</div><div id="total-balance-val" style="font-size:16px;font-weight:700;color:#f8fafc">$0.00</div></div></div>
+<div style="background:rgba(30,41,59,.8);border:1px solid rgba(56,189,248,.3);border-radius:12px;padding:14px;margin-bottom:12px;text-align:center"><div style="font-size:11px;color:#94a3b8;margin-bottom:4px"><i class="fas fa-clock" style="color:#38bdf8"></i> <span data-i18n="nyTime">ساعت نیویورک</span></div><div id="ny-clock-val" style="font-size:24px;color:#38bdf8;font-weight:700;letter-spacing:1px">--:--:--</div></div>
 <div class="quant-grid">
-<!-- VIP 1 -->
-<div class="q-card">
-  <div class="q-header">
-    <h3 style="color:#38bdf8;"><i class="fas fa-crown" style="color:#fbbf24;"></i> VIP 1</h3>
-    <span class="badge-lock" id="vip1-badge"><i class="fas fa-lock"></i></span>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(56,189,248,0.15);color:#38bdf8;"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span>
-    <b style="color:#f8fafc;">$20 - $300</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,0.15);color:#22c55e;"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span>
-    <b style="color:#22c55e;">1.5%</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(192,132,252,0.15);color:#c084fc;"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span>
-    <b style="color:#f8fafc;">5</b>
-  </div>
+<div class="q-card"><div class="q-header"><h3 style="color:#38bdf8"><i class="fas fa-crown" style="color:#fbbf24"></i> VIP 1</h3><span class="badge-lock" id="vip1-badge"><i class="fas fa-lock"></i></span></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(56,189,248,.15);color:#38bdf8"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span><b style="color:#f8fafc">$20 - $300</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span><b style="color:#22c55e">1.5%</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(192,132,252,.15);color:#c084fc"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span><b style="color:#f8fafc">5</b></div></div>
+<div class="q-card"><div class="q-header"><h3 style="color:#38bdf8"><i class="fas fa-crown" style="color:#e2e8f0"></i> VIP 2</h3><span class="badge-lock"><i class="fas fa-lock"></i></span></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(6,182,212,.15);color:#06b6d4"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span><b style="color:#f8fafc">$300 - $1000</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span><b style="color:#22c55e">2.0%</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(232,121,249,.15);color:#e879f9"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span><b style="color:#f8fafc">15</b></div></div>
+<div class="q-card"><div class="q-header"><h3 style="color:#38bdf8"><i class="fas fa-crown" style="color:#f59e0b"></i> VIP 3</h3><span class="badge-lock"><i class="fas fa-lock"></i></span></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(59,130,246,.15);color:#3b82f6"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span><b style="color:#f8fafc">$1000 - $2500</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span><b style="color:#22c55e">2.5%</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(168,85,247,.15);color:#a855f7"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span><b style="color:#f8fafc">25</b></div></div>
+<div class="q-card"><div class="q-header"><h3 style="color:#38bdf8"><i class="fas fa-crown" style="color:#ec4899"></i> VIP 4</h3><span class="badge-lock"><i class="fas fa-lock"></i></span></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(14,165,233,.15);color:#0ea5e9"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span><b style="color:#f8fafc">$2500 - $5000</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span><b style="color:#22c55e">3.0%</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(244,63,94,.15);color:#f43f5e"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span><b style="color:#f8fafc">35</b></div></div>
+<div class="q-card"><div class="q-header"><h3 style="color:#38bdf8"><i class="fas fa-crown" style="color:#8b5cf6"></i> VIP 5</h3><span class="badge-lock"><i class="fas fa-lock"></i></span></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(6,182,212,.15);color:#06b6d4"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span><b style="color:#f8fafc">$5000 - $10000</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span><b style="color:#22c55e">3.5%</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(251,191,36,.15);color:#fbbf24"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span><b style="color:#f8fafc">45</b></div></div>
+<div class="q-card"><div class="q-header"><h3 style="color:#38bdf8"><i class="fas fa-crown" style="color:#f43f5e"></i> VIP 6</h3><span class="badge-lock"><i class="fas fa-lock"></i></span></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(56,189,248,.15);color:#38bdf8"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span><b style="color:#f8fafc">$10000+</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span><b style="color:#22c55e">4.0%</b></div><div class="q-desc"><span class="q-desc-title"><span class="q-icon" style="background:rgba(52,211,153,.15);color:#34d399"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span><b style="color:#f8fafc">60</b></div></div>
 </div>
-
-<!-- VIP 2 -->
-<div class="q-card">
-  <div class="q-header">
-    <h3 style="color:#38bdf8;"><i class="fas fa-crown" style="color:#e2e8f0;"></i> VIP 2</h3>
-    <span class="badge-lock"><i class="fas fa-lock"></i></span>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(6,182,212,0.15);color:#06b6d4;"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span>
-    <b style="color:#f8fafc;">$300 - $1000</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,0.15);color:#22c55e;"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span>
-    <b style="color:#22c55e;">2.0%</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(232,121,249,0.15);color:#e879f9;"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span>
-    <b style="color:#f8fafc;">15</b>
-  </div>
-</div>
-
-<!-- VIP 3 -->
-<div class="q-card">
-  <div class="q-header">
-    <h3 style="color:#38bdf8;"><i class="fas fa-crown" style="color:#f59e0b;"></i> VIP 3</h3>
-    <span class="badge-lock"><i class="fas fa-lock"></i></span>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(59,130,246,0.15);color:#3b82f6;"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span>
-    <b style="color:#f8fafc;">$1000 - $2500</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,0.15);color:#22c55e;"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span>
-    <b style="color:#22c55e;">2.5%</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(168,85,247,0.15);color:#a855f7;"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span>
-    <b style="color:#f8fafc;">25</b>
-  </div>
-</div>
-
-<!-- VIP 4 -->
-<div class="q-card">
-  <div class="q-header">
-    <h3 style="color:#38bdf8;"><i class="fas fa-crown" style="color:#ec4899;"></i> VIP 4</h3>
-    <span class="badge-lock"><i class="fas fa-lock"></i></span>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(14,165,233,0.15);color:#0ea5e9;"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span>
-    <b style="color:#f8fafc;">$2500 - $5000</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,0.15);color:#22c55e;"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span>
-    <b style="color:#22c55e;">3.0%</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(244,63,94,0.15);color:#f43f5e;"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span>
-    <b style="color:#f8fafc;">35</b>
-  </div>
-</div>
-
-<!-- VIP 5 -->
-<div class="q-card">
-  <div class="q-header">
-    <h3 style="color:#38bdf8;"><i class="fas fa-crown" style="color:#8b5cf6;"></i> VIP 5</h3>
-    <span class="badge-lock"><i class="fas fa-lock"></i></span>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(6,182,212,0.15);color:#06b6d4;"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span>
-    <b style="color:#f8fafc;">$5000 - $10000</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,0.15);color:#22c55e;"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span>
-    <b style="color:#22c55e;">3.5%</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(251,191,36,0.15);color:#fbbf24;"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span>
-    <b style="color:#f8fafc;">45</b>
-  </div>
-</div>
-
-<!-- VIP 6 -->
-<div class="q-card">
-  <div class="q-header">
-    <h3 style="color:#38bdf8;"><i class="fas fa-crown" style="color:#f43f5e;"></i> VIP 6</h3>
-    <span class="badge-lock"><i class="fas fa-lock"></i></span>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(56,189,248,0.15);color:#38bdf8;"><i class="fas fa-wallet"></i></span><span data-i18n="bal">موجودی</span></span>
-    <b style="color:#f8fafc;">$10000+</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(34,197,94,0.15);color:#22c55e;"><i class="fas fa-chart-line"></i></span><span data-i18n="prof">سود</span></span>
-    <b style="color:#22c55e;">4.0%</b>
-  </div>
-  <div class="q-desc">
-    <span class="q-desc-title"><span class="q-icon" style="background:rgba(52,211,153,0.15);color:#34d399;"><i class="fas fa-users"></i></span><span data-i18n="usersCount">نفرات</span></span>
-    <b style="color:#f8fafc;">60</b>
-  </div>
-</div>
-</div>
-
-<div class="main-quant-box"><button class="main-quant-btn" id="quant-btn" disabled style="opacity:0.5;cursor:not-allowed;"><i class="fas fa-robot"></i> <span data-i18n="quantification">کوانتیفیکیشن</span></button></div>
-<div id="trade-box" style="display:none;background:rgba(30,41,59,0.9);border:1px solid rgba(56,189,248,0.4);border-radius:12px;padding:12px;margin-top:12px;text-align:center;color:#f8fafc;"><div style="font-size:11px;color:#38bdf8;margin-bottom:6px;font-weight:600;"><i class="fas fa-exchange-alt"></i> <span data-i18n="liveTrade">وضعیت معامله جاری</span></div><div id="trade-details" style="font-size:13px;font-weight:bold;color:#22c55e;display:flex;align-items:center;justify-content:center;gap:6px;">-</div></div>
-<div class="profit-grid" style="margin-top:16px;"><div class="profit-card"><i class="fas fa-chart-line" style="color:#22c55e;font-size:20px;"></i><div><span class="p-title" data-i18n="todayProfit">سود امروز</span><h4 class="p-val" id="today-profit-val">$0.00</h4></div></div><div class="profit-card"><i class="fas fa-calendar-day" style="color:#38bdf8;font-size:20px;"></i><div><span class="p-title" data-i18n="yesterdayProfit">سود دیروز</span><h4 class="p-val">$0.00</h4></div></div></div>
-
-<!-- تاریخچه معاملات -->
-<div style="margin-top:16px;background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;">
-  <h3 style="font-size:13px;color:#38bdf8;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-    <span style="background:rgba(6,182,212,0.15);color:#06b6d4;width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;border:1px solid rgba(6,182,212,0.3);box-shadow:0 0 10px rgba(6,182,212,0.2);"><i class="fas fa-history"></i></span>
-    <span data-i18n="tradeHistory">تاریخچه معاملات</span>
-  </h3>
-  <div id="history-list" style="display:flex;flex-direction:column;gap:8px;max-height:350px;overflow-y:auto;">
-    <div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">هنوز معامله‌ای ثبت نشده است</div>
-  </div>
-  <button id="view-all-history-btn" onclick="window.toggleHistory()" style="display:none;width:100%;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);color:#38bdf8;padding:8px;border-radius:8px;font-size:11px;font-weight:bold;margin-top:10px;cursor:pointer;align-items:center;justify-content:center;gap:6px;transition:all 0.2s ease;">
-    <i id="history-btn-icon" class="fas fa-list-ul"></i> <span id="history-btn-text" data-i18n="showFullHistory">مشاهده کامل تاریخچه</span>
-  </button>
-</div>
-
-<!-- بخش بازار ارز جهانی (رصد ۵۰ ارز برتر - نمایش ۱۵ ارز) -->
-<div style="margin-top:16px;background:rgba(30,41,59,0.5);border:1px solid rgba(56,189,248,0.2);border-radius:12px;padding:14px;">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <h3 style="font-size:13px;color:#38bdf8;display:flex;align-items:center;gap:6px;">
-      <i class="fas fa-globe" style="color:#22c55e;"></i> <span data-i18n="globalMarket">بازار ارز جهانی</span>
-    </h3>
-    <span style="font-size:10px;color:#94a3b8;display:flex;align-items:center;gap:4px;">
-      <i class="fas fa-arrows-rotate fa-spin" style="color:#38bdf8;"></i> <span data-i18n="liveUpdates">به‌روزرسانی زنده</span>
-    </span>
-  </div>
-  <div id="market-list" style="display:flex;flex-direction:column;gap:8px;"></div>
-</div>
-
-</div>
-
-<!-- مدال راهنمای کوانتیفیکیشن -->
-<div class="modal" id="m-help">
-    <div class="modal-content">
-        <div class="modal-header"><span id="t-help-title" data-i18n="helpModalTitle">راهنمای بخش کوانتیفیکیشن و سطوح VIP</span><button class="modal-close" onclick="window.closeHelpModal()"><i class="fas fa-times"></i></button></div>
-        <div style="overflow-y:auto;padding-right:4px">
-            <div class="msg-body-box">
-                <div class="msg-title-text"><i class="fas fa-robot" style="color:#38bdf8"></i> <span data-i18n="whatIsQuantTitle">سیستم کوانتیفیکیشن چیست؟</span></div>
-                <div class="msg-desc-text" data-i18n="whatIsQuantDesc">ربات هوشمند معاملات با بررسی لحظه‌ای قیمت رمز‌ارزها در صرافی‌های مختلف جهان، کوچک‌ترین اختلاف قیمت‌ها را کشف کرده و معاملات سودآور برپایه آربیتراژ و الگوریتم‌های هوش مصنوعی انجام می‌دهد.</div>
-            </div>
-            <div class="msg-body-box">
-                <div class="msg-title-text"><i class="fas fa-layer-group" style="color:#a855f7"></i> <span data-i18n="vipRulesTitle">شروط ورود و ارتقا به سطوح VIP</span></div>
-                <p style="color:#fbbf24;font-size:11px;margin-bottom:10px;background:rgba(251,191,36,0.1);padding:8px 10px;border-radius:8px;border:1px solid rgba(251,191,36,0.25);line-height:1.6;">
-                    <i class="fas fa-exclamation-triangle" style="margin-left:4px;"></i> <span data-i18n="vipNote">نکته مهم: شرط اصلی فعال‌سازی و ارتقا به هر سطح VIP، انجام واریزی مستقیم به همان میزان است. سود حاصل از معاملات پلتفرم، برای شرط واریزی جهت ارتقا سطوح محسوب نمی‌شود.</span>
-                </p>
-                
-                <div class="vip-level-list">
-                    <!-- VIP 1 -->
-                    <div class="vip-level-item">
-                        <div class="vip-level-header">
-                            <span class="vip-level-title"><i class="fas fa-crown" style="color:#fbbf24"></i> VIP 1</span>
-                        </div>
-                        <div class="vip-level-grid">
-                            <div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$20</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>5</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$20 - $300</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e;">1.5%</b></div>
-                        </div>
-                    </div>
-
-                    <!-- VIP 2 -->
-                    <div class="vip-level-item">
-                        <div class="vip-level-header">
-                            <span class="vip-level-title"><i class="fas fa-crown" style="color:#e2e8f0"></i> VIP 2</span>
-                        </div>
-                        <div class="vip-level-grid">
-                            <div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$300</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>15</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$300 - $1000</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e;">2.0%</b></div>
-                        </div>
-                    </div>
-
-                    <!-- VIP 3 -->
-                    <div class="vip-level-item">
-                        <div class="vip-level-header">
-                            <span class="vip-level-title"><i class="fas fa-crown" style="color:#f59e0b"></i> VIP 3</span>
-                        </div>
-                        <div class="vip-level-grid">
-                            <div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$1000</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>25</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$1000 - $2500</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e;">2.5%</b></div>
-                        </div>
-                    </div>
-
-                    <!-- VIP 4 -->
-                    <div class="vip-level-item">
-                        <div class="vip-level-header">
-                            <span class="vip-level-title"><i class="fas fa-crown" style="color:#38bdf8"></i> VIP 4</span>
-                        </div>
-                        <div class="vip-level-grid">
-                            <div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$2500</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>35</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$2500 - $5000</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e;">3.0%</b></div>
-                        </div>
-                    </div>
-
-                    <!-- VIP 5 -->
-                    <div class="vip-level-item">
-                        <div class="vip-level-header">
-                            <span class="vip-level-title"><i class="fas fa-crown" style="color:#ec4899"></i> VIP 5</span>
-                        </div>
-                        <div class="vip-level-grid">
-                            <div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$5000</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>45</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$5000 - $10000</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e;">3.5%</b></div>
-                        </div>
-                    </div>
-
-                    <!-- VIP 6 -->
-                    <div class="vip-level-item">
-                        <div class="vip-level-header">
-                            <span class="vip-level-title"><i class="fas fa-crown" style="color:#a855f7"></i> VIP 6</span>
-                        </div>
-                        <div class="vip-level-grid">
-                            <div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$10000</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>60</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>+$10000</b></div>
-                            <div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e;">4.0%</b></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="msg-body-box">
-                <div class="msg-title-text"><i class="fas fa-play-circle" style="color:#22c55e"></i> <span data-i18n="activationTitle">نحوه فعال‌سازی و تقسیم سود</span></div>
-                <div class="msg-desc-text" data-i18n="activationDesc">حداقل واریزی جهت فعال‌سازی 20 دلار است. سود روزانه مشخص‌شده، به ۴ معامله ۱۰ ثانیه‌ای در طول روز تقسیم می‌شود؛ یعنی با انجام هر ۴ معامله، درصد سود کامل سطح VIP خود را به‌دست می‌آورید.</div>
-            </div>
-            <div class="msg-body-box">
-                <div class="msg-title-text"><i class="fas fa-clock" style="color:#fbbf24"></i> <span data-i18n="resetTitle">بازنشانی روزانه (ساعت نیویورک)</span></div>
-                <div class="msg-desc-text" data-i18n="resetDesc">ظرفیت ۴ معامله در روز مطابق با ساعت رسمی نیویورک (NY Time) در پایان هر روز کاری صفر شده و مجدداً فعال می‌شود.</div>
-            </div>
-        </div>
-    </div>
-</div>
-
+<div class="main-quant-box"><button class="main-quant-btn" id="quant-btn" disabled style="opacity:.5;cursor:not-allowed"><i class="fas fa-robot"></i> <span data-i18n="quantification">کوانتیفیکیشن</span></button></div>
+<div id="trade-box" style="display:none;background:rgba(30,41,59,.9);border:1px solid rgba(56,189,248,.4);border-radius:12px;padding:12px;margin-top:12px;text-align:center;color:#f8fafc"><div style="font-size:11px;color:#38bdf8;margin-bottom:6px;font-weight:600"><i class="fas fa-exchange-alt"></i> <span data-i18n="liveTrade">وضعیت معامله جاری</span></div><div id="trade-details" style="font-size:13px;font-weight:700;color:#22c55e;display:flex;align-items:center;justify-content:center;gap:6px">-</div></div>
+<div class="profit-grid" style="margin-top:16px"><div class="profit-card"><i class="fas fa-chart-line" style="color:#22c55e;font-size:20px"></i><div><span class="p-title" data-i18n="todayProfit">سود امروز</span><h4 class="p-val" id="today-profit-val">$0.00</h4></div></div><div class="profit-card"><i class="fas fa-calendar-day" style="color:#38bdf8;font-size:20px"></i><div><span class="p-title" data-i18n="yesterdayProfit">سود دیروز</span><h4 class="p-val">$0.00</h4></div></div></div>
+<div style="margin-top:16px;background:rgba(30,41,59,.5);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px"><h3 style="font-size:13px;color:#38bdf8;margin-bottom:12px;display:flex;align-items:center;gap:8px"><span style="background:rgba(6,182,212,.15);color:#06b6d4;width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;border:1px solid rgba(6,182,212,.3);box-shadow:0 0 10px rgba(6,182,212,.2)"><i class="fas fa-history"></i></span><span data-i18n="tradeHistory">تاریخچه معاملات</span></h3><div id="history-list" style="display:flex;flex-direction:column;gap:8px;max-height:350px;overflow-y:auto"><div style="font-size:12px;color:#94a3b8;text-align:center" data-i18n="noHistory">هنوز معامله‌ای ثبت نشده است</div></div><button id="view-all-history-btn" onclick="window.toggleHistory()" style="display:none;width:100%;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);color:#38bdf8;padding:8px;border-radius:8px;font-size:11px;font-weight:700;margin-top:10px;cursor:pointer;align-items:center;justify-content:center;gap:6px;transition:all .2s ease"><i id="history-btn-icon" class="fas fa-list-ul"></i> <span id="history-btn-text" data-i18n="showFullHistory">مشاهده کامل تاریخچه</span></button></div>
+<div style="margin-top:16px;background:rgba(30,41,59,.5);border:1px solid rgba(56,189,248,.2);border-radius:12px;padding:14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="font-size:13px;color:#38bdf8;display:flex;align-items:center;gap:6px"><i class="fas fa-globe" style="color:#22c55e"></i> <span data-i18n="globalMarket">بازار ارز جهانی</span></h3><span style="font-size:10px;color:#94a3b8;display:flex;align-items:center;gap:4px"><i class="fas fa-arrows-rotate fa-spin" style="color:#38bdf8"></i> <span data-i18n="liveUpdates">به‌روزرسانی زنده</span></span></div><div id="market-list" style="display:flex;flex-direction:column;gap:8px"></div></div></div>
+<div class="modal" id="m-help"><div class="modal-content"><div class="modal-header"><span id="t-help-title" data-i18n="helpModalTitle">راهنمای بخش کوانتیفیکیشن و سطوح VIP</span><button class="modal-close" onclick="window.closeHelpModal()"><i class="fas fa-times"></i></button></div><div style="overflow-y:auto;padding-right:4px"><div class="msg-body-box"><div class="msg-title-text"><i class="fas fa-robot" style="color:#38bdf8"></i> <span data-i18n="whatIsQuantTitle">سیستم کوانتیفیکیشن چیست؟</span></div><div class="msg-desc-text" data-i18n="whatIsQuantDesc">ربات هوشمند معاملات با بررسی لحظه‌ای قیمت رمز‌ارزها در صرافی‌های مختلف جهان، کوچک‌ترین اختلاف قیمت‌ها را کشف کرده و معاملات سودآور برپایه آربیتراژ و الگوریتم‌های هوش مصنوعی انجام می‌دهد.</div></div><div class="msg-body-box"><div class="msg-title-text"><i class="fas fa-layer-group" style="color:#a855f7"></i> <span data-i18n="vipRulesTitle">شروط ورود و ارتقا به سطوح VIP</span></div><p style="color:#fbbf24;font-size:11px;margin-bottom:10px;background:rgba(251,191,36,.1);padding:8px 10px;border-radius:8px;border:1px solid rgba(251,191,36,.25);line-height:1.6"><i class="fas fa-exclamation-triangle" style="margin-left:4px"></i> <span data-i18n="vipNote">نکته مهم: شرط اصلی فعال‌سازی و ارتقا به هر سطح VIP، انجام واریزی مستقیم به همان میزان است. سود حاصل از معاملات پلتفرم، برای شرط واریزی جهت ارتقا سطوح محسوب نمی‌شود.</span></p><div class="vip-level-list"><div class="vip-level-item"><div class="vip-level-header"><span class="vip-level-title"><i class="fas fa-crown" style="color:#fbbf24"></i> VIP 1</span></div><div class="vip-level-grid"><div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$20</b></div><div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>5</b></div><div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$20 - $300</b></div><div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e">1.5%</b></div></div></div><div class="vip-level-item"><div class="vip-level-header"><span class="vip-level-title"><i class="fas fa-crown" style="color:#e2e8f0"></i> VIP 2</span></div><div class="vip-level-grid"><div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$300</b></div><div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>15</b></div><div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$300 - $1000</b></div><div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e">2.0%</b></div></div></div><div class="vip-level-item"><div class="vip-level-header"><span class="vip-level-title"><i class="fas fa-crown" style="color:#f59e0b"></i> VIP 3</span></div><div class="vip-level-grid"><div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$1000</b></div><div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>25</b></div><div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$1000 - $2500</b></div><div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e">2.5%</b></div></div></div><div class="vip-level-item"><div class="vip-level-header"><span class="vip-level-title"><i class="fas fa-crown" style="color:#38bdf8"></i> VIP 4</span></div><div class="vip-level-grid"><div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$2500</b></div><div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>35</b></div><div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$2500 - $5000</b></div><div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e">3.0%</b></div></div></div><div class="vip-level-item"><div class="vip-level-header"><span class="vip-level-title"><i class="fas fa-crown" style="color:#ec4899"></i> VIP 5</span></div><div class="vip-level-grid"><div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$5000</b></div><div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>45</b></div><div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>$5000 - $10000</b></div><div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e">3.5%</b></div></div></div><div class="vip-level-item"><div class="vip-level-header"><span class="vip-level-title"><i class="fas fa-crown" style="color:#a855f7"></i> VIP 6</span></div><div class="vip-level-grid"><div class="vip-cell"><span><i class="fas fa-arrow-down" style="color:#22c55e"></i> <span data-i18n="directDeposit">واریزی مستقیم:</span></span> <b>$10000</b></div><div class="vip-cell"><span><i class="fas fa-users" style="color:#a855f7"></i> <span data-i18n="directInvite">دعوت مستقیم:</span></span> <b>60</b></div><div class="vip-cell"><span><i class="fas fa-wallet" style="color:#38bdf8"></i> <span data-i18n="balanceRange">محدوده موجودی:</span></span> <b>+$10000</b></div><div class="vip-cell"><span><i class="fas fa-chart-line" style="color:#f59e0b"></i> <span data-i18n="dailyProfit">سود روزانه:</span></span> <b style="color:#22c55e">4.0%</b></div></div></div></div></div><div class="msg-body-box"><div class="msg-title-text"><i class="fas fa-play-circle" style="color:#22c55e"></i> <span data-i18n="activationTitle">نحوه فعال‌سازی و تقسیم سود</span></div><div class="msg-desc-text" data-i18n="activationDesc">حداقل واریزی جهت فعال‌سازی 20 دلار است. سود روزانه مشخص‌شده، به ۴ معامله ۱۰ ثانیه‌ای در طول روز تقسیم می‌شود؛ یعنی با انجام هر ۴ معامله، درصد سود کامل سطح VIP خود را به‌دست می‌آورید.</div></div><div class="msg-body-box"><div class="msg-title-text"><i class="fas fa-clock" style="color:#fbbf24"></i> <span data-i18n="resetTitle">بازنشانی روزانه (ساعت نیویورک)</span></div><div class="msg-desc-text" data-i18n="resetDesc">ظرفیت ۴ معامله در روز مطابق با ساعت رسمی نیویورک (NY Time) در پایان هر روز کاری صفر شده و مجدداً فعال می‌شود.</div></div></div></div></div>
 <footer><p>&copy; 2026 Zenix</p></footer>
 <script>
 window.openHelpModal=()=>document.getElementById('m-help')?.classList.add('show');
 window.closeHelpModal=()=>document.getElementById('m-help')?.classList.remove('show');
-
-window.showAllHistory=false;
-window.toggleHistory=function(){
-  window.showAllHistory=!window.showAllHistory;
-  if(window.renderHistory)window.renderHistory();
-};
-
+window.showAllHistory=!1;
+window.toggleHistory=function(){window.showAllHistory=!window.showAllHistory;if(window.renderHistory)window.renderHistory();};
 const LD={
-  fa:{
-    dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',
-    deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',logout:'خروج',tradingLevels:'سطوح معاملاتی',
-    subWel:'سطح خود را بررسی و ربات را فعال کنید',active:'فعال',inactive:'غیرفعال (موجودی کمتر از $20)',nyTime:'ساعت نیویورک',
-    bal:'موجودی',prof:'سود',usersCount:'نفرات',liveTrade:'وضعیت معامله جاری',todayProfit:'سود امروز',yesterdayProfit:'سود دیروز',
-    tradeHistory:'تاریخچه معاملات',noHistory:'هنوز معامله‌ای ثبت نشده است',totalBalance:'موجودی کل حساب',
-    dailyLimit:'پایان ظرفیت امروز',trading:'معامله',seconds:'ثانیه',success:'موفق!',helpModalTitle:'راهنمای بخش کوانتیفیکیشن و سطوح VIP',
-    whatIsQuantTitle:'سیستم کوانتیفیکیشن چیست؟',whatIsQuantDesc:'ربات هوشمند معاملات با بررسی لحظه‌ای قیمت رمز‌ارزها در صرافی‌های مختلف جهان، کوچک‌ترین اختلاف قیمت‌ها را کشف کرده و معاملات سودآور برپایه آربیتراژ و الگوریتم‌های هوش مصنوعی انجام می‌دهد.',
-    vipRulesTitle:'شروط ورود و ارتقا به سطوح VIP',vipNote:'نکته مهم: شرط اصلی فعال‌سازی و ارتقا به هر سطح VIP، انجام واریزی مستقیم به همان میزان است. سود حاصل از معاملات پلتفرم، برای شرط واریزی جهت ارتقا سطوح محسوب نمی‌شود.',
-    directDeposit:'واریزی مستقیم:',directInvite:'دعوت مستقیم:',balanceRange:'محدوده موجودی:',dailyProfit:'سود روزانه:',
-    activationTitle:'نحوه فعال‌سازی و تقسیم سود',activationDesc:'حداقل واریزی جهت فعال‌سازی 20 دلار است. سود روزانه مشخص‌شده، به ۴ معامله ۱۰ ثانیه‌ای در طول روز تقسیم می‌شود؛ یعنی با انجام هر ۴ معامله، درصد سود کامل سطح VIP خود را به‌دست می‌آورید.',
-    resetTitle:'بازنشانی روزانه (ساعت نیویورک)',resetDesc:'ظرفیت ۴ معامله در روز مطابق با ساعت رسمی نیویورک (NY Time) در پایان هر روز کاری صفر شده و مجدداً فعال می‌شود.',
-    globalMarket:'بازار ارز جهانی',liveUpdates:'به‌روزرسانی زنده',showFullHistory:'مشاهده کامل تاریخچه',showLess:'بستن تاریخچه'
-  },
-  en:{
-    dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',
-    deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',logout:'Logout',tradingLevels:'Trading Levels',
-    subWel:'Check your level and activate the bot',active:'Active',inactive:'Inactive (Balance < $20)',nyTime:'New York Time',
-    bal:'Balance',prof:'Profit',usersCount:'Users',liveTrade:'Live Trade Status',todayProfit:'Today Profit',yesterdayProfit:'Yesterday Profit',
-    tradeHistory:'Trade History',noHistory:'No trades recorded yet',totalBalance:'Total Balance',
-    dailyLimit:'Daily Limit Reached',trading:'Trading',seconds:'sec',success:'Success!',helpModalTitle:'Quantification & VIP Levels Guide',
-    whatIsQuantTitle:'What is the Quantification System?',whatIsQuantDesc:'The smart trading bot analyzes real-time cryptocurrency prices across global exchanges to detect price differences and execute profitable trades based on arbitrage and AI algorithms.',
-    vipRulesTitle:'Conditions for VIP Levels',vipNote:'Important Note: The main condition for activating and upgrading VIP levels is making a direct deposit of the required amount. Platform trading profit does not count towards deposit requirements.',
-    directDeposit:'Direct Deposit:',directInvite:'Direct Referral:',balanceRange:'Balance Range:',dailyProfit:'Daily Profit:',
-    activationTitle:'Activation & Profit Division',activationDesc:'Minimum deposit for activation is $20. The daily profit rate is divided into 4 10-second trades throughout the day; completing all 4 trades grants your level\'s full daily profit.',
-    resetTitle:'Daily Reset (NY Time)',resetDesc:'The 4 daily trade limit resets at the end of each business day according to New York Time (NY Time).',
-    globalMarket:'Global Crypto Market',liveUpdates:'Live Updates',showFullHistory:'View Full History',showLess:'Show Less'
-  },
-  ar:{
-    dir:'rtl',adminMsg:'رسالة الإدارة',welcomeText:'مرحباً بكم في منصة زينكس.',home:'الرئيسية',quantification:'التداول الكمي',
-    deposit:'إيداع',receive:'سحب',transactions:'المعاملات',profile:'الملف الشخصي',logout:'تسجيل خروج',tradingLevels:'مستويات التداول',
-    subWel:'تحقق من مستواك وفعل البوت',active:'نشط',inactive:'غير نشط (الرصيد أقل من $20)',nyTime:'توقيت نيويورك',
-    bal:'الرصيد',prof:'الربح',usersCount:'المستخدمين',liveTrade:'حالة التداول المباشر',todayProfit:'ربح اليوم',yesterdayProfit:'ربح الأمس',
-    tradeHistory:'سجل المعاملات',noHistory:'لم يتم تسجيل أي معاملات بعد',totalBalance:'إجمالي الرصيد',
-    dailyLimit:'تم الوصول للحد اليومي',trading:'تداول',seconds:'ثانية',success:'ناجح!',helpModalTitle:'دليل التداول الكمي ومستويات VIP',
-    whatIsQuantTitle:'ما هو نظام التداول الكمي؟',whatIsQuantDesc:'يقوم بوت التداول الذكي بتحليل أسعار العملات الرقمية في البورصات العالمية لحظة بلحظة لاكتشاف الفروقات السعرية وإجراء صفقات مربحة بناءً على المراجحة وخوارزميات الذكاء الاصطناعي.',
-    vipRulesTitle:'شروط الدخول والترقية لمستويات VIP',vipNote:'ملاحظة هامة: الشرط الأساسي لتفعيل وترقية أي مستوى VIP هو إجراء إيداع مباشر بالمبلغ المطلوب. أرباح التداول في المنصة لا تحتسب ضمن شرط الإيداع.',
-    directDeposit:'الإيداع المباشر:',directInvite:'الدعوة المباشرة:',balanceRange:'نطاق الرصيد:',dailyProfit:'الربح اليومي:',
-    activationTitle:'طريقة التفعيل وتقسيم الأرباح',activationDesc:'الحد الأدنى للإيداع للتفعيل هو 20 دولاراً. يتم تقسيم نسبة الربح اليومية على 4 صفقات تستغرق كل منها 10 ثوانٍ خلال اليوم.',
-    resetTitle:'إعادة الضبط اليومية (توقيت نيويورك)',resetDesc:'يتم إعادة ضبط حد الصفقات الأربع يومياً وفقاً للتوقيت الرسمي لمدينة نيويورك (NY Time).',
-    globalMarket:'سوق العملات العالمية',liveUpdates:'تحديثات مباشرة',showFullHistory:'عرض سجل المعاملات بالكامل',showLess:'عرض أقل'
-  },
-  tr:{
-    dir:'ltr',adminMsg:'Yönetici Mesajı',welcomeText:'Zenix platformuna hoş geldiniz.',home:'Ana Sayfa',quantification:'Kantifikasyon',
-    deposit:'Yatır',receive:'Çek',transactions:'İşlemler',profile:'Profil',logout:'Çıkış Yap',tradingLevels:'İşlem Seviyeleri',
-    subWel:'Seviyenizi kontrol edin ve botu etkinleştirin',active:'Aktif',inactive:'Pasif (Bakiye < $20)',nyTime:'New York Saati',
-    bal:'Bakiye',prof:'Kâr',usersCount:'Kullanıcılar',liveTrade:'Canlı İşlem Durumu',todayProfit:'Bugünkü Kâr',yesterdayProfit:'Dünkü Kâr',
-    tradeHistory:'İşlem Geçmişi',noHistory:'Henüz işlem kaydedilmedi',totalBalance:'Toplam Bakiye',
-    dailyLimit:'Günlük Limit Doldu',trading:'İşlem Yapılıyor',seconds:'saniye',success:'Başarılı!',helpModalTitle:'Kantifikasyon ve VIP Seviyeleri Rehberi',
-    whatIsQuantTitle:'Kantifikasyon Sistemi Nedir?',whatIsQuantDesc:'Akıllı işlem botu, küresel borsalardaki kripto para fiyatlarını anlık olarak analiz ederek fiyat farklarını tespit eder ve arbitraj ile yapay zeka algoritmalarına dayalı kârlı işlemler gerçekleştirir.',
-    vipRulesTitle:'VIP Seviyelerine Giriş ve Yükseltme Şartları',vipNote:'Önemli Not: Herhangi bir VIP seviyesini etkinleştirmenin ve yükseltmenin temel şartı, gerekli miktarda doğrudan yatırım yapmaktır. Platform işlem kârları yatırım şartına dahil edilmez.',
-    directDeposit:'Doğrudan Yatırım:',directInvite:'Doğrudan Davet:',balanceRange:'Bakiye Aralığı:',dailyProfit:'Günlük Kâr:',
-    activationTitle:'Etkinleştirme ve Kâr Bölünmesi',activationDesc:'Etkinleştirme için minimum yatırım 20 dolardır. Belirtilen günlük kâr oranı gün içinde 4 adet 10 saniyelik işleme bölünür.',
-    resetTitle:'Günlük Sıfırlama (New York Saati)',resetDesc:'Günlük 4 işlem kapasitesi, New York Saati (NY Time) esasına göre her iş gününün sonunda sıfırlanır.',
-    globalMarket:'Küresel Kripto Piyasası',liveUpdates:'Canlı Güncellemeler',showFullHistory:'Tüm Geçmişi Görüntüle',showLess:'Daha Az Göster'
-  },
-  ru:{
-    dir:'ltr',adminMsg:'Сообщение админа',welcomeText:'Добро пожаловать на платформу Zenix.',home:'Главная',quantification:'Квантификация',
-    deposit:'Депозит',receive:'Вывод',transactions:'Транзакции',profile:'Профиль',logout:'Выйти',tradingLevels:'Торговые уровни',
-    subWel:'Проверьте ваш уровень и активируйте бота',active:'Активен',inactive:'Неактивен (Баланс < $20)',nyTime:'Время в Нью-Йорке',
-    bal:'Баланс',prof:'Прибыль',usersCount:'Пользователи',liveTrade:'Статус текущей сделки',todayProfit:'Прибыль сегодня',yesterdayProfit:'Прибыль вчера',
-    tradeHistory:'История сделок',noHistory:'Сделок пока нет',totalBalance:'Общий баланс',
-    dailyLimit:'Дневной лимит исчерпан',trading:'Торговля',seconds:'сек',success:'Успешно!',helpModalTitle:'Руководство по квантификации и VIP уровням',
-    whatIsQuantTitle:'Что такое система квантификации?',whatIsQuantDesc:'Умный торговый бот анализирует цены на криптовалюту на мировых биржах в реальном времени, выявляет разницу в ценах и совершает прибыльные сделки на основе арбитража и алгоритмов ИИ.',
-    vipRulesTitle:'Условия входа и повышения уровней VIP',vipNote:'Важное примечание: Главным условием активации и повышения уровня VIP является прямой депозит требуемой суммы. Прибыль от торговли на платформе не учитывается.',
-    directDeposit:'Прямой депозит:',directInvite:'Прямые рефералы:',balanceRange:'Диапазон баланса:',dailyProfit:'Ежедневная прибыль:',
-    activationTitle:'Активация и распределение прибыли',activationDesc:'Минимальный депозит для активации составляет 20$. Ежедневная прибыль делится на 4 сделки по 10 секунд в течение дня.',
-    resetTitle:'Ежедневный сброс (время Нью-Йорка)',resetDesc:'Лимит из 4 сделок в день сбрасывается в конце каждого рабочего дня по времени Нью-Йорка (NY Time).',
-    globalMarket:'Мировой рынок криптовалют',liveUpdates:'Прямое обновление',showFullHistory:'Посмотреть всю историю',showLess:'Свернуть'
-  },
-  es:{
-    dir:'ltr',adminMsg:'Mensaje de administración',welcomeText:'Bienvenido a la plataforma Zenix.',home:'Inicio',quantification:'Cuantificación',
-    deposit:'Depósito',receive:'Retiro',transactions:'Transacciones',profile:'Perfil',logout:'Cerrar sesión',tradingLevels:'Niveles de trading',
-    subWel:'Consulta tu nivel y activa el bot',active:'Activo',inactive:'Inactivo (Saldo < $20)',nyTime:'Hora de Nueva York',
-    bal:'Saldo',prof:'Ganancia',usersCount:'Usuarios',liveTrade:'Estado de operación en vivo',todayProfit:'Ganancia de hoy',yesterdayProfit:'Ganancia de ayer',
-    tradeHistory:'Historial de operaciones',noHistory:'Aún no hay operaciones registradas',totalBalance:'Saldo total',
-    dailyLimit:'Límite diario alcanzado',trading:'Operando',seconds:'seg',success:'¡Éxito!',helpModalTitle:'Guía de cuantificación y niveles VIP',
-    whatIsQuantTitle:'¿Qué es el sistema de cuantificación?',whatIsQuantDesc:'El bot de trading inteligente analiza los precios de las criptomonetas en tiempo real en los exchanges globales para detectar diferencias de precios y realizar operaciones rentables basadas en arbitraje y algoritmos de IA.',
-    vipRulesTitle:'Condiciones para niveles VIP',vipNote:'Nota importante: La condición principal para activar y actualizar los niveles VIP es realizar un depósito directo por el monto requerido. Las ganancias de trading no cuentan para este requisito.',
-    directDeposit:'Depósito directo:',directInvite:'Referencia directa:',balanceRange:'Rango de saldo:',dailyProfit:'Ganancia diaria:',
-    activationTitle:'Activación y división de ganancias',activationDesc:'El depósito mínimo de activación es de $20. El porcentaje de ganancia diaria se divide en 4 operaciones de 10 segundos a lo largo del día.',
-    resetTitle:'Restablecimiento diario (Hora NY)',resetDesc:'El límite de 4 operaciones diarias se restablece al final de cada día hábil según la hora de Nueva York (NY Time).',
-    globalMarket:'Mercado global de criptomonedas',liveUpdates:'Actualizaciones en vivo',showFullHistory:'Ver historial completo',showLess:'Mostrar menos'
-  },
-  fr:{
-    dir:'ltr',adminMsg:'Message d\'administration',welcomeText:'Bienvenue sur la plateforme Zenix.',home:'Accueil',quantification:'Quantification',
-    deposit:'Dépôt',receive:'Retrait',transactions:'Transactions',profile:'Profil',logout:'Déconnexion',tradingLevels:'Niveaux de trading',
-    subWel:'Vérifiez votre niveau et activez le bot',active:'Actif',inactive:'Inactif (Solde < $20)',nyTime:'Heure de New York',
-    bal:'Solde',prof:'Profit',usersCount:'Utilisateurs',liveTrade:'Statut du trade en direct',todayProfit:'Profit du jour',yesterdayProfit:'Profit d\'hier',
-    tradeHistory:'Historique des trades',noHistory:'Aucun trade enregistré pour le moment',totalBalance:'Solde total',
-    dailyLimit:'Limite quotidienne atteinte',trading:'Trade en cours',seconds:'sec',success:'Succès !',helpModalTitle:'Guide de quantification et niveaux VIP',
-    whatIsQuantTitle:'Qu\'est-ce que le système de quantification ?',whatIsQuantDesc:'Le bot de trading intelligent analyse en temps réel les prix des cryptomonnaies sur les plateformes mondiales pour détecter les écarts de prix et exécuter des trades profitables basés sur l\'arbitrage et l\'IA.',
-    vipRulesTitle:'Conditions pour les niveaux VIP',vipNote:'Remarque importante : La condition principale pour activer et surclasser les niveaux VIP est d\'effectuer un dépôt direct du montant requis. Les profits de trading de la plateforme ne comptent pas.',
-    directDeposit:'Dépôt direct :',directInvite:'Parrainage direct :',balanceRange:'Plage de solde :',dailyProfit:'Profit quotidien :',
-    activationTitle:'Activation et répartition des profits',activationDesc:'Le dépôt minimum d\'activation est de 20 $. Le taux de profit quotidien est divisé en 4 trades de 10 secondes tout au long de la journée.',
-    resetTitle:'Réinitialisation quotidienne (Heure NY)',resetDesc:'La limite de 4 trades quotidiens est réinitialisée à la fin de chaque journée ouvrable selon l\'heure de New York (NY Time).',
-    globalMarket:'Marché mondial des cryptomonnaies',liveUpdates:'Mises à jour en direct',showFullHistory:'Voir tout l\'historique',showLess:'Réduire'
-  },
-  de:{
-    dir:'ltr',adminMsg:'Admin-Nachricht',welcomeText:'Willkommen auf der Zenix-Plattform.',home:'Startseite',quantification:'Quantifizierung',
-    deposit:'Einzahlung',receive:'Auszahlung',transactions:'Transaktionen',profile:'Profil',logout:'Abmelden',tradingLevels:'Handelsstufen',
-    subWel:'Prüfen Sie Ihre Stufe und aktivieren Sie den Bot',active:'Aktiv',inactive:'Inaktiv (Guthaben < $20)',nyTime:'New York Zeit',
-    bal:'Guthaben',prof:'Gewinn',usersCount:'Benutzer',liveTrade:'Live-Trade-Status',todayProfit:'Heutiger Gewinn',yesterdayProfit:'Gestriger Gewinn',
-    tradeHistory:'Handelsverlauf',noHistory:'Noch keine Trades aufgezeichnet',totalBalance:'Gesamtguthaben',
-    dailyLimit:'Tageslimit erreicht',trading:'Handel läuft',seconds:'Sek',success:'Erfolgreich!',helpModalTitle:'Leitfaden für Quantifizierung & VIP-Stufen',
-    whatIsQuantTitle:'Was ist das Quantifizierungssystem?',whatIsQuantDesc:'Der smarte Trading-Bot analysiert Kryptowährungspreise auf globalen Börsen in Echtzeit, um Preisunterschiede zu erkennen und profitable Arbitrage-Trades mit KI-Algorithmen auszuführen.',
-    vipRulesTitle:'Bedingungen für VIP-Stufen',vipNote:'Wichtiger Hinweis: Die Hauptbedingung für die Aktivierung und das Upgrade von VIP-Stufen ist eine direkte Einzahlung des erforderlichen Betrags. Handelsgewinne zählen nicht dafür.',
-    directDeposit:'Direkte Einzahlung:',directInvite:'Direkte Einladung:',balanceRange:'Guthabenbereich:',dailyProfit:'Täglicher Gewinn:',
-    activationTitle:'Aktivierung & Gewinnaufteilung',activationDesc:'Die Mindesteinzahlung zur Aktivierung beträgt 20 $. Der tägliche Gewinnsatz wird über den Tag verteilt in 4 Trades von jeweils 10 Sekunden aufgeteilt.',
-    resetTitle:'Tägliches Zurücksetzen (New York Zeit)',resetDesc:'Das Limit von 4 täglichen Trades wird am Ende jedes Arbeitstages nach New Yorker Zeit (NY Time) zurückgesetzt.',
-    globalMarket:'Globaler Kryptomarkt',liveUpdates:'Live-Updates',showFullHistory:'Vollständigen Verlauf anzeigen',showLess:'Weniger anzeigen'
-  }
+  fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',logout:'خروج',tradingLevels:'سطوح معاملاتی',subWel:'سطح خود را بررسی و ربات را فعال کنید',active:'فعال',inactive:'غیرفعال (موجودی کمتر از $20)',nyTime:'ساعت نیویورک',bal:'موجودی',prof:'سود',usersCount:'نفرات',liveTrade:'وضعیت معامله جاری',todayProfit:'سود امروز',yesterdayProfit:'سود دیروز',tradeHistory:'تاریخچه معاملات',noHistory:'هنوز معامله‌ای ثبت نشده است',totalBalance:'موجودی کل حساب',dailyLimit:'پایان ظرفیت امروز',trading:'معامله',seconds:'ثانیه',success:'موفق!',helpModalTitle:'راهنمای بخش کوانتیفیکیشن و سطوح VIP',whatIsQuantTitle:'سیستم کوانتیفیکیشن چیست؟',whatIsQuantDesc:'ربات هوشمند معاملات با بررسی لحظه‌ای قیمت رمز‌ارزها در صرافی‌های مختلف جهان، کوچک‌ترین اختلاف قیمت‌ها را کشف کرده و معاملات سودآور برپایه آربیتراژ و الگوریتم‌های هوش مصنوعی انجام می‌دهد.',vipRulesTitle:'شروط ورود و ارتقا به سطوح VIP',vipNote:'نکته مهم: شرط اصلی فعال‌سازی و ارتقا به هر سطح VIP، انجام واریزی مستقیم به همان میزان است. سود حاصل از معاملات پلتفرم، برای شرط واریزی جهت ارتقا سطوح محسوب نمی‌شود.',directDeposit:'واریزی مستقیم:',directInvite:'دعوت مستقیم:',balanceRange:'محدوده موجودی:',dailyProfit:'سود روزانه:',activationTitle:'نحوه فعال‌سازی و تقسیم سود',activationDesc:'حداقل واریزی جهت فعال‌سازی 20 دلار است. سود روزانه مشخص‌شده، به ۴ معامله ۱۰ ثانیه‌ای در طول روز تقسیم می‌شود؛ یعنی با انجام هر ۴ معامله، درصد سود کامل سطح VIP خود را به‌دست می‌آورید.',resetTitle:'بازنشانی روزانه (ساعت نیویورک)',resetDesc:'ظرفیت ۴ معامله در روز مطابق با ساعت رسمی نیویورک (NY Time) در پایان هر روز کاری صفر شده و مجدداً فعال می‌شود.',globalMarket:'بازار ارز جهانی',liveUpdates:'به‌روزرسانی زنده',showFullHistory:'مشاهده کامل تاریخچه',showLess:'بستن تاریخچه'},
+  en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',logout:'Logout',tradingLevels:'Trading Levels',subWel:'Check your level and activate the bot',active:'Active',inactive:'Inactive (Balance < $20)',nyTime:'New York Time',bal:'Balance',prof:'Profit',usersCount:'Users',liveTrade:'Live Trade Status',todayProfit:'Today Profit',yesterdayProfit:'Yesterday Profit',tradeHistory:'Trade History',noHistory:'No trades recorded yet',totalBalance:'Total Balance',dailyLimit:'Daily Limit Reached',trading:'Trading',seconds:'sec',success:'Success!',helpModalTitle:'Quantification & VIP Levels Guide',whatIsQuantTitle:'What is the Quantification System?',whatIsQuantDesc:'The smart trading bot analyzes real-time cryptocurrency prices across global exchanges to detect price differences and execute profitable trades based on arbitrage and AI algorithms.',vipRulesTitle:'Conditions for VIP Levels',vipNote:'Important Note: The main condition for activating and upgrading VIP levels is making a direct deposit of the required amount. Platform trading profit does not count towards deposit requirements.',directDeposit:'Direct Deposit:',directInvite:'Direct Referral:',balanceRange:'Balance Range:',dailyProfit:'Daily Profit:',activationTitle:'Activation & Profit Division',activationDesc:'Minimum deposit for activation is $20. The daily profit rate is divided into 4 10-second trades throughout the day; completing all 4 trades grants your level\'s full daily profit.',resetTitle:'Daily Reset (NY Time)',resetDesc:'The 4 daily trade limit resets at the end of each business day according to New York Time (NY Time).',globalMarket:'Global Crypto Market',liveUpdates:'Live Updates',showFullHistory:'View Full History',showLess:'Show Less'},
+  ar:{dir:'rtl',adminMsg:'رسالة الإدارة',welcomeText:'مرحباً بكم في منصة زينكس.',home:'الرئيسية',quantification:'التداول الكمي',deposit:'إيداع',receive:'سحب',transactions:'المعاملات',profile:'الملف الشخصي',logout:'تسجيل خروج',tradingLevels:'مستويات التداول',subWel:'تحقق من مستواك وفعل البوت',active:'نشط',inactive:'غير نشط (الرصيد أقل من $20)',nyTime:'توقيت نيويورك',bal:'الرصيد',prof:'الربح',usersCount:'المستخدمين',liveTrade:'حالة التداول المباشر',todayProfit:'ربح اليوم',yesterdayProfit:'ربح الأمس',tradeHistory:'سجل المعاملات',noHistory:'لم يتم تسجيل أي معاملات بعد',totalBalance:'إجمالي الرصيد',dailyLimit:'تم الوصول للحد اليومي',trading:'تداول',seconds:'ثانية',success:'ناجح!',helpModalTitle:'دليل التداول الكمي ومستويات VIP',whatIsQuantTitle:'ما هو نظام التداول الكمي؟',whatIsQuantDesc:'يقوم بوت التداول الذكي بتحليل أسعار العملات الرقمية في البورصات العالمية لحظة بلحظة لاكتشاف الفروقات السعرية وإجراء صفقات مربحة بناءً على المراجحة وخوارزميات الذكاء الاصطناعي.',vipRulesTitle:'شروط الدخول والترقية لمستويات VIP',vipNote:'ملاحظة هامة: الشرط الأساسي لتفعيل وترقية أي مستوى VIP هو إجراء إيداع مباشر بالمبلغ المطلوب. أرباح التداول في المنصة لا تحتسب ضمن شرط الإيداع.',directDeposit:'الإيداع المباشر:',directInvite:'الدعوة المباشرة:',balanceRange:'نطاق الرصيد:',dailyProfit:'الربح اليومي:',activationTitle:'طريقة التفعيل وتقسيم الأرباح',activationDesc:'الحد الأدنى للإيداع للتفعيل هو 20 دولاراً. يتم تقسيم نسبة الربح اليومية على 4 صفقات تستغرق كل منها 10 ثوانٍ خلال اليوم.',resetTitle:'إعادة الضبط اليومية (توقيت نيويورك)',resetDesc:'يتم إعادة ضبط حد الصفقات الأربع يومياً وفقاً للتوقيت الرسمي لمدينة نيويورك (NY Time).',globalMarket:'سوق العملات العالمية',liveUpdates:'تحديثات مباشرة',showFullHistory:'عرض سجل المعاملات بالكامل',showLess:'عرض أقل'},
+  tr:{dir:'ltr',adminMsg:'Yönetici Mesajı',welcomeText:'Zenix platformuna hoş geldiniz.',home:'Ana Sayfa',quantification:'Kantifikasyon',deposit:'Yatır',receive:'Çek',transactions:'İşlemler',profile:'Profil',logout:'Çıkış Yap',tradingLevels:'İşlem Seviyeleri',subWel:'Seviyenizi kontrol edin ve botu etkinleştirin',active:'Aktif',inactive:'Pasif (Bakiye < $20)',nyTime:'New York Saati',bal:'Bakiye',prof:'Kâr',usersCount:'Kullanıcılar',liveTrade:'Canlı İşlem Durumu',todayProfit:'Bugünkü Kâr',yesterdayProfit:'Dünkü Kâr',tradeHistory:'İşlem Geçmişi',noHistory:'Henüz işlem kaydedilmedi',totalBalance:'Toplam Bakiye',dailyLimit:'Günlük Limit Doldu',trading:'İşlem Yapılıyor',seconds:'saniye',success:'Başarılı!',helpModalTitle:'Kantifikasyon ve VIP Seviyeleri Rehberi',whatIsQuantTitle:'Kantifikasyon Sistemi Nedir?',whatIsQuantDesc:'Akıllı işlem botu, küresel borsalardaki kripto para fiyatlarını anlık olarak analiz ederek fiyat farklarını tespit eder ve arbitraj ile yapay zeka algoritmalarına dayalı kârlı işlemler gerçekleştirir.',vipRulesTitle:'VIP Seviyelerine Giriş ve Yükseltme Şartları',vipNote:'Önemli Not: Herhangi bir VIP seviyesini etkinleştirmenin ve yükseltmenin temel şartı, gerekli miktarda doğrudan yatırım yapmaktır. Platform işlem kârları yatırım şartına dahil edilmez.',directDeposit:'Doğrudan Yatırım:',directInvite:'Doğrudan Davet:',balanceRange:'Bakiye Aralığı:',dailyProfit:'Günlük Kâr:',activationTitle:'Etkinleştirme ve Kâr Bölünmesi',activationDesc:'Etkinleştirme için minimum yatırım 20 dolardır. Belirtilen günlük kâr oranı gün içinde 4 adet 10 saniyelik işleme bölünür.',resetTitle:'Günlük Sıfırlama (New York Saati)',resetDesc:'Günlük 4 işlem kapasitesi, New York Saati (NY Time) esasına göre her iş gününün sonunda sıfırlanır.',globalMarket:'Küresel Kripto Piyasası',liveUpdates:'Canlı Güncellemeler',showFullHistory:'Tüm Geçmişi Görüntüle',showLess:'Daha Az Göster'},
+  ru:{dir:'ltr',adminMsg:'Сообщение админа',welcomeText:'Добро пожаловать на платформу Zenix.',home:'Главная',quantification:'Квантификация',deposit:'Депозит',receive:'Вывод',transactions:'Транзакции',profile:'Профиль',logout:'Выйти',tradingLevels:'Торговые уровни',subWel:'Проверьте ваш уровень и активируйте бота',active:'Активен',inactive:'Неактивен (Баланс < $20)',nyTime:'Время в Нью-Йорке',bal:'Баланс',prof:'Прибыль',usersCount:'Пользователи',liveTrade:'Статус текущей сделки',todayProfit:'Прибыль сегодня',yesterdayProfit:'Прибыль вчера',tradeHistory:'История сделок',noHistory:'Сделок пока нет',totalBalance:'Общий баланс',dailyLimit:'Дневной лимит исчерпан',trading:'Торговля',seconds:'сек',success:'Успешно!',helpModalTitle:'Руководство по квантификации и VIP уровням',whatIsQuantTitle:'Что такое система квантификации?',whatIsQuantDesc:'Умный торговый бот анализирует цены на криптовалюту на мировых биржах в реальном времени, выявляет разницу в ценах и совершает прибыльные сделки на основе арбитража и алгоритмов ИИ.',vipRulesTitle:'Условия входа и повышения уровней VIP',vipNote:'Важное примечание: Главным условием активации и повышения уровня VIP является прямой депозит требуемой суммы. Прибыль от торговли на платформе не учитывается.',directDeposit:'Прямой депозит:',directInvite:'Прямые рефералы:',balanceRange:'Диапазон баланса:',dailyProfit:'Ежедневная прибыль:',activationTitle:'Активация и распределение прибыли',activationDesc:'Минимальный депозит для активации составляет 20$. Ежедневная прибыль делится на 4 сделки по 10 секунд в течение дня.',resetTitle:'Ежедневный сброс (время Нью-Йорка)',resetDesc:'Лимит из 4 сделок в день сбрасывается в конце каждого рабочего дня по времени Нью-Йорка (NY Time).',globalMarket:'Мировой рынок криптовалют',liveUpdates:'Прямое обновление',showFullHistory:'Посмотреть всю историю',showLess:'Свернуть'},
+  es:{dir:'ltr',adminMsg:'Mensaje de administración',welcomeText:'Bienvenido a la plataforma Zenix.',home:'Inicio',quantification:'Cuantificación',deposit:'Depósito',receive:'Retiro',transactions:'Transacciones',profile:'Perfil',logout:'Cerrar sesión',tradingLevels:'Niveles de trading',subWel:'Consulta tu nivel y activa el bot',active:'Activo',inactive:'Inactivo (Saldo < $20)',nyTime:'Hora de Nueva York',bal:'Saldo',prof:'Ganancia',usersCount:'Usuarios',liveTrade:'Estado de operación en vivo',todayProfit:'Ganancia de hoy',yesterdayProfit:'Ganancia de ayer',tradeHistory:'Historial de operaciones',noHistory:'Aún no hay operaciones registradas',totalBalance:'Saldo total',dailyLimit:'Límite diario alcanzado',trading:'Operando',seconds:'seg',success:'¡Éxito!',helpModalTitle:'Guía de cuantificación y niveles VIP',whatIsQuantTitle:'¿Qué es el sistema de cuantificación?',whatIsQuantDesc:'El bot de trading inteligente analiza los precios de las criptomonetas en tiempo real en los exchanges globales para detectar diferencias de precios y realizar operaciones rentables basadas en arbitraje y algoritmos de IA.',vipRulesTitle:'Condiciones para niveles VIP',vipNote:'Nota importante: La condición principal para activar y actualizar los niveles VIP es realizar un depósito directo por el monto requerido. Las ganancias de trading no cuentan para este requisito.',directDeposit:'Depósito directo:',directInvite:'Referencia directa:',balanceRange:'Rango de saldo:',dailyProfit:'Ganancia diaria:',activationTitle:'Activación y división de ganancias',activationDesc:'El depósito mínimo de activación es de $20. El porcentaje de ganancia diaria se divide en 4 operaciones de 10 segundos a lo largo del día.',resetTitle:'Restablecimiento diario (Hora NY)',resetDesc:'El límite de 4 operaciones diarias se restablece al final de cada día hábil según la hora de Nueva York (NY Time).',globalMarket:'Mercado global de criptomonedas',liveUpdates:'Actualizaciones en vivo',showFullHistory:'Ver historial completo',showLess:'Mostrar menos'},
+  fr:{dir:'ltr',adminMsg:'Message d\'administration',welcomeText:'Bienvenue sur la plateforme Zenix.',home:'Accueil',quantification:'Quantification',deposit:'Dépôt',receive:'Retrait',transactions:'Transactions',profile:'Profil',logout:'Déconnexion',tradingLevels:'Niveaux de trading',subWel:'Vérifiez votre niveau et activez le bot',active:'Actif',inactive:'Inactif (Solde < $20)',nyTime:'Heure de New York',bal:'Solde',prof:'Profit',usersCount:'Utilisateurs',liveTrade:'Statut du trade en direct',todayProfit:'Profit du jour',yesterdayProfit:'Profit d\'hier',tradeHistory:'Historique des trades',noHistory:'Aucun trade enregistré pour le moment',totalBalance:'Solde total',dailyLimit:'Limite quotidienne atteinte',trading:'Trade en cours',seconds:'sec',success:'Succès !',helpModalTitle:'Guide de quantification et niveaux VIP',whatIsQuantTitle:'Qu\'est-ce que le système de quantification ?',whatIsQuantDesc:'Le bot de trading intelligent analyse en temps réel les prix des cryptomonnaies sur les plateformes mondiales pour détecter les écarts de prix et exécuter des trades profitables basés sur l\'arbitrage et l\'IA.',vipRulesTitle:'Conditions pour les niveaux VIP',vipNote:'Remarque importante : La condition principale pour activer et surclasser les niveaux VIP est d\'effectuer un dépôt direct du montant requis. Les profits de trading de la plateforme ne comptent pas.',directDeposit:'Dépôt direct :',directInvite:'Parrainage direct :',balanceRange:'Plage de solde :',dailyProfit:'Profit quotidien :',activationTitle:'Activation et répartition des profits',activationDesc:'Le dépôt minimum d\'activation est de 20 $. Le taux de profit quotidien est divisé en 4 trades de 10 secondes tout au long de la journée.',resetTitle:'Réinitialisation quotidienne (Heure NY)',resetDesc:'La limite de 4 trades quotidiens est réinitialisée à la fin de chaque journée ouvrable selon l\'heure de New York (NY Time).',globalMarket:'Marché mondial des cryptomonnaies',liveUpdates:'Mises à jour en direct',showFullHistory:'Voir tout l\'historique',showLess:'Réduire'},
+  de:{dir:'ltr',adminMsg:'Admin-Nachricht',welcomeText:'Willkommen auf der Zenix-Plattform.',home:'Startseite',quantification:'Quantifizierung',deposit:'Einzahlung',receive:'Auszahlung',transactions:'Transaktionen',profile:'Profil',logout:'Abmelden',tradingLevels:'Handelsstufen',subWel:'Prüfen Sie Ihre Stufe und aktivieren Sie den Bot',active:'Aktiv',inactive:'Inaktiv (Guthaben < $20)',nyTime:'New York Zeit',bal:'Guthaben',prof:'Gewinn',usersCount:'Benutzer',liveTrade:'Live-Trade-Status',todayProfit:'Heutiger Gewinn',yesterdayProfit:'Gestriger Gewinn',tradeHistory:'Handelsverlauf',noHistory:'Noch keine Trades aufgezeichnet',totalBalance:'Gesamtguthaben',dailyLimit:'Tageslimit erreicht',trading:'Handel läuft',seconds:'Sek',success:'Erfolgreich!',helpModalTitle:'Leitfaden für Quantifizierung & VIP-Stufen',whatIsQuantTitle:'Was ist das Quantifizierungssystem?',whatIsQuantDesc:'Der smarte Trading-Bot analysiert Kryptowährungspreise auf globalen Börsen in Echtzeit, um Preisunterschiede zu erkennen und profitable Arbitrage-Trades mit KI-Algorithmen auszuführen.',vipRulesTitle:'Bedingungen für VIP-Stufen',vipNote:'Wichtiger Hinweis: Die Hauptbedingung für die Aktivierung und das Upgrade von VIP-Stufen ist eine direkte Einzahlung des erforderlichen Betrags. Handelsgewinne zählen nicht dafür.',directDeposit:'Direkte Einzahlung:',directInvite:'Direkte Einladung:',balanceRange:'Guthabenbereich:',dailyProfit:'Täglicher Gewinn:',activationTitle:'Aktivierung & Gewinnaufteilung',activationDesc:'Die Mindesteinzahlung zur Aktivierung beträgt 20 $. Der tägliche Gewinnsatz wird über den Tag verteilt in 4 Trades von jeweils 10 Sekunden aufgeteilt.',resetTitle:'Tägliches Zurücksetzen (New York Zeit)',resetDesc:'Das Limit von 4 täglichen Trades wird am Ende jedes Arbeitstages nach New Yorker Zeit (NY Time) zurückgesetzt.',globalMarket:'Globaler Kryptomarkt',liveUpdates:'Live-Updates',showFullHistory:'Vollständigen Verlauf anzeigen',showLess:'Weniger anzeigen'}
 };
 
 function setLang(l){
-  const t=LD[l]||LD.fa;
-  document.documentElement.dir=t.dir;
-  document.documentElement.lang=l;
-  localStorage.setItem('zenix_lang',l);
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const k=el.getAttribute('data-i18n');
-    if(t[k])el.innerText=t[k];
-  });
+  const t=LD[l]||LD.fa;document.documentElement.dir=t.dir;document.documentElement.lang=l;localStorage.setItem('zenix_lang',l);
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k])el.innerText=t[k];});
   window.currentActiveLang=l;
-  
   const statusB=document.getElementById('status-badge'),vipB=document.getElementById('vip1-badge');
-  if(statusB){
-    if(window.isBotActive){
-      statusB.innerHTML=`<i class="fas fa-robot"></i> <span>${t.active}</span>`;
-    }else{
-      statusB.innerHTML=`<i class="fas fa-lock"></i> <span>${t.inactive}</span>`;
-    }
-  }
-  if(vipB&&vipB.classList.contains('badge-active')){
-    vipB.innerText=t.active;
-  }
-  
+  if(statusB){if(window.isBotActive)statusB.innerHTML=`<i class="fas fa-robot"></i> <span>${t.active}</span>`;else statusB.innerHTML=`<i class="fas fa-lock"></i> <span>${t.inactive}</span>`;}
+  if(vipB&&vipB.classList.contains('badge-active'))vipB.innerText=t.active;
   if(window.checkClickState)window.checkClickState();
   if(window.renderHistory)window.renderHistory();
   if(window.renderMarketList)window.renderMarketList();
 }
-
 setLang(localStorage.getItem('zenix_lang')||'fa');
 
 const mB=document.getElementById('menu-btn'),nM=document.getElementById('nav-menu'),lB=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu'),bB=document.getElementById('bell-btn'),bM=document.getElementById('bell-menu');
-document.querySelectorAll('#lang-menu .mi').forEach(el=>{
-  el.onclick=(e)=>{
-    e.stopPropagation();
-    setLang(el.dataset.lang);
-    lMenu.classList.remove('show');
-  };
-});
-
-function tM(o,e){
-  e.stopPropagation();
-  [nM,lMenu,bM].forEach(m=>{if(m!==o)m.classList.remove('show');});
-  o.classList.toggle('show');
-}
-
-if(mB)mB.onclick=(e)=>tM(nM,e);
-if(lB)lB.onclick=(e)=>tM(lMenu,e);
-if(bB)bB.onclick=(e)=>tM(bM,e);
-
+document.querySelectorAll('#lang-menu .mi').forEach(el=>{el.onclick=(e)=>{e.stopPropagation();setLang(el.dataset.lang);lMenu.classList.remove('show');};});
+function tM(o,e){e.stopPropagation();[nM,lMenu,bM].forEach(m=>{if(m!==o)m.classList.remove('show');});o.classList.toggle('show');}
+if(mB)mB.onclick=(e)=>tM(nM,e);if(lB)lB.onclick=(e)=>tM(lMenu,e);if(bB)bB.onclick=(e)=>tM(bM,e);
 document.onclick=()=>{[nM,lMenu,bM].forEach(m=>m.classList.remove('show'));};
 document.querySelectorAll('.menu').forEach(m=>m.onclick=(e)=>e.stopPropagation());
 
-// دیتابیس رصد ۵۰ ارز برتر بازار جهانی
 const marketData=[
-  {name:'Bitcoin',symbol:'BTC/USDT',price:96450.20,change:4.85,cls:'fab fa-bitcoin',color:'#f7931a'},
-  {name:'Ethereum',symbol:'ETH/USDT',price:3480.50,change:3.62,cls:'fab fa-ethereum',color:'#627eea'},
+  {name:'Bitcoin',symbol:'BTC/USDT',price:96450.2,change:4.85,cls:'fab fa-bitcoin',color:'#f7931a'},
+  {name:'Ethereum',symbol:'ETH/USDT',price:3480.5,change:3.62,cls:'fab fa-ethereum',color:'#627eea'},
   {name:'Solana',symbol:'SOL/USDT',price:185.25,change:8.12,cls:'fas fa-coins',color:'#14f195'},
-  {name:'Ripple',symbol:'XRP/USDT',price:2.35,change:6.40,cls:'fas fa-water',color:'#23292f'},
-  {name:'Binance Coin',symbol:'BNB/USDT',price:620.10,change:1.45,cls:'fas fa-cube',color:'#f3ba2f'},
-  {name:'Dogecoin',symbol:'DOGE/USDT',price:0.284,change:7.30,cls:'fas fa-dog',color:'#c2a633'},
-  {name:'Cardano',symbol:'ADA/USDT',price:0.952,change:2.10,cls:'fas fa-circle-dot',color:'#0033ad'},
-  {name:'Avalanche',symbol:'AVAX/USDT',price:38.40,change:5.90,cls:'fas fa-mountain',color:'#e84142'},
-  {name:'Sui',symbol:'SUI/USDT',price:3.45,change:9.80,cls:'fas fa-droplet',color:'#4a90e2'},
-  {name:'Chainlink',symbol:'LINK/USDT',price:18.20,change:4.15,cls:'fas fa-link',color:'#375bd2'},
-  {name:'Polkadot',symbol:'DOT/USDT',price:8.60,change:-0.80,cls:'fas fa-circle-notch',color:'#e6007a'},
-  {name:'Near Protocol',symbol:'NEAR/USDT',price:6.75,change:6.40,cls:'fas fa-leaf',color:'#000000'},
-  {name:'Shiba Inu',symbol:'SHIB/USDT',price:0.000024,change:3.20,cls:'fas fa-fire',color:'#ffa409'},
-  {name:'Pepe',symbol:'PEPE/USDT',price:0.000019,change:11.40,cls:'fas fa-frog',color:'#52ab52'},
-  {name:'Uniswap',symbol:'UNI/USDT',price:11.80,change:2.80,cls:'fas fa-horse-head',color:#ff007a'},
-  {name:'Aptos',symbol:'APT/USDT',price:12.30,change:5.10,cls:'fas fa-code-branch',color:'#2dd4bf'},
-  {name:'Stellar',symbol:'XLM/USDT',price:0.42,change:8.90,cls:'fas fa-rocket',color:'#14b8a6'},
-  {name:'Cosmos',symbol:'ATOM/USDT',price:7.90,change:1.30,cls:'fas fa-atom',color:'#2e3148'},
-  {name:'Hedera',symbol:'HBAR/USDT',price:0.26,change:12.10,cls:'fas fa-h',color:'#a855f7'},
-  {name:'Render',symbol:'RENDER/USDT',price:8.40,change:7.60,cls:'fas fa-draw-polygon',color:'#ef4444'},
-  {name:'Arbitrum',symbol:'ARB/USDT',price:1.15,change:0.90,cls:'fas fa-layer-group',color:'#28a0f0'},
-  {name:'Optimism',symbol:'OP/USDT',price:2.10,change:3.40,cls:'fas fa-bolt',color:'#ff0420'},
-  {name:'Kaspa',symbol:'KAS/USDT',price:0.18,change:4.20,cls:'fas fa-gem',color:'#70c7ba'},
-  {name:'Litecoin',symbol:'LTC/USDT',price:104.50,change:1.90,cls:'fas fa-litecoin-sign',color:'#345d9d'},
-  {name:'Bitcoin Cash',symbol:'BCH/USDT',price:480.20,change:2.70,cls:'fas fa-money-bill-wave',color:'#8dc351'},
-  {name:'Toncoin',symbol:'TON/USDT',price:6.40,change:3.90,cls:'fas fa-paper-plane',color:'#0088cc'},
-  {name:'Injective',symbol:'INJ/USDT',price:26.80,change:6.80,cls:'fas fa-syringe',color:'#00f2fe'},
-  {name:'Bittensor',symbol:'TAO/USDT',price:540.00,change:10.20,cls:'fas fa-brain',color:'#38bdf8'},
-  {name:'Fetch.ai',symbol:'FET/USDT',price:1.65,change:8.40,cls:'fas fa-microchip',color:'#1e293b'},
-  {name:'Stacks',symbol:'STX/USDT',price:2.25,change:4.50,cls:'fas fa-cubes',color:'#5546ff'},
-  {name:'Aave',symbol:'AAVE/USDT',price:195.00,change:5.30,cls:'fas fa-ghost',color:'#b6509e'},
-  {name:'Celestia',symbol:'TIA/USDT',price:6.20,change:-1.40,cls:'fas fa-sun',color:'#7b2bf9'},
-  {name:'Filecoin',symbol:'FIL/USDT',price:6.10,change:2.30,cls:'fas fa-folder-open',color:'#0094ff'},
-  {name:'Sei',symbol:'SEI/USDT',price:0.58,change:6.90,cls:'fas fa-compass',color:'#9e1b32'},
-  {name:'Algorand',symbol:'ALGO/USDT',price:0.32,change:7.10,cls:'fas fa-check-circle',color:'#000000'},
-  {name:'VeChain',symbol:'VET/USDT',price:0.045,change:3.80,cls:'fas fa-v',color:'#15bdff'},
-  {name:'Fantom',symbol:'FTM/USDT',price:0.92,change:8.20,cls:'fas fa-ghost',color:'#1969ff'},
-  {name:'JasmyCoin',symbol:'JASMY/USDT',price:0.032,change:13.50,cls:'fas fa-shield-halved',color:'#f97316'},
-  {name:'THETA',symbol:'THETA/USDT',price:2.40,change:4.10,cls:'fas fa-play',color:'#2ab8e6'},
-  {name:'THORChain',symbol:'RUNE/USDT',price:6.30,change:5.70,cls:'fas fa-hammer',color:'#33ff99'},
-  {name:'Decentraland',symbol:'MANA/USDT',price:0.55,change:6.30,cls:'fas fa-cubes-stacked',color:'#ff2d55'},
-  {name:'The Sandbox',symbol:'SAND/USDT',price:0.58,change:7.80,cls:'fas fa-box-open',color:'#0084ff'},
-  {name:'Axie Infinity',symbol:'AXS/USDT',price:7.80,change:2.60,cls:'fas fa-gamepad',color:'#0055ff'},
-  {name:'Flow',symbol:'FLOW/USDT',price:0.92,change:3.10,cls:'fas fa-wave-square',color:'#00ef8b'},
-  {name:'MultiversX',symbol:'EGLD/USDT',price:38.90,change:4.40,cls:'fas fa-infinity',color:'#23f7dd'},
-  {name:'Chiliz',symbol:'CHZ/USDT',price:0.11,change:5.20,cls:'fas fa-pepper-hot',color:'#cd012c'},
-  {name:'EOS',symbol:'EOS/USDT',price:0.82,change:1.10,cls:'fas fa-shapes',color:'#000000'},
-  {name:'IOTA',symbol:'IOTA/USDT',price:0.28,change:9.10,cls:'fas fa-network-wired',color:'#101010'},
-  {name:'Tezos',symbol:'XTZ/USDT',price:1.25,change:3.60,cls:'fas fa-copyright',color:'#2c7df7'},
-  {name:'Kava',symbol:'KAVA/USDT',price:0.52,change:2.80,cls:'fas fa-shield-cat',color:#ff424d}
+  {name:'Ripple',symbol:'XRP/USDT',price:2.35,change:6.4,cls:'fas fa-water',color:'#23292f'},
+  {name:'Binance Coin',symbol:'BNB/USDT',price:620.1,change:1.45,cls:'fas fa-cube',color:'#f3ba2f'},
+  {name:'Dogecoin',symbol:'DOGE/USDT',price:.284,change:7.3,cls:'fas fa-dog',color:'#c2a633'},
+  {name:'Cardano',symbol:'ADA/USDT',price:.952,change:2.1,cls:'fas fa-circle-dot',color:'#0033ad'},
+  {name:'Avalanche',symbol:'AVAX/USDT',price:38.4,change:5.9,cls:'fas fa-mountain',color:'#e84142'},
+  {name:'Sui',symbol:'SUI/USDT',price:3.45,change:9.8,cls:'fas fa-droplet',color:'#4a90e2'},
+  {name:'Chainlink',symbol:'LINK/USDT',price:18.2,change:4.15,cls:'fas fa-link',color:'#375bd2'},
+  {name:'Polkadot',symbol:'DOT/USDT',price:8.6,change:-.8,cls:'fas fa-circle-notch',color:'#e6007a'},
+  {name:'Near Protocol',symbol:'NEAR/USDT',price:6.75,change:6.4,cls:'fas fa-leaf',color:'#000000'},
+  {name:'Shiba Inu',symbol:'SHIB/USDT',price:.000024,change:3.2,cls:'fas fa-fire',color:'#ffa409'},
+  {name:'Pepe',symbol:'PEPE/USDT',price:.000019,change:11.4,cls:'fas fa-frog',color:'#52ab52'},
+  {name:'Uniswap',symbol:'UNI/USDT',price:11.8,change:2.8,cls:'fas fa-horse-head',color:'#ff007a'},
+  {name:'Aptos',symbol:'APT/USDT',price:12.3,change:5.1,cls:'fas fa-code-branch',color:'#2dd4bf'},
+  {name:'Stellar',symbol:'XLM/USDT',price:.42,change:8.9,cls:'fas fa-rocket',color:'#14b8a6'},
+  {name:'Cosmos',symbol:'ATOM/USDT',price:7.9,change:1.3,cls:'fas fa-atom',color:'#2e3148'},
+  {name:'Hedera',symbol:'HBAR/USDT',price:.26,change:12.1,cls:'fas fa-h',color:'#a855f7'},
+  {name:'Render',symbol:'RENDER/USDT',price:8.4,change:7.6,cls:'fas fa-draw-polygon',color:'#ef4444'},
+  {name:'Arbitrum',symbol:'ARB/USDT',price:1.15,change:.9,cls:'fas fa-layer-group',color:'#28a0f0'},
+  {name:'Optimism',symbol:'OP/USDT',price:2.1,change:3.4,cls:'fas fa-bolt',color:'#ff0420'},
+  {name:'Kaspa',symbol:'KAS/USDT',price:.18,change:4.2,cls:'fas fa-gem',color:'#70c7ba'},
+  {name:'Litecoin',symbol:'LTC/USDT',price:104.5,change:1.9,cls:'fas fa-litecoin-sign',color:'#345d9d'},
+  {name:'Bitcoin Cash',symbol:'BCH/USDT',price:480.2,change:2.7,cls:'fas fa-money-bill-wave',color:'#8dc351'},
+  {name:'Toncoin',symbol:'TON/USDT',price:6.4,change:3.9,cls:'fas fa-paper-plane',color:'#0088cc'},
+  {name:'Injective',symbol:'INJ/USDT',price:26.8,change:6.8,cls:'fas fa-syringe',color:'#00f2fe'},
+  {name:'Bittensor',symbol:'TAO/USDT',price:540,change:10.2,cls:'fas fa-brain',color:'#38bdf8'},
+  {name:'Fetch.ai',symbol:'FET/USDT',price:1.65,change:8.4,cls:'fas fa-microchip',color:'#1e293b'},
+  {name:'Stacks',symbol:'STX/USDT',price:2.25,change:4.5,cls:'fas fa-cubes',color:'#5546ff'},
+  {name:'Aave',symbol:'AAVE/USDT',price:195,change:5.3,cls:'fas fa-ghost',color:'#b6509e'},
+  {name:'Celestia',symbol:'TIA/USDT',price:6.2,change:-1.4,cls:'fas fa-sun',color:'#7b2bf9'},
+  {name:'Filecoin',symbol:'FIL/USDT',price:6.1,change:2.3,cls:'fas fa-folder-open',color:'#0094ff'},
+  {name:'Sei',symbol:'SEI/USDT',price:.58,change:6.9,cls:'fas fa-compass',color:'#9e1b32'},
+  {name:'Algorand',symbol:'ALGO/USDT',price:.32,change:7.1,cls:'fas fa-check-circle',color:'#000000'},
+  {name:'VeChain',symbol:'VET/USDT',price:.045,change:3.8,cls:'fas fa-v',color:'#15bdff'},
+  {name:'Fantom',symbol:'FTM/USDT',price:.92,change:8.2,cls:'fas fa-ghost',color:'#1969ff'},
+  {name:'JasmyCoin',symbol:'JASMY/USDT',price:.032,change:13.5,cls:'fas fa-shield-halved',color:'#f97316'},
+  {name:'THETA',symbol:'THETA/USDT',price:2.4,change:4.1,cls:'fas fa-play',color:'#2ab8e6'},
+  {name:'THORChain',symbol:'RUNE/USDT',price:6.3,change:5.7,cls:'fas fa-hammer',color:'#33ff99'},
+  {name:'Decentraland',symbol:'MANA/USDT',price:.55,change:6.3,cls:'fas fa-cubes-stacked',color:'#ff2d55'},
+  {name:'The Sandbox',symbol:'SAND/USDT',price:.58,change:7.8,cls:'fas fa-box-open',color:'#0084ff'},
+  {name:'Axie Infinity',symbol:'AXS/USDT',price:7.8,change:2.6,cls:'fas fa-gamepad',color:'#0055ff'},
+  {name:'Flow',symbol:'FLOW/USDT',price:.92,change:3.1,cls:'fas fa-wave-square',color:'#00ef8b'},
+  {name:'MultiversX',symbol:'EGLD/USDT',price:38.9,change:4.4,cls:'fas fa-infinity',color:'#23f7dd'},
+  {name:'Chiliz',symbol:'CHZ/USDT',price:.11,change:5.2,cls:'fas fa-pepper-hot',color:'#cd012c'},
+  {name:'EOS',symbol:'EOS/USDT',price:.82,change:1.1,cls:'fas fa-shapes',color:'#000000'},
+  {name:'IOTA',symbol:'IOTA/USDT',price:.28,change:9.1,cls:'fas fa-network-wired',color:'#101010'},
+  {name:'Tezos',symbol:'XTZ/USDT',price:1.25,change:3.6,cls:'fas fa-copyright',color:'#2c7df7'},
+  {name:'Kava',symbol:'KAVA/USDT',price:.52,change:2.8,cls:'fas fa-shield-cat',color:'#ff424d'}
 ];
 
 window.renderMarketList=function(){
-  const mList=document.getElementById('market-list');
-  if(!mList)return;
-  
-  // مرتب‌سازی ۵۰ ارز بر اساس بیشترین سود (Gainers) به صورت دینامیک
-  marketData.sort((a,b)=>b.change - a.change);
-  
-  // انتخاب ۱۵ ارز برتر پس از مرتب‌سازی
+  const mList=document.getElementById('market-list');if(!mList)return;
+  marketData.sort((a,b)=>b.change-a.change);
   const top15=marketData.slice(0,15);
-  
   let html='';
   top15.forEach(item=>{
-    const isPositive=item.change>=0;
-    const changeClass=isPositive?'color:#22c55e;':'color:#ef4444;';
-    const bgClass=isPositive?'background:rgba(34,197,94,0.12);':'background:rgba(239,68,68,0.12);';
-    const sign=isPositive?'+':'';
-    
-    // چیدمان: سمت چپ (نام + نماد) | سمت راست (قیمت + درصد)
+    const isP=item.change>=0,cC=isP?'color:#22c55e;':'color:#ef4444;',bC=isP?'background:rgba(34,197,94,0.12);':'background:rgba(239,68,68,0.12);',sgn=isP?'+':'';
     html+=`<div style="background:rgba(255,255,255,0.03);padding:10px 12px;border-radius:8px;font-size:12px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.05);transition:all 0.3s ease;">
-      <!-- سمت چپ: نماد، آیکون و نام ارز -->
       <div style="display:flex;align-items:center;gap:10px;direction:ltr;text-align:left;">
         <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:${item.color};color:#fff;font-size:13px;"><i class="${item.cls}"></i></span>
-        <div>
-          <div style="font-weight:700;color:#f8fafc;font-size:12px;">${item.name}</div>
-          <div style="font-size:10px;color:#94a3b8;">${item.symbol}</div>
-        </div>
+        <div><div style="font-weight:700;color:#f8fafc;font-size:12px;">${item.name}</div><div style="font-size:10px;color:#94a3b8;">${item.symbol}</div></div>
       </div>
-      <!-- سمت راست: قیمت و درصد سود -->
       <div style="text-align:right;direction:ltr;">
         <div style="font-weight:700;color:#f8fafc;font-size:12px;">$${item.price.toLocaleString('en-US',{minimumFractionDigits:item.price<1?4:2,maximumFractionDigits:item.price<1?4:2})}</div>
-        <div style="font-size:10px;font-weight:700;${changeClass}padding:2px 6px;border-radius:4px;${bgClass}display:inline-block;margin-top:2px;">
-          ${sign}${item.change.toFixed(2)}%
-        </div>
+        <div style="font-size:10px;font-weight:700;${cC}padding:2px 6px;border-radius:4px;${bC}display:inline-block;margin-top:2px;">${sgn}${item.change.toFixed(2)}%</div>
       </div>
     </div>`;
   });
   mList.innerHTML=html;
 };
-
 window.renderMarketList();
-
-// به‌روزرسانی زنده قیمت‌ها و مرتب‌سازی دینامیک جایگاه ارزها
-setInterval(()=>{
-  marketData.forEach(item=>{
-    const delta=(Math.random()-0.49)*(item.price*0.003);
-    const changeDelta=(Math.random()-0.49)*0.25;
-    item.price=Math.max(0.00001,item.price+delta);
-    item.change+=changeDelta;
-  });
-  window.renderMarketList();
-},3000);
+setInterval(()=>{marketData.forEach(item=>{item.price=Math.max(.00001,item.price+(Math.random()-.49)*(item.price*.003));item.change+=(Math.random()-.49)*.25;});window.renderMarketList();},3000);
 </script>
 <script async type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -558,19 +138,12 @@ const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDo
 const qB=document.getElementById('quant-btn');let uUid=null,tProf=0,bBal=0,tpEl=document.getElementById('today-profit-val'),tbEl=document.getElementById('total-balance-val'),hList=document.getElementById('history-list');
 
 function getNYDateStr(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York'}).format(new Date());}
-let todayNY=getNYDateStr();
-let cCnt=0;
-let allTradesArray=[];
+let todayNY=getNYDateStr(),cCnt=0,allTradesArray=[];
 
 function formatTradeDate(item){
   if(item.timestamp){
     const d=new Date(item.timestamp);
-    const YYYY=d.getFullYear();
-    const MM=String(d.getMonth()+1).padStart(2,'0');
-    const DD=String(d.getDate()).padStart(2,'0');
-    const hh=String(d.getHours()).padStart(2,'0');
-    const mm=String(d.getMinutes()).padStart(2,'0');
-    return `${YYYY}/${MM}/${DD} - ${hh}:${mm}`;
+    return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} - ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
   }
   return item.dateStr||'';
 }
@@ -578,16 +151,13 @@ function formatTradeDate(item){
 function uC(){
   const dateStr=getNYDateStr();
   if(dateStr!==todayNY){
-    todayNY=dateStr;
-    cCnt=0;
-    tProf=0;
+    todayNY=dateStr;cCnt=0;tProf=0;
     if(uUid)updateDoc(doc(db,"users",uUid),{quantCount:0,quantDate:todayNY,todayProfit:0});
     if(tpEl)tpEl.innerText='$0.00';
     window.checkClickState();
   }
   const t=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());
-  const c=document.getElementById('ny-clock-val');
-  if(c)c.innerText=t;
+  const c=document.getElementById('ny-clock-val');if(c)c.innerText=t;
 }
 setInterval(uC,1000);uC();
 
@@ -608,21 +178,17 @@ window.checkClickState=function(){
 window.renderHistory=function(){
   const l=window.currentActiveLang||'fa',t=LD[l]||LD.fa;
   const btn=document.getElementById('view-all-history-btn'),btnTxt=document.getElementById('history-btn-text'),btnIcon=document.getElementById('history-btn-icon');
-  
   if(!allTradesArray||allTradesArray.length===0){
     hList.innerHTML=`<div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">${t.noHistory}</div>`;
     if(btn)btn.style.display='none';
     return;
   }
-  
   if(btn){
     btn.style.display=allTradesArray.length>4?'flex':'none';
     if(btnTxt)btnTxt.innerText=window.showAllHistory?(t.showLess||'بستن تاریخچه'):(t.showFullHistory||'مشاهده کامل تاریخچه');
     if(btnIcon)btnIcon.className=window.showAllHistory?'fas fa-chevron-up':'fas fa-list-ul';
   }
-  
   const tradesToDisplay=window.showAllHistory?allTradesArray:allTradesArray.slice(0,4);
-  
   let htmlStr='';
   tradesToDisplay.forEach(item=>{
     const formattedDate=formatTradeDate(item);
@@ -642,7 +208,6 @@ if(qB){
     cCnt++;
     qB.disabled=true;qB.style.opacity="0.5";
     const l=window.currentActiveLang||'fa',t=LD[l]||LD.fa;
-
     let dailyRate=0.015;
     if(bBal>=10000)dailyRate=0.04;
     else if(bBal>=5000)dailyRate=0.035;
@@ -651,7 +216,6 @@ if(qB){
     else if(bBal>=300)dailyRate=0.02;
 
     const p=(bBal*dailyRate)/4;
-
     const tBox=document.getElementById('trade-box'),tDet=document.getElementById('trade-details');
     tBox.style.display='block';
     const rc=cList[Math.floor(Math.random()*cList.length)];
@@ -659,42 +223,26 @@ if(qB){
     tDet.innerHTML=`<i class="fas fa-spinner fa-spin"></i> ${t.trading} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> <b>${rc.name} (${rc.symbol})</b> - <span id="cd-v" style="color:#f59e0b;font-weight:bold;">10</span> ${t.seconds}`;
     const tI=setInterval(()=>{
       tLeft--;
-      const cd=document.getElementById('cd-v');
-      if(cd)cd.innerText=tLeft;
+      const cd=document.getElementById('cd-v');if(cd)cd.innerText=tLeft;
       if(tLeft<=0)clearInterval(tI);
     },1000);
 
     setTimeout(()=>{
       clearInterval(tI);
-      
-      tProf+=p;
-      bBal+=p;
-
+      tProf+=p;bBal+=p;
       if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);
       if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
-
       tDet.innerHTML=`<i class="fas fa-check-circle" style="color:#22c55e"></i> ${t.success} <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${rc.color};color:#fff;font-size:12px;margin:0 3px;"><i class="${rc.cls}"></i></span> ${rc.symbol} | ${t.prof}: <span style="color:#22c55e;">+$${p.toFixed(2)}</span>`;
       
       const now=new Date();
-      const YYYY=now.getFullYear();
-      const MM=String(now.getMonth()+1).padStart(2,'0');
-      const DD=String(now.getDate()).padStart(2,'0');
-      const hh=String(now.getHours()).padStart(2,'0');
-      const mm=String(now.getMinutes()).padStart(2,'0');
-      const dateStr=`${YYYY}/${MM}/${DD} - ${hh}:${mm}`;
-
+      const dateStr=`${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} - ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
       const tradeObj={name:rc.name,symbol:rc.symbol,cls:rc.cls,color:rc.color,profit:p,dateStr:dateStr,timestamp:now.getTime()};
       allTradesArray.unshift(tradeObj);
       window.renderHistory();
       
       updateDoc(doc(db,"users",uUid),{quantCount:cCnt,quantDate:todayNY,todayProfit:tProf,balance:bBal,tradeHistoryArray:allTradesArray}).then(()=>{
-        setTimeout(()=>{
-          window.location.reload();
-        },1000);
-      }).catch(err=>{
-        console.error(err);
-        window.location.reload();
-      });
+        setTimeout(()=>{window.location.reload();},1000);
+      }).catch(err=>{console.error(err);window.location.reload();});
       window.checkClickState();
     },10000);
   };
@@ -707,25 +255,14 @@ onAuthStateChanged(auth,u=>{
     if(d.exists()){
       const data=d.data();
       bBal=Number(data.balance||data.depositAmount||0);
-      if(data.quantDate===todayNY){
-        cCnt=Number(data.quantCount||0);
-        tProf=Number(data.todayProfit||0);
-      }else{
-        cCnt=0;
-        tProf=0;
-      }
+      if(data.quantDate===todayNY){cCnt=Number(data.quantCount||0);tProf=Number(data.todayProfit||0);}
+      else{cCnt=0;tProf=0;}
       if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);
       if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
-
-      if(data.tradeHistoryArray&&Array.isArray(data.tradeHistoryArray)){
-        allTradesArray=data.tradeHistoryArray;
-        window.renderHistory();
-      }
-
+      if(data.tradeHistoryArray&&Array.isArray(data.tradeHistoryArray)){allTradesArray=data.tradeHistoryArray;window.renderHistory();}
       const b=document.getElementById('status-badge'),v=document.getElementById('vip1-badge'),l=window.currentActiveLang||localStorage.getItem('zenix_lang')||'fa',t=LD[l]||LD.fa;
       if(bBal>=20){
-        window.isBotActive=true;
-        window.checkClickState();
+        window.isBotActive=true;window.checkClickState();
         b.style.background="rgba(56,189,248,.1)";b.style.borderColor="#38bdf8";b.style.color="#38bdf8";
         b.innerHTML=`<i class="fas fa-robot"></i> <span>${t.active}</span>`;
         v.className="badge-active";v.innerText=t.active;
