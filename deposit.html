@@ -5,7 +5,6 @@
 <title>Zenix - واریز هوشمند</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -18,8 +17,9 @@ header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1)
 .hr{display:flex;align-items:center;gap:8px}
 .wrap{position:relative}
 .lb{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);height:36px;width:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:#38bdf8;text-decoration:none}
-.badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
-.menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:200px;padding:8px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}
+.badge{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;font-weight:700}
+.badge.show{display:flex}
+.menu{display:none;position:absolute;top:42px;background:#0f172a;border:1px solid rgba(255,255,255,.2);border-radius:8px;min-width:170px;padding:6px;z-index:999;box-shadow:0 8px 25px rgba(0,0,0,.8)}
 [dir="rtl"] .wrap .menu{left:0}
 [dir="ltr"] .wrap .menu{right:0}
 .menu.show{display:block}
@@ -29,22 +29,25 @@ header{background:rgba(15,23,42,.9);border-bottom:1px solid rgba(255,255,255,.1)
 .wel{background:linear-gradient(135deg,rgba(2,132,199,.15),rgba(147,51,234,.15));border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .wel h1{font-size:16px;margin-bottom:3px}
 .wel p{color:#94a3b8;font-size:11px}
-footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05)}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(2,6,23,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.modal.show{display:flex}
+.modal-content{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid rgba(56,189,248,.3);border-radius:20px;width:100%;max-width:440px;max-height:85vh;display:flex;flex-direction:column;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.9)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:#38bdf8;font-weight:800;font-size:14px;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:10px}
+.modal-close{background:rgba(255,255,255,.05);border:none;color:#94a3b8;cursor:pointer;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:rgba(239,68,68,.2);color:#ef4444}
+#modal-msg-container{overflow-y:auto;padding-right:4px}
+.msg-body-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;margin-bottom:10px}
+.msg-title-text{font-size:13px;font-weight:700;color:#38bdf8;margin-bottom:4px}
+.msg-desc-text{font-size:12px;color:#cbd5e1;line-height:1.5}
+footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;max-width:800px;margin:0 auto;width:100%;padding-left:12px;padding-right:12px}
 </style>
 </head>
 <body>
 <header>
 <div class="logo"><div class="logo-icon">Z</div><div class="logo-text">ZENIX</div></div>
 <div class="hr">
-<div class="wrap">
-<button type="button" class="lb" id="bell-btn"><i class="fas fa-bell" style="color:#fbbf24"></i><span class="badge" id="bell-badge" style="display:none">0</span></button>
-<div class="menu" id="bell-menu">
-<div style="padding:6px 10px;font-size:11px;color:#38bdf8;border-bottom:1px solid rgba(255,255,255,.1);font-weight:700" data-i18n="adminMsg">پیام مدیریت</div>
-<div id="bell-messages-container" style="max-height:180px;overflow-y:auto;padding-top:4px;">
-<div style="padding:8px 10px;font-size:11px;color:#cbd5e1" data-i18n="welcomeText">به پلتفرم زنیکس خوش آمدید.</div>
-</div>
-</div></div>
-<a href="support.html" id="support-link" class="lb"><i class="fas fa-headset" style="color:#a855f7"></i></a>
+<div class="wrap"><button type="button" class="lb" id="bell-btn"><i class="fas fa-bell" style="color:#fbbf24"></i><span class="badge" id="bell-badge">0</span></button></div>
+<a href="support.html" onclick="sessionStorage.setItem('zenix_return_page', window.location.href);" class="lb"><i class="fas fa-headset" style="color:#a855f7"></i></a>
 <div class="wrap"><button type="button" class="lb" id="lang-btn"><i class="fas fa-globe" style="color:#22c55e"></i></button>
 <div class="menu" id="lang-menu">
 <div class="mi" data-lang="fa">فارسی</div><div class="mi" data-lang="en">English</div><div class="mi" data-lang="ar">العربية</div><div class="mi" data-lang="tr">Türkçe</div><div class="mi" data-lang="ru">Русский</div><div class="mi" data-lang="es">Español</div><div class="mi" data-lang="fr">Français</div><div class="mi" data-lang="de">Deutsch</div>
@@ -57,6 +60,7 @@ footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1p
 <a href="receive.html" class="mi"><i class="fas fa-arrow-up" style="color:#fbbf24"></i><span data-i18n="receive">برداشت</span></a>
 <a href="transactions.html" class="mi"><i class="fas fa-history" style="color:#06b6d4"></i><span data-i18n="transactions">تراکنش</span></a>
 <a href="profile.html" class="mi"><i class="fas fa-user-cog" style="color:#ec4899"></i><span data-i18n="profile">پروفایل</span></a>
+<a href="support.html" class="mi" onclick="sessionStorage.setItem('zenix_return_page', window.location.href);"><i class="fas fa-headset" style="color:#a855f7"></i><span data-i18n="support">پشتیبانی</span></a>
 <a href="#" class="mi" id="logout-btn" style="color:#ef4444"><i class="fas fa-sign-out-alt"></i><span data-i18n="logout">خروج</span></a>
 </div></div></div>
 </header>
@@ -115,7 +119,18 @@ footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1p
 </div>
 </div>
 
-<footer><p>&copy; 2026 Zenix</p></footer>
+<!-- مدال پیام‌ها -->
+<div class="modal" id="m-msg">
+    <div class="modal-content">
+        <div class="modal-header"><span id="t-modal-title">صندوق پیام‌های مدیریت</span><button class="modal-close" onclick="window.closeMessageModal()"><i class="fas fa-times"></i></button></div>
+        <div id="modal-msg-container"><div style="text-align:center;padding:20px;color:#94a3b8">هیچ پیام جدیدی وجود ندارد.</div></div>
+    </div>
+</div>
+
+<footer>
+<p>&copy; 2026 Zenix. All rights reserved.</p>
+<p style="color:#22c55e;"><i class="fas fa-circle" style="font-size:6px;"></i> <span id="t-node">سرور فعال (US-East)</span></p>
+</footer>
 
 <script>
 const wallets={
@@ -123,22 +138,31 @@ const wallets={
   BEP20:"0x9eA4B9aCa9B7505E63BA436d3240718A21574dc4"
 };
 window.currentNetwork='TRC20';
+let allMessages = [];
+let currentUserId = null;
 
 const LD={
-  fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',support:'پشتیبانی',logout:'خروج',depositTitle:'واریز هوشمند ارز',depositSub:'شارژ آنی و اتوماتیک از شبکه بلاکچین',activeStatus:'فعال',calcTitle:'محاسبه مبلغ واریزی',finalCalcText:'مبلغ واریزی نهایی:',txHashTitle:'هش تراکنش (TxID)',selectNetwork:'انتخاب شبکه و آدرس',scanQr:'اسکن جهت واریز مستقیم',copyBtn:'کپی',copyWarning:'⚠️ برای نمایش و کپی آدرس کیف پول، ابتدا مبلغ واریزی را وارد کنید.',inquiryBtn:'استعلام و واریزی',securityGuide:'راهنمای امنیتی:',sec1:'* لطفاً از واریز هرگونه ارزی غیر از USDT خودداری فرمایید.',sec2:'* تراکنش‌ها به صورت خودکار پس از تایید گره‌های شبکه اعمال می‌شوند.',copiedMsg:'📋 آدرس کیف پول با موفقیت در کلیپ‌بورد کپی شد.',loginErr:'❌ لطفاً ابتدا وارد حساب کاربری خود شوید.',fillReqErr:'❌ لطفاً مبلغ و هش تراکنش را به طور کامل وارد کنید.',successMsg:'✅ تراکنش بلاکچین تایید شد. مبلغ {amount} USDT به موجودی شما افزوده شد.',netLbl:'آدرس کیف پول'},
-  en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',support:'Support',logout:'Logout',depositTitle:'Smart Crypto Deposit',depositSub:'Instant & automatic top-up from blockchain network',activeStatus:'Active',calcTitle:'Deposit Calculator',finalCalcText:'Final deposit amount:',txHashTitle:'Transaction Hash (TxID)',selectNetwork:'Select Network & Address',scanQr:'Scan for direct deposit',copyBtn:'Copy',copyWarning:'⚠️ Please enter the deposit amount first to display and copy the wallet address.',inquiryBtn:'Inquire & Deposit',securityGuide:'Security Guide:',sec1:'* Please refrain from depositing any currency other than USDT.',sec2:'* Transactions are automatically processed after network node confirmation.',copiedMsg:'📋 Wallet address successfully copied to clipboard.',loginErr:'❌ Please log in to your account first.',fillReqErr:'❌ Please fill in both the amount and transaction hash.',successMsg:'✅ Blockchain transaction confirmed. {amount} USDT added to your balance.',netLbl:'Wallet Address'},
-  ar:{dir:'rtl',adminMsg:'رسالة الإدارة',welcomeText:'مرحباً بكم في منصة زينكس.',home:'الرئيسية',quantification:'التداول الكمي',deposit:'إيداع',receive:'سحب',transactions:'المعاملات',profile:'الملف الشخصي',support:'الدعم',logout:'تسجيل خروج',depositTitle:'إيداع العملات الذكي',depositSub:'شحن فوري وتلقائي من شبكة البلوكشين',activeStatus:'نشط',calcTitle:'حاسبة مبلغ الإيداع',finalCalcText:'مبلغ الإيداع النهائي:',txHashTitle:'هش تراکنش (TxID)',selectNetwork:'اختر الشبكة والعنوان',scanQr:'امحُ للإيداع المباشر',copyBtn:'نسخ',copyWarning:'⚠️ يرجى إدخال مبلغ الإيداع أولاً لعرض ونسخ عنوان المحفظة.',inquiryBtn:'استعلام و واریزی',securityGuide:'دليل الأمان:',sec1:'* يرجى عدم إيداع أي عملة أخرى غير USDT.',sec2:'* تتم المعاملات تلقائياً بعد تأكيد عقد الشبكة.',copiedMsg:'📋 تم نسخ عنوان المحافظة بنجاح.',loginErr:'❌ يرجى تسجيل الدخول أولاً.',fillReqErr:'❌ يرجى ملء مبلغ الإيداع وهش المعاملة.',successMsg:'✅ تم تأكيد معاملة البلوكشين. تمت إضافة {amount} USDT إلى رصيدك.',netLbl:'عنوان المحفظة'}
+  fa:{dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',support:'پشتیبانی',logout:'خروج',depositTitle:'واریز هوشمند ارز',depositSub:'شارژ آنی و اتوماتیک از شبکه بلاکچین',activeStatus:'فعال',calcTitle:'محاسبه مبلغ واریزی',finalCalcText:'مبلغ واریزی نهایی:',txHashTitle:'هش تراکنش (TxID)',selectNetwork:'انتخاب شبکه و آدرس',scanQr:'اسکن جهت واریز مستقیم',copyBtn:'کپی',copyWarning:'⚠️ برای نمایش و کپی آدرس کیف پول، ابتدا مبلغ واریزی را وارد کنید.',inquiryBtn:'استعلام و واریزی',securityGuide:'راهنمای امنیتی:',sec1:'* لطفاً از واریز هرگونه ارزی غیر از USDT خودداری فرمایید.',sec2:'* تراکنش‌ها به صورت خودکار پس از تایید گره‌های شبکه اعمال می‌شوند.',copiedMsg:'📋 آدرس کیف پول با موفقیت در کلیپ‌بورد کپی شد.',loginErr:'❌ لطفاً ابتدا وارد حساب کاربری خود شوید.',fillReqErr:'❌ لطفاً مبلغ و هش تراکنش را به طور کامل وارد کنید.',successMsg:'✅ تراکنش بلاکچین تایید شد. مبلغ {amount} USDT به موجودی شما افزوده شد.',netLbl:'آدرس کیف پول',modalTitle:'صندوق پیام‌های مدیریت',noMsg:'هیچ پیام جدیدی از طرف مدیریت وجود ندارد.',tNode:'سرور فعال (US-East)'},
+  en:{dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',support:'Support',logout:'Logout',depositTitle:'Smart Crypto Deposit',depositSub:'Instant & automatic top-up from blockchain network',activeStatus:'Active',calcTitle:'Deposit Calculator',finalCalcText:'Final deposit amount:',txHashTitle:'Transaction Hash (TxID)',selectNetwork:'Select Network & Address',scanQr:'Scan for direct deposit',copyBtn:'Copy',copyWarning:'⚠️ Please enter the deposit amount first to display and copy the wallet address.',inquiryBtn:'Inquire & Deposit',securityGuide:'Security Guide:',sec1:'* Please refrain from depositing any currency other than USDT.',sec2:'* Transactions are automatically processed after network node confirmation.',copiedMsg:'📋 Wallet address successfully copied to clipboard.',loginErr:'❌ Please log in to your account first.',fillReqErr:'❌ Please fill in both the amount and transaction hash.',successMsg:'✅ Blockchain transaction confirmed. {amount} USDT added to your balance.',netLbl:'Wallet Address',modalTitle:'Admin Messages',noMsg:'No new messages from admin.',tNode:'Node Active (US-East)'},
+  ar:{dir:'rtl',adminMsg:'رسالة الإدارة',welcomeText:'مرحباً بكم في منصة زينكس.',home:'الرئيسية',quantification:'التداول الكمي',deposit:'إيداع',receive:'سحب',transactions:'المعاملات',profile:'الملف الشخصي',support:'الدعم',logout:'تسجيل خروج',depositTitle:'إيداع العملات الذكي',depositSub:'شحن فوري وتلقائي من شبكة البلوكشين',activeStatus:'نشط',calcTitle:'حاسبة مبلغ الإيداع',finalCalcText:'مبلغ الإيداع النهائي:',txHashTitle:'هش تراکنش (TxID)',selectNetwork:'اختر الشبكة والعنوان',scanQr:'امحُ للإيداع المباشر',copyBtn:'نسخ',copyWarning:'⚠️ يرجى إدخال مبلغ الإيداع أولاً لعرض ونسخ عنوان المحافظة.',inquiryBtn:'استعلام و واریزی',securityGuide:'دليل الأمان:',sec1:'* يرجى عدم إيداع أي عملة أخرى غير USDT.',sec2:'* تتم المعاملات تلقائياً بعد تأكيد عقد الشبكة.',copiedMsg:'📋 تم نسخ عنوان المحافظة بنجاح.',loginErr:'❌ يرجى تسجيل الدخول أولاً.',fillReqErr:'❌ يرجى ملء مبلغ الإيداع وهش المعاملة.',successMsg:'✅ تم تأكيد معاملة البلوكشين. تمت إضافة {amount} USDT إلى رصيدك.',netLbl:'عنوان المحفظة',modalTitle:'رسائل الإدارة',noMsg:'لا توجد رسائل جديدة من الإدارة.',tNode:'خادم نشط'}
 };
 
+let currLang = localStorage.getItem('zenix_lang') || 'fa';
+
 function setLang(l){
+  currLang = l;
   const t=LD[l]||LD.fa;document.documentElement.dir=t.dir;document.documentElement.lang=l;localStorage.setItem('zenix_lang',l);
   document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k])el.innerText=t[k];});
   window.currentLangData=t;
   const net=window.currentNetwork||'TRC20';
   const lbl=document.getElementById('wallet-label');
   if(lbl) lbl.textContent = `${t.netLbl} (${net}):`;
+  const mTitle = document.getElementById('t-modal-title');
+  if(mTitle) mTitle.textContent = t.modalTitle;
+  const nodeEl = document.getElementById('t-node');
+  if(nodeEl) nodeEl.textContent = t.tNode;
 }
-setLang(localStorage.getItem('zenix_lang')||'fa');
+setLang(currLang);
 
 function calculateDeposit(){
   const val = parseFloat(document.getElementById('calc-input').value) || 0;
@@ -223,21 +247,19 @@ window.copyAddress=function(){
   box.innerHTML=t.copiedMsg;
 }
 
-const mB=document.getElementById('menu-btn'),nM=document.getElementById('nav-menu'),lB=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu'),bB=document.getElementById('bell-btn'),bM=document.getElementById('bell-menu');
+const mB=document.getElementById('menu-btn'),nM=document.getElementById('nav-menu'),lB=document.getElementById('lang-btn'),lMenu=document.getElementById('lang-menu');
 document.querySelectorAll('#lang-menu .mi').forEach(el=>{el.onclick=(e)=>{e.stopPropagation();setLang(el.dataset.lang);lMenu.classList.remove('show');};});
-function tM(o,e){e.stopPropagation();[nM,lMenu,bM].forEach(m=>{if(m!==o)m.classList.remove('show');});o.classList.toggle('show');}
-if(mB)mB.onclick=(e)=>tM(nM,e);if(lB)lB.onclick=(e)=>tM(lMenu,e);if(bB)bB.onclick=(e)=>tM(bM,e);
-document.onclick=()=>{[nM,lMenu,bM].forEach(m=>m.classList.remove('show'));};document.querySelectorAll('.menu').forEach(m=>m.onclick=(e)=>e.stopPropagation());
+function tM(o,e){e.stopPropagation();[nM,lMenu].forEach(m=>{if(m!==o)m.classList.remove('show');});o.classList.toggle('show');}
+if(mB)mB.onclick=(e)=>tM(nM,e);if(lB)lB.onclick=(e)=>tM(lMenu,e);
+document.onclick=()=>{[nM,lMenu].forEach(m=>m.classList.remove('show'));};document.querySelectorAll('.menu').forEach(m=>m.onclick=(e)=>e.stopPropagation());
 </script>
 
 <script async type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import{getFirestore,doc,getDoc,updateDoc,increment,collection,query,orderBy,getDocs}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import{getFirestore,doc,updateDoc,increment,collection,query,orderBy,getDocs}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
-
-let currentUser=null;
 
 function showMsg(text,isErr){
   const box=document.getElementById('status-box');
@@ -250,7 +272,7 @@ function showMsg(text,isErr){
 
 window.checkAutoDeposit=async function(){
   const t=window.currentLangData||LD.fa;
-  if(!currentUser){
+  if(!currentUserId){
     showMsg(t.loginErr, true);
     return;
   }
@@ -264,7 +286,7 @@ window.checkAutoDeposit=async function(){
 
   const detectedAmount = parseFloat(calcInput) * 1.025;
   try {
-    const userRef=doc(db,"users",currentUser.uid);
+    const userRef=doc(db,"users",currentUserId);
     await updateDoc(userRef,{
       balance: increment(detectedAmount),
       depositAmount: increment(detectedAmount)
@@ -276,52 +298,106 @@ window.checkAutoDeposit=async function(){
   }
 }
 
-async function loadNotifications() {
+async function fetchUserMessages(uid) {
   try {
-    const container = document.getElementById('bell-messages-container');
-    const badge = document.getElementById('bell-badge');
-    
-    const q = query(collection(db, "notifications"), orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
-    
-    let html = '';
-    let count = 0;
-    
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      html += `<div style="padding:8px 10px;font-size:11px;color:#cbd5e1;border-bottom:1px solid rgba(255,255,255,0.05);">
-                 <div style="font-weight:bold;color:#38bdf8;margin-bottom:2px;">${data.title || 'پیام جدید'}</div>
-                 <div>${data.message || ''}</div>
-               </div>`;
-      count++;
+    let snap = await getDocs(collection(db, "users", uid, "notifications"));
+    let messages = snap.docs.map(d => {
+      let dt = d.data();
+      return {
+        id: d.id,
+        subject: dt.title || dt.subject || 'Announcement',
+        body: dt.message || dt.text || dt.body || '',
+        time: dt.createdAt || dt.timestamp || dt.time || new Date().toISOString(),
+        read: dt.read === true || dt.isRead === true
+      };
     });
-    
-    if(count > 0) {
-      container.innerHTML = html;
-      badge.style.display = 'flex';
-      badge.innerText = count;
-    }
-  } catch(e) {
-    console.log("Error loading notifications:", e);
+    messages.sort((a, b) => {
+      const getTimeMs = (timeVal) => {
+        if (!timeVal) return 0;
+        if (typeof timeVal.toDate === 'function') return timeVal.toDate().getTime();
+        if (typeof timeVal.seconds === 'number') return timeVal.seconds * 1000;
+        const parsed = new Date(timeVal).getTime();
+        return isNaN(parsed) ? 0 : parsed;
+      };
+      return getTimeMs(b.time) - getTimeMs(a.time);
+    });
+    return messages;
+  } catch (e) {
+    console.error(e);
+    return [];
   }
 }
 
+window.openMessageModal = async () => {
+  let c = document.getElementById('modal-msg-container'), t = (window.currentLangData || LD.fa);
+  if (currentUserId) {
+    allMessages = await fetchUserMessages(currentUserId);
+    let unread = allMessages.filter(m => !m.read).length, b = document.getElementById('bell-badge');
+    if (b) { b.textContent = unread; b.classList.toggle('show', unread > 0); }
+  }
+  if (allMessages.length > 0) renderMessageList();
+  else c.innerHTML = `<div style="text-align:center;padding:20px;color:#94a3b8">${t.noMsg}</div>`;
+  document.getElementById('m-msg')?.classList.add('show');
+};
+
+function renderMessageList() {
+  let c = document.getElementById('modal-msg-container'), html = '<div style="display:flex;flex-direction:column;gap:10px;">';
+  allMessages.forEach((m, idx) => {
+    let dTime = '';
+    if (m.time) {
+      let d = typeof m.time.toDate === 'function' ? m.time.toDate() : new Date(m.time);
+      dTime = isNaN(d.getTime()) ? String(m.time) : d.toUTCString();
+    }
+    let unread = !m.read;
+    html += `<div class="msg-body-box" style="cursor:pointer;border-right:${unread ? '3px solid #38bdf8' : '1px solid rgba(255,255,255,.08)'};" onclick="window.readAdminMessage(${idx})">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="msg-title-text" style="${unread ? 'color:#fff;font-weight:800;' : ''}"><i class="fas fa-envelope${unread ? '' : '-open'}-text" style="color:#38bdf8;margin-left:5px;"></i> ${m.subject}</div>
+        ${unread ? '<span style="font-size:9px;background:#38bdf8;color:#0f172a;padding:2px 6px;border-radius:4px;font-weight:700;">جدید</span>' : ''}
+      </div>
+      <div class="msg-desc-text" style="margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${m.body}</div>
+      <div style="font-size:10px;color:#64748b;margin-top:6px;text-align:left" dir="ltr">${dTime}</div>
+    </div>`;
+  });
+  c.innerHTML = html + '</div>';
+}
+
+window.readAdminMessage = async idx => {
+  let m = allMessages[idx]; if (!m) return;
+  if (!m.read && currentUserId && m.id) {
+    allMessages[idx].read = true;
+    try {
+      await updateDoc(doc(db, "users", currentUserId, "notifications", m.id), { read: true, isRead: true });
+      let unread = allMessages.filter(i => !i.read).length, b = document.getElementById('bell-badge');
+      if (b) { b.textContent = unread; b.classList.toggle('show', unread > 0); }
+    } catch (e) { console.error(e); }
+  }
+  let c = document.getElementById('modal-msg-container'), dTime = '';
+  if (m.time) {
+    let d = typeof m.time.toDate === 'function' ? m.time.toDate() : new Date(m.time);
+    dTime = isNaN(d.getTime()) ? String(m.time) : d.toUTCString();
+  }
+  c.innerHTML = `<button onclick="window.openMessageModal()" style="background:none;border:none;color:#38bdf8;cursor:pointer;font-size:12px;margin-bottom:12px;display:flex;align-items:center;gap:5px;padding:0;"><i class="fas fa-arrow-right"></i> بازگشت به لیست پیام‌ها</button>
+  <div class="msg-body-box" style="padding:16px;">
+    <div class="msg-title-text" style="font-size:15px;margin-bottom:8px;"><i class="fas fa-envelope-open-text" style="color:#38bdf8;"></i> ${m.subject}</div>
+    <div class="msg-desc-text" style="font-size:13px;line-height:1.8;color:#f8fafc;white-space:pre-wrap;">${m.body}</div>
+    <div style="font-size:11px;color:#64748b;margin-top:14px;text-align:left;border-top:1px solid rgba(255,255,255,.05);padding-top:8px;" dir="ltr">${dTime}</div>
+  </div>`;
+};
+
+window.closeMessageModal = () => {
+  document.getElementById('m-msg')?.classList.remove('show');
+};
+window.closeMsgModal = window.closeMessageModal;
+
+document.getElementById('bell-btn')?.addEventListener('click', e => { e.stopPropagation(); window.openMessageModal(); });
+
 onAuthStateChanged(auth, async u=>{
   if(!u){window.location.href='index.html';return;}
-  currentUser=u;
+  currentUserId=u.uid;
   
-  // تنظیم لینک پشتیبانی بر اساس ربات تلگرام ذخیره‌شده کاربر
-  try {
-    const userDoc = await getDoc(doc(db, "users", u.uid));
-    if(userDoc.exists() && userDoc.data().telegramBotUrl) {
-      document.getElementById('support-link').href = userDoc.data().telegramBotUrl;
-      document.getElementById('support-link').target = '_blank';
-    }
-  } catch(err) {
-    console.error(err);
-  }
-
-  loadNotifications();
+  allMessages = await fetchUserMessages(u.uid);
+  let unread = allMessages.filter(m => !m.read).length, b = document.getElementById('bell-badge');
+  if (b && unread > 0) { b.textContent = unread; b.classList.add('show'); }
 });
 
 const lBtn=document.getElementById('logout-btn');
