@@ -144,7 +144,7 @@
   </button>
 </div>
 
-<!-- بخش بازار ارز جهانی -->
+<!-- بخش بازار ارز جهانی (رصد ۵۰ ارز برتر - نمایش ۱۵ ارز) -->
 <div style="margin-top:16px;background:rgba(30,41,59,0.5);border:1px solid rgba(56,189,248,0.2);border-radius:12px;padding:14px;">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
     <h3 style="font-size:13px;color:#38bdf8;display:flex;align-items:center;gap:6px;">
@@ -417,6 +417,7 @@ function setLang(l){
   
   if(window.checkClickState)window.checkClickState();
   if(window.renderHistory)window.renderHistory();
+  if(window.renderMarketList)window.renderMarketList();
 }
 
 setLang(localStorage.getItem('zenix_lang')||'fa');
@@ -443,37 +444,90 @@ if(bB)bB.onclick=(e)=>tM(bM,e);
 document.onclick=()=>{[nM,lMenu,bM].forEach(m=>m.classList.remove('show'));};
 document.querySelectorAll('.menu').forEach(m=>m.onclick=(e)=>e.stopPropagation());
 
-// داتا و رندر بخش بازار ارز جهانی
+// دیتابیس رصد ۵۰ ارز برتر بازار جهانی
 const marketData=[
-  {name:'Bitcoin',symbol:'BTC/USDT',price:96450.20,change:2.45,cls:'fab fa-bitcoin',color:'#f7931a'},
-  {name:'Ethereum',symbol:'ETH/USDT',price:3480.50,change:1.82,cls:'fab fa-ethereum',color:'#627eea'},
-  {name:'Solana',symbol:'SOL/USDT',price:185.25,change:4.12,cls:'fas fa-coins',color:'#14f195'},
-  {name:'Ripple',symbol:'XRP/USDT',price:2.35,change:5.60,cls:'fas fa-water',color:'#23292f'},
-  {name:'Binance Coin',symbol:'BNB/USDT',price:620.10,change:-0.45,cls:'fas fa-cube',color:'#f3ba2f'},
-  {name:'Dogecoin',symbol:'DOGE/USDT',price:0.284,change:3.10,cls:'fas fa-dog',color:'#c2a633'},
-  {name:'Cardano',symbol:'ADA/USDT',price:0.952,change:-1.20,cls:'fas fa-circle-dot',color:'#0033ad'}
+  {name:'Bitcoin',symbol:'BTC/USDT',price:96450.20,change:4.85,cls:'fab fa-bitcoin',color:'#f7931a'},
+  {name:'Ethereum',symbol:'ETH/USDT',price:3480.50,change:3.62,cls:'fab fa-ethereum',color:'#627eea'},
+  {name:'Solana',symbol:'SOL/USDT',price:185.25,change:8.12,cls:'fas fa-coins',color:'#14f195'},
+  {name:'Ripple',symbol:'XRP/USDT',price:2.35,change:6.40,cls:'fas fa-water',color:'#23292f'},
+  {name:'Binance Coin',symbol:'BNB/USDT',price:620.10,change:1.45,cls:'fas fa-cube',color:'#f3ba2f'},
+  {name:'Dogecoin',symbol:'DOGE/USDT',price:0.284,change:7.30,cls:'fas fa-dog',color:'#c2a633'},
+  {name:'Cardano',symbol:'ADA/USDT',price:0.952,change:2.10,cls:'fas fa-circle-dot',color:'#0033ad'},
+  {name:'Avalanche',symbol:'AVAX/USDT',price:38.40,change:5.90,cls:'fas fa-mountain',color:'#e84142'},
+  {name:'Sui',symbol:'SUI/USDT',price:3.45,change:9.80,cls:'fas fa-droplet',color:'#4a90e2'},
+  {name:'Chainlink',symbol:'LINK/USDT',price:18.20,change:4.15,cls:'fas fa-link',color:'#375bd2'},
+  {name:'Polkadot',symbol:'DOT/USDT',price:8.60,change:-0.80,cls:'fas fa-circle-notch',color:'#e6007a'},
+  {name:'Near Protocol',symbol:'NEAR/USDT',price:6.75,change:6.40,cls:'fas fa-leaf',color:'#000000'},
+  {name:'Shiba Inu',symbol:'SHIB/USDT',price:0.000024,change:3.20,cls:'fas fa-fire',color:'#ffa409'},
+  {name:'Pepe',symbol:'PEPE/USDT',price:0.000019,change:11.40,cls:'fas fa-frog',color:'#52ab52'},
+  {name:'Uniswap',symbol:'UNI/USDT',price:11.80,change:2.80,cls:'fas fa-horse-head',color:#ff007a'},
+  {name:'Aptos',symbol:'APT/USDT',price:12.30,change:5.10,cls:'fas fa-code-branch',color:'#2dd4bf'},
+  {name:'Stellar',symbol:'XLM/USDT',price:0.42,change:8.90,cls:'fas fa-rocket',color:'#14b8a6'},
+  {name:'Cosmos',symbol:'ATOM/USDT',price:7.90,change:1.30,cls:'fas fa-atom',color:'#2e3148'},
+  {name:'Hedera',symbol:'HBAR/USDT',price:0.26,change:12.10,cls:'fas fa-h',color:'#a855f7'},
+  {name:'Render',symbol:'RENDER/USDT',price:8.40,change:7.60,cls:'fas fa-draw-polygon',color:'#ef4444'},
+  {name:'Arbitrum',symbol:'ARB/USDT',price:1.15,change:0.90,cls:'fas fa-layer-group',color:'#28a0f0'},
+  {name:'Optimism',symbol:'OP/USDT',price:2.10,change:3.40,cls:'fas fa-bolt',color:'#ff0420'},
+  {name:'Kaspa',symbol:'KAS/USDT',price:0.18,change:4.20,cls:'fas fa-gem',color:'#70c7ba'},
+  {name:'Litecoin',symbol:'LTC/USDT',price:104.50,change:1.90,cls:'fas fa-litecoin-sign',color:'#345d9d'},
+  {name:'Bitcoin Cash',symbol:'BCH/USDT',price:480.20,change:2.70,cls:'fas fa-money-bill-wave',color:'#8dc351'},
+  {name:'Toncoin',symbol:'TON/USDT',price:6.40,change:3.90,cls:'fas fa-paper-plane',color:'#0088cc'},
+  {name:'Injective',symbol:'INJ/USDT',price:26.80,change:6.80,cls:'fas fa-syringe',color:'#00f2fe'},
+  {name:'Bittensor',symbol:'TAO/USDT',price:540.00,change:10.20,cls:'fas fa-brain',color:'#38bdf8'},
+  {name:'Fetch.ai',symbol:'FET/USDT',price:1.65,change:8.40,cls:'fas fa-microchip',color:'#1e293b'},
+  {name:'Stacks',symbol:'STX/USDT',price:2.25,change:4.50,cls:'fas fa-cubes',color:'#5546ff'},
+  {name:'Aave',symbol:'AAVE/USDT',price:195.00,change:5.30,cls:'fas fa-ghost',color:'#b6509e'},
+  {name:'Celestia',symbol:'TIA/USDT',price:6.20,change:-1.40,cls:'fas fa-sun',color:'#7b2bf9'},
+  {name:'Filecoin',symbol:'FIL/USDT',price:6.10,change:2.30,cls:'fas fa-folder-open',color:'#0094ff'},
+  {name:'Sei',symbol:'SEI/USDT',price:0.58,change:6.90,cls:'fas fa-compass',color:'#9e1b32'},
+  {name:'Algorand',symbol:'ALGO/USDT',price:0.32,change:7.10,cls:'fas fa-check-circle',color:'#000000'},
+  {name:'VeChain',symbol:'VET/USDT',price:0.045,change:3.80,cls:'fas fa-v',color:'#15bdff'},
+  {name:'Fantom',symbol:'FTM/USDT',price:0.92,change:8.20,cls:'fas fa-ghost',color:'#1969ff'},
+  {name:'JasmyCoin',symbol:'JASMY/USDT',price:0.032,change:13.50,cls:'fas fa-shield-halved',color:'#f97316'},
+  {name:'THETA',symbol:'THETA/USDT',price:2.40,change:4.10,cls:'fas fa-play',color:'#2ab8e6'},
+  {name:'THORChain',symbol:'RUNE/USDT',price:6.30,change:5.70,cls:'fas fa-hammer',color:'#33ff99'},
+  {name:'Decentraland',symbol:'MANA/USDT',price:0.55,change:6.30,cls:'fas fa-cubes-stacked',color:'#ff2d55'},
+  {name:'The Sandbox',symbol:'SAND/USDT',price:0.58,change:7.80,cls:'fas fa-box-open',color:'#0084ff'},
+  {name:'Axie Infinity',symbol:'AXS/USDT',price:7.80,change:2.60,cls:'fas fa-gamepad',color:'#0055ff'},
+  {name:'Flow',symbol:'FLOW/USDT',price:0.92,change:3.10,cls:'fas fa-wave-square',color:'#00ef8b'},
+  {name:'MultiversX',symbol:'EGLD/USDT',price:38.90,change:4.40,cls:'fas fa-infinity',color:'#23f7dd'},
+  {name:'Chiliz',symbol:'CHZ/USDT',price:0.11,change:5.20,cls:'fas fa-pepper-hot',color:'#cd012c'},
+  {name:'EOS',symbol:'EOS/USDT',price:0.82,change:1.10,cls:'fas fa-shapes',color:'#000000'},
+  {name:'IOTA',symbol:'IOTA/USDT',price:0.28,change:9.10,cls:'fas fa-network-wired',color:'#101010'},
+  {name:'Tezos',symbol:'XTZ/USDT',price:1.25,change:3.60,cls:'fas fa-copyright',color:'#2c7df7'},
+  {name:'Kava',symbol:'KAVA/USDT',price:0.52,change:2.80,cls:'fas fa-shield-cat',color:#ff424d}
 ];
 
-function renderMarketList(){
+window.renderMarketList=function(){
   const mList=document.getElementById('market-list');
   if(!mList)return;
+  
+  // مرتب‌سازی ۵۰ ارز بر اساس بیشترین سود (Gainers) به صورت دینامیک
+  marketData.sort((a,b)=>b.change - a.change);
+  
+  // انتخاب ۱۵ ارز برتر پس از مرتب‌سازی
+  const top15=marketData.slice(0,15);
+  
   let html='';
-  marketData.forEach(item=>{
+  top15.forEach(item=>{
     const isPositive=item.change>=0;
     const changeClass=isPositive?'color:#22c55e;':'color:#ef4444;';
     const bgClass=isPositive?'background:rgba(34,197,94,0.12);':'background:rgba(239,68,68,0.12);';
     const sign=isPositive?'+':'';
     
-    html+=`<div style="background:rgba(255,255,255,0.03);padding:10px 12px;border-radius:8px;font-size:12px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.05);">
-      <div style="display:flex;align-items:center;gap:10px;">
+    // چیدمان: سمت چپ (نام + نماد) | سمت راست (قیمت + درصد)
+    html+=`<div style="background:rgba(255,255,255,0.03);padding:10px 12px;border-radius:8px;font-size:12px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,0.05);transition:all 0.3s ease;">
+      <!-- سمت چپ: نماد، آیکون و نام ارز -->
+      <div style="display:flex;align-items:center;gap:10px;direction:ltr;text-align:left;">
         <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:${item.color};color:#fff;font-size:13px;"><i class="${item.cls}"></i></span>
         <div>
           <div style="font-weight:700;color:#f8fafc;font-size:12px;">${item.name}</div>
           <div style="font-size:10px;color:#94a3b8;">${item.symbol}</div>
         </div>
       </div>
-      <div style="text-align:left;">
-        <div style="font-weight:700;color:#f8fafc;font-size:12px;">$${item.price.toLocaleString('en-US',{minimumFractionDigits:item.price<10?3:2,maximumFractionDigits:item.price<10?3:2})}</div>
+      <!-- سمت راست: قیمت و درصد سود -->
+      <div style="text-align:right;direction:ltr;">
+        <div style="font-weight:700;color:#f8fafc;font-size:12px;">$${item.price.toLocaleString('en-US',{minimumFractionDigits:item.price<1?4:2,maximumFractionDigits:item.price<1?4:2})}</div>
         <div style="font-size:10px;font-weight:700;${changeClass}padding:2px 6px;border-radius:4px;${bgClass}display:inline-block;margin-top:2px;">
           ${sign}${item.change.toFixed(2)}%
         </div>
@@ -481,16 +535,19 @@ function renderMarketList(){
     </div>`;
   });
   mList.innerHTML=html;
-}
-renderMarketList();
+};
 
-// به‌روزرسانی زنده قیمت‌ها
+window.renderMarketList();
+
+// به‌روزرسانی زنده قیمت‌ها و مرتب‌سازی دینامیک جایگاه ارزها
 setInterval(()=>{
   marketData.forEach(item=>{
-    const delta=(Math.random()-0.49)*(item.price*0.0015);
-    item.price=Math.max(0.0001,item.price+delta);
+    const delta=(Math.random()-0.49)*(item.price*0.003);
+    const changeDelta=(Math.random()-0.49)*0.25;
+    item.price=Math.max(0.00001,item.price+delta);
+    item.change+=changeDelta;
   });
-  renderMarketList();
+  window.renderMarketList();
 },3000);
 </script>
 <script async type="module">
