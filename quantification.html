@@ -132,8 +132,16 @@
 
 <!-- تاریخچه معاملات -->
 <div style="margin-top:16px;background:rgba(30,41,59,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;">
-  <h3 style="font-size:13px;color:#38bdf8;margin-bottom:10px;"><i class="fas fa-history"></i> <span data-i18n="tradeHistory">تاریخچه معاملات (۳۰ روز گذشته)</span></h3>
-  <div id="history-list" style="display:flex;flex-direction:column;gap:8px;max-height:250px;overflow-y:auto;"><div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">هنوز معامله‌ای ثبت نشده است</div></div>
+  <h3 style="font-size:13px;color:#38bdf8;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+    <span style="background:rgba(6,182,212,0.15);color:#06b6d4;width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;border:1px solid rgba(6,182,212,0.3);box-shadow:0 0 10px rgba(6,182,212,0.2);"><i class="fas fa-history"></i></span>
+    <span data-i18n="tradeHistory">تاریخچه معاملات</span>
+  </h3>
+  <div id="history-list" style="display:flex;flex-direction:column;gap:8px;max-height:350px;overflow-y:auto;">
+    <div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">هنوز معامله‌ای ثبت نشده است</div>
+  </div>
+  <button id="view-all-history-btn" onclick="window.toggleHistory()" style="display:none;width:100%;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);color:#38bdf8;padding:8px;border-radius:8px;font-size:11px;font-weight:bold;margin-top:10px;cursor:pointer;align-items:center;justify-content:center;gap:6px;transition:all 0.2s ease;">
+    <i id="history-btn-icon" class="fas fa-list-ul"></i> <span id="history-btn-text" data-i18n="showFullHistory">مشاهده کامل تاریخچه</span>
+  </button>
 </div>
 
 <!-- بخش بازار ارز جهانی -->
@@ -263,118 +271,124 @@
 window.openHelpModal=()=>document.getElementById('m-help')?.classList.add('show');
 window.closeHelpModal=()=>document.getElementById('m-help')?.classList.remove('show');
 
+let showAllHistory=false;
+window.toggleHistory=function(){
+  showAllHistory=!showAllHistory;
+  if(window.renderHistory)window.renderHistory();
+};
+
 const LD={
   fa:{
     dir:'rtl',adminMsg:'پیام مدیریت',welcomeText:'به پلتفرم زنیکس خوش آمدید.',home:'صفحه اصلی',quantification:'کوانتیفیکیشن',
     deposit:'واریز',receive:'برداشت',transactions:'تراکنش',profile:'پروفایل',logout:'خروج',tradingLevels:'سطوح معاملاتی',
     subWel:'سطح خود را بررسی و ربات را فعال کنید',active:'فعال',inactive:'غیرفعال (موجودی کمتر از $20)',nyTime:'ساعت نیویورک',
     bal:'موجودی',prof:'سود',usersCount:'نفرات',liveTrade:'وضعیت معامله جاری',todayProfit:'سود امروز',yesterdayProfit:'سود دیروز',
-    tradeHistory:'تاریخچه معاملات (۳۰ روز گذشته)',noHistory:'هنوز معامله‌ای ثبت نشده است',totalBalance:'موجودی کل حساب',
+    tradeHistory:'تاریخچه معاملات',noHistory:'هنوز معامله‌ای ثبت نشده است',totalBalance:'موجودی کل حساب',
     dailyLimit:'پایان ظرفیت امروز',trading:'معامله',seconds:'ثانیه',success:'موفق!',helpModalTitle:'راهنمای بخش کوانتیفیکیشن و سطوح VIP',
     whatIsQuantTitle:'سیستم کوانتیفیکیشن چیست؟',whatIsQuantDesc:'ربات هوشمند معاملات با بررسی لحظه‌ای قیمت رمز‌ارزها در صرافی‌های مختلف جهان، کوچک‌ترین اختلاف قیمت‌ها را کشف کرده و معاملات سودآور برپایه آربیتراژ و الگوریتم‌های هوش مصنوعی انجام می‌دهد.',
     vipRulesTitle:'شروط ورود و ارتقا به سطوح VIP',vipNote:'نکته مهم: شرط اصلی فعال‌سازی و ارتقا به هر سطح VIP، انجام واریزی مستقیم به همان میزان است. سود حاصل از معاملات پلتفرم، برای شرط واریزی جهت ارتقا سطوح محسوب نمی‌شود.',
     directDeposit:'واریزی مستقیم:',directInvite:'دعوت مستقیم:',balanceRange:'محدوده موجودی:',dailyProfit:'سود روزانه:',
     activationTitle:'نحوه فعال‌سازی و تقسیم سود',activationDesc:'حداقل واریزی جهت فعال‌سازی 20 دلار است. سود روزانه مشخص‌شده، به ۴ معامله ۱۰ ثانیه‌ای در طول روز تقسیم می‌شود؛ یعنی با انجام هر ۴ معامله، درصد سود کامل سطح VIP خود را به‌دست می‌آورید.',
     resetTitle:'بازنشانی روزانه (ساعت نیویورک)',resetDesc:'ظرفیت ۴ معامله در روز مطابق با ساعت رسمی نیویورک (NY Time) در پایان هر روز کاری صفر شده و مجدداً فعال می‌شود.',
-    globalMarket:'بازار ارز جهانی',liveUpdates:'به‌روزرسانی زنده'
+    globalMarket:'بازار ارز جهانی',liveUpdates:'به‌روزرسانی زنده',showFullHistory:'مشاهده کامل تاریخچه',showLess:'بستن تاریخچه'
   },
   en:{
     dir:'ltr',adminMsg:'Admin Message',welcomeText:'Welcome to Zenix platform.',home:'Home',quantification:'Quantification',
     deposit:'Deposit',receive:'Withdraw',transactions:'Transactions',profile:'Profile',logout:'Logout',tradingLevels:'Trading Levels',
     subWel:'Check your level and activate the bot',active:'Active',inactive:'Inactive (Balance < $20)',nyTime:'New York Time',
     bal:'Balance',prof:'Profit',usersCount:'Users',liveTrade:'Live Trade Status',todayProfit:'Today Profit',yesterdayProfit:'Yesterday Profit',
-    tradeHistory:'Trade History (Last 30 Days)',noHistory:'No trades recorded yet',totalBalance:'Total Balance',
+    tradeHistory:'Trade History',noHistory:'No trades recorded yet',totalBalance:'Total Balance',
     dailyLimit:'Daily Limit Reached',trading:'Trading',seconds:'sec',success:'Success!',helpModalTitle:'Quantification & VIP Levels Guide',
     whatIsQuantTitle:'What is the Quantification System?',whatIsQuantDesc:'The smart trading bot analyzes real-time cryptocurrency prices across global exchanges to detect price differences and execute profitable trades based on arbitrage and AI algorithms.',
     vipRulesTitle:'Conditions for VIP Levels',vipNote:'Important Note: The main condition for activating and upgrading VIP levels is making a direct deposit of the required amount. Platform trading profit does not count towards deposit requirements.',
     directDeposit:'Direct Deposit:',directInvite:'Direct Referral:',balanceRange:'Balance Range:',dailyProfit:'Daily Profit:',
     activationTitle:'Activation & Profit Division',activationDesc:'Minimum deposit for activation is $20. The daily profit rate is divided into 4 10-second trades throughout the day; completing all 4 trades grants your level\'s full daily profit.',
     resetTitle:'Daily Reset (NY Time)',resetDesc:'The 4 daily trade limit resets at the end of each business day according to New York Time (NY Time).',
-    globalMarket:'Global Crypto Market',liveUpdates:'Live Updates'
+    globalMarket:'Global Crypto Market',liveUpdates:'Live Updates',showFullHistory:'View Full History',showLess:'Show Less'
   },
   ar:{
     dir:'rtl',adminMsg:'رسالة الإدارة',welcomeText:'مرحباً بكم في منصة زينكس.',home:'الرئيسية',quantification:'التداول الكمي',
     deposit:'إيداع',receive:'سحب',transactions:'المعاملات',profile:'الملف الشخصي',logout:'تسجيل خروج',tradingLevels:'مستويات التداول',
     subWel:'تحقق من مستواك وفعل البوت',active:'نشط',inactive:'غير نشط (الرصيد أقل من $20)',nyTime:'توقيت نيويورك',
     bal:'الرصيد',prof:'الربح',usersCount:'المستخدمين',liveTrade:'حالة التداول المباشر',todayProfit:'ربح اليوم',yesterdayProfit:'ربح الأمس',
-    tradeHistory:'سجل المعاملات (آخر 30 يومًا)',noHistory:'لم يتم تسجيل أي معاملات بعد',totalBalance:'إجمالي الرصيد',
+    tradeHistory:'سجل المعاملات',noHistory:'لم يتم تسجيل أي معاملات بعد',totalBalance:'إجمالي الرصيد',
     dailyLimit:'تم الوصول للحد اليومي',trading:'تداول',seconds:'ثانية',success:'ناجح!',helpModalTitle:'دليل التداول الكمي ومستويات VIP',
     whatIsQuantTitle:'ما هو نظام التداول الكمي؟',whatIsQuantDesc:'يقوم بوت التداول الذكي بتحليل أسعار العملات الرقمية في البورصات العالمية لحظة بلحظة لاكتشاف الفروقات السعرية وإجراء صفقات مربحة بناءً على المراجحة وخوارزميات الذكاء الاصطناعي.',
     vipRulesTitle:'شروط الدخول والترقية لمستويات VIP',vipNote:'ملاحظة هامة: الشرط الأساسي لتفعيل وترقية أي مستوى VIP هو إجراء إيداع مباشر بالمبلغ المطلوب. أرباح التداول في المنصة لا تحتسب ضمن شرط الإيداع.',
     directDeposit:'الإيداع المباشر:',directInvite:'الدعوة المباشرة:',balanceRange:'نطاق الرصيد:',dailyProfit:'الربح اليومي:',
     activationTitle:'طريقة التفعيل وتقسيم الأرباح',activationDesc:'الحد الأدنى للإيداع للتفعيل هو 20 دولاراً. يتم تقسيم نسبة الربح اليومية على 4 صفقات تستغرق كل منها 10 ثوانٍ خلال اليوم.',
     resetTitle:'إعادة الضبط اليومية (توقيت نيويورك)',resetDesc:'يتم إعادة ضبط حد الصفقات الأربع يومياً وفقاً للتوقيت الرسمي لمدينة نيويورك (NY Time).',
-    globalMarket:'سوق العملات العالمية',liveUpdates:'تحديثات مباشرة'
+    globalMarket:'سوق العملات العالمية',liveUpdates:'تحديثات مباشرة',showFullHistory:'عرض سجل المعاملات بالكامل',showLess:'عرض أقل'
   },
   tr:{
     dir:'ltr',adminMsg:'Yönetici Mesajı',welcomeText:'Zenix platformuna hoş geldiniz.',home:'Ana Sayfa',quantification:'Kantifikasyon',
     deposit:'Yatır',receive:'Çek',transactions:'İşlemler',profile:'Profil',logout:'Çıkış Yap',tradingLevels:'İşlem Seviyeleri',
     subWel:'Seviyenizi kontrol edin ve botu etkinleştirin',active:'Aktif',inactive:'Pasif (Bakiye < $20)',nyTime:'New York Saati',
     bal:'Bakiye',prof:'Kâr',usersCount:'Kullanıcılar',liveTrade:'Canlı İşlem Durumu',todayProfit:'Bugünkü Kâr',yesterdayProfit:'Dünkü Kâr',
-    tradeHistory:'İşlem Geçmişi (Son 30 Gün)',noHistory:'Henüz işlem kaydedilmedi',totalBalance:'Toplam Bakiye',
+    tradeHistory:'İşlem Geçmişi',noHistory:'Henüz işlem kaydedilmedi',totalBalance:'Toplam Bakiye',
     dailyLimit:'Günlük Limit Doldu',trading:'İşlem Yapılıyor',seconds:'saniye',success:'Başarılı!',helpModalTitle:'Kantifikasyon ve VIP Seviyeleri Rehberi',
     whatIsQuantTitle:'Kantifikasyon Sistemi Nedir?',whatIsQuantDesc:'Akıllı işlem botu, küresel borsalardaki kripto para fiyatlarını anlık olarak analiz ederek fiyat farklarını tespit eder ve arbitraj ile yapay zeka algoritmalarına dayalı kârlı işlemler gerçekleştirir.',
     vipRulesTitle:'VIP Seviyelerine Giriş ve Yükseltme Şartları',vipNote:'Önemli Not: Herhangi bir VIP seviyesini etkinleştirmenin ve yükseltmenin temel şartı, gerekli miktarda doğrudan yatırım yapmaktır. Platform işlem kârları yatırım şartına dahil edilmez.',
     directDeposit:'Doğrudan Yatırım:',directInvite:'Doğrudan Davet:',balanceRange:'Bakiye Aralığı:',dailyProfit:'Günlük Kâr:',
     activationTitle:'Etkinleştirme ve Kâr Bölünmesi',activationDesc:'Etkinleştirme için minimum yatırım 20 dolardır. Belirtilen günlük kâr oranı gün içinde 4 adet 10 saniyelik işleme bölünür.',
     resetTitle:'Günlük Sıfırlama (New York Saati)',resetDesc:'Günlük 4 işlem kapasitesi, New York Saati (NY Time) esasına göre her iş gününün sonunda sıfırlanır.',
-    globalMarket:'Küresel Kripto Piyasası',liveUpdates:'Canlı Güncellemeler'
+    globalMarket:'Küresel Kripto Piyasası',liveUpdates:'Canlı Güncellemeler',showFullHistory:'Tüm Geçmişi Görüntüle',showLess:'Daha Az Göster'
   },
   ru:{
     dir:'ltr',adminMsg:'Сообщение админа',welcomeText:'Добро пожаловать на платформу Zenix.',home:'Главная',quantification:'Квантификация',
     deposit:'Депозит',receive:'Вывод',transactions:'Транзакции',profile:'Профиль',logout:'Выйти',tradingLevels:'Торговые уровни',
     subWel:'Проверьте ваш уровень и активируйте бота',active:'Активен',inactive:'Неактивен (Баланс < $20)',nyTime:'Время в Нью-Йорке',
     bal:'Баланс',prof:'Прибыль',usersCount:'Пользователи',liveTrade:'Статус текущей сделки',todayProfit:'Прибыль сегодня',yesterdayProfit:'Прибыль вчера',
-    tradeHistory:'История сделок (последние 30 дней)',noHistory:'Сделок пока нет',totalBalance:'Общий баланс',
+    tradeHistory:'История сделок',noHistory:'Сделок пока нет',totalBalance:'Общий баланс',
     dailyLimit:'Дневной лимит исчерпан',trading:'Торговля',seconds:'сек',success:'Успешно!',helpModalTitle:'Руководство по квантификации и VIP уровням',
     whatIsQuantTitle:'Что такое система квантификации?',whatIsQuantDesc:'Умный торговый бот анализирует цены на криптовалюту на мировых биржах в реальном времени, выявляет разницу в ценах и совершает прибыльные сделки на основе арбитража и алгоритмов ИИ.',
     vipRulesTitle:'Условия входа и повышения уровней VIP',vipNote:'Важное примечание: Главным условием активации и повышения уровня VIP является прямой депозит требуемой суммы. Прибыль от торговли на платформе не учитывается.',
     directDeposit:'Прямой депозит:',directInvite:'Прямые рефералы:',balanceRange:'Диапазон баланса:',dailyProfit:'Ежедневная прибыль:',
     activationTitle:'Активация и распределение прибыли',activationDesc:'Минимальный депозит для активации составляет 20$. Ежедневная прибыль делится на 4 сделки по 10 секунд в течение дня.',
     resetTitle:'Ежедневный сброс (время Нью-Йорка)',resetDesc:'Лимит из 4 сделок в день сбрасывается в конце каждого рабочего дня по времени Нью-Йорка (NY Time).',
-    globalMarket:'Мировой рынок криптовалют',liveUpdates:'Прямое обновление'
+    globalMarket:'Мировой рынок криптовалют',liveUpdates:'Прямое обновление',showFullHistory:'Посмотреть всю историю',showLess:'Свернуть'
   },
   es:{
     dir:'ltr',adminMsg:'Mensaje de administración',welcomeText:'Bienvenido a la plataforma Zenix.',home:'Inicio',quantification:'Cuantificación',
     deposit:'Depósito',receive:'Retiro',transactions:'Transacciones',profile:'Perfil',logout:'Cerrar sesión',tradingLevels:'Niveles de trading',
     subWel:'Consulta tu nivel y activa el bot',active:'Activo',inactive:'Inactivo (Saldo < $20)',nyTime:'Hora de Nueva York',
     bal:'Saldo',prof:'Ganancia',usersCount:'Usuarios',liveTrade:'Estado de operación en vivo',todayProfit:'Ganancia de hoy',yesterdayProfit:'Ganancia de ayer',
-    tradeHistory:'Historial de operaciones (Últimos 30 días)',noHistory:'Aún no hay operaciones registradas',totalBalance:'Saldo total',
+    tradeHistory:'Historial de operaciones',noHistory:'Aún no hay operaciones registradas',totalBalance:'Saldo total',
     dailyLimit:'Límite diario alcanzado',trading:'Operando',seconds:'seg',success:'¡Éxito!',helpModalTitle:'Guía de cuantificación y niveles VIP',
     whatIsQuantTitle:'¿Qué es el sistema de cuantificación?',whatIsQuantDesc:'El bot de trading inteligente analiza los precios de las criptomonetas en tiempo real en los exchanges globales para detectar diferencias de precios y realizar operaciones rentables basadas en arbitraje y algoritmos de IA.',
     vipRulesTitle:'Condiciones para niveles VIP',vipNote:'Nota importante: La condición principal para activar y actualizar los niveles VIP es realizar un depósito directo por el monto requerido. Las ganancias de trading no cuentan para este requisito.',
     directDeposit:'Depósito directo:',directInvite:'Referencia directa:',balanceRange:'Rango de saldo:',dailyProfit:'Ganancia diaria:',
     activationTitle:'Activación y división de ganancias',activationDesc:'El depósito mínimo de activación es de $20. El porcentaje de ganancia diaria se divide en 4 operaciones de 10 segundos a lo largo del día.',
     resetTitle:'Restablecimiento diario (Hora NY)',resetDesc:'El límite de 4 operaciones diarias se restablece al final de cada día hábil según la hora de Nueva York (NY Time).',
-    globalMarket:'Mercado global de criptomonedas',liveUpdates:'Actualizaciones en vivo'
+    globalMarket:'Mercado global de criptomonedas',liveUpdates:'Actualizaciones en vivo',showFullHistory:'Ver historial completo',showLess:'Mostrar menos'
   },
   fr:{
     dir:'ltr',adminMsg:'Message d\'administration',welcomeText:'Bienvenue sur la plateforme Zenix.',home:'Accueil',quantification:'Quantification',
     deposit:'Dépôt',receive:'Retrait',transactions:'Transactions',profile:'Profil',logout:'Déconnexion',tradingLevels:'Niveaux de trading',
     subWel:'Vérifiez votre niveau et activez le bot',active:'Actif',inactive:'Inactif (Solde < $20)',nyTime:'Heure de New York',
     bal:'Solde',prof:'Profit',usersCount:'Utilisateurs',liveTrade:'Statut du trade en direct',todayProfit:'Profit du jour',yesterdayProfit:'Profit d\'hier',
-    tradeHistory:'Historique des trades (30 derniers jours)',noHistory:'Aucun trade enregistré pour le moment',totalBalance:'Solde total',
+    tradeHistory:'Historique des trades',noHistory:'Aucun trade enregistré pour le moment',totalBalance:'Solde total',
     dailyLimit:'Limite quotidienne atteinte',trading:'Trade en cours',seconds:'sec',success:'Succès !',helpModalTitle:'Guide de quantification et niveaux VIP',
     whatIsQuantTitle:'Qu\'est-ce que le système de quantification ?',whatIsQuantDesc:'Le bot de trading intelligent analyse en temps réel les prix des cryptomonnaies sur les plateformes mondiales pour détecter les écarts de prix et exécuter des trades profitables basés sur l\'arbitrage et l\'IA.',
     vipRulesTitle:'Conditions pour les niveaux VIP',vipNote:'Remarque importante : La condition principale pour activer et surclasser les niveaux VIP est d\'effectuer un dépôt direct du montant requis. Les profits de trading de la plateforme ne comptent pas.',
     directDeposit:'Dépôt direct :',directInvite:'Parrainage direct :',balanceRange:'Plage de solde :',dailyProfit:'Profit quotidien :',
     activationTitle:'Activation et répartition des profits',activationDesc:'Le dépôt minimum d\'activation est de 20 $. Le taux de profit quotidien est divisé en 4 trades de 10 secondes tout au long de la journée.',
     resetTitle:'Réinitialisation quotidienne (Heure NY)',resetDesc:'La limite de 4 trades quotidiens est réinitialisée à la fin de chaque journée ouvrable selon l\'heure de New York (NY Time).',
-    globalMarket:'Marché mondial des cryptomonnaies',liveUpdates:'Mises à jour en direct'
+    globalMarket:'Marché mondial des cryptomonnaies',liveUpdates:'Mises à jour en direct',showFullHistory:'Voir tout l\'historique',showLess:'Réduire'
   },
   de:{
     dir:'ltr',adminMsg:'Admin-Nachricht',welcomeText:'Willkommen auf der Zenix-Plattform.',home:'Startseite',quantification:'Quantifizierung',
     deposit:'Einzahlung',receive:'Auszahlung',transactions:'Transaktionen',profile:'Profil',logout:'Abmelden',tradingLevels:'Handelsstufen',
     subWel:'Prüfen Sie Ihre Stufe und aktivieren Sie den Bot',active:'Aktiv',inactive:'Inaktiv (Guthaben < $20)',nyTime:'New York Zeit',
     bal:'Guthaben',prof:'Gewinn',usersCount:'Benutzer',liveTrade:'Live-Trade-Status',todayProfit:'Heutiger Gewinn',yesterdayProfit:'Gestriger Gewinn',
-    tradeHistory:'Handelsverlauf (Letzte 30 Tage)',noHistory:'Noch keine Trades aufgezeichnet',totalBalance:'Gesamtguthaben',
+    tradeHistory:'Handelsverlauf',noHistory:'Noch keine Trades aufgezeichnet',totalBalance:'Gesamtguthaben',
     dailyLimit:'Tageslimit erreicht',trading:'Handel läuft',seconds:'Sek',success:'Erfolgreich!',helpModalTitle:'Leitfaden für Quantifizierung & VIP-Stufen',
     whatIsQuantTitle:'Was ist das Quantifizierungssystem?',whatIsQuantDesc:'Der smarte Trading-Bot analysiert Kryptowährungspreise auf globalen Börsen in Echtzeit, um Preisunterschiede zu erkennen und profitable Arbitrage-Trades mit KI-Algorithmen auszuführen.',
     vipRulesTitle:'Bedingungen für VIP-Stufen',vipNote:'Wichtiger Hinweis: Die Hauptbedingung für die Aktivierung und das Upgrade von VIP-Stufen ist eine direkte Einzahlung des erforderlichen Betrags. Handelsgewinne zählen nicht dafür.',
     directDeposit:'Direkte Einzahlung:',directInvite:'Direkte Einladung:',balanceRange:'Guthabenbereich:',dailyProfit:'Täglicher Gewinn:',
     activationTitle:'Aktivierung & Gewinnaufteilung',activationDesc:'Die Mindesteinzahlung zur Aktivierung beträgt 20 $. Der tägliche Gewinnsatz wird über den Tag verteilt in 4 Trades von jeweils 10 Sekunden aufgeteilt.',
     resetTitle:'Tägliches Zurücksetzen (New York Zeit)',resetDesc:'Das Limit von 4 täglichen Trades wird am Ende jedes Arbeitstages nach New Yorker Zeit (NY Time) zurückgesetzt.',
-    globalMarket:'Globaler Kryptomarkt',liveUpdates:'Live-Updates'
+    globalMarket:'Globaler Kryptomarkt',liveUpdates:'Live-Updates',showFullHistory:'Vollständigen Verlauf anzeigen',showLess:'Weniger anzeigen'
   }
 };
 
@@ -402,6 +416,7 @@ function setLang(l){
   }
   
   if(window.checkClickState)window.checkClickState();
+  if(window.renderHistory)window.renderHistory();
 }
 
 setLang(localStorage.getItem('zenix_lang')||'fa');
@@ -520,29 +535,34 @@ window.checkClickState=function(){
   }
 };
 
-function renderHistory(){
+window.renderHistory=function(){
   const l=window.currentActiveLang||'fa',t=LD[l]||LD.fa;
+  const btn=document.getElementById('view-all-history-btn'),btnTxt=document.getElementById('history-btn-text'),btnIcon=document.getElementById('history-btn-icon');
+  
   if(!allTradesArray||allTradesArray.length===0){
     hList.innerHTML=`<div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">${t.noHistory}</div>`;
+    if(btn)btn.style.display='none';
     return;
   }
-  const nowTime=new Date().getTime();
-  const thirtyDaysMs=30*24*60*60*1000;
-  const filtered=allTradesArray.filter(item=>nowTime-item.timestamp<=thirtyDaysMs);
-  if(filtered.length===0){
-    hList.innerHTML=`<div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">${t.noHistory}</div>`;
-    return;
+  
+  if(btn){
+    btn.style.display=allTradesArray.length>4?'flex':'none';
+    if(btnTxt)btnTxt.innerText=showAllHistory?(t.showLess||'بستن تاریخچه'):(t.showFullHistory||'مشاهده کامل تاریخچه');
+    if(btnIcon)btnIcon.className=showAllHistory?'fas fa-chevron-up':'fas fa-list-ul';
   }
+  
+  const tradesToDisplay=showAllHistory?allTradesArray:allTradesArray.slice(0,4);
+  
   let htmlStr='';
-  filtered.forEach(item=>{
-    htmlStr+=`<div style="background:rgba(255,255,255,0.05);padding:8px;border-radius:6px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;">
-      <span style="color:#22c55e;font-weight:bold;">+$${item.profit.toFixed(2)}</span>
+  tradesToDisplay.forEach(item=>{
+    htmlStr+=`<div style="background:rgba(255,255,255,0.03);padding:10px 12px;border-radius:8px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;border:1px solid rgba(255,255,255,0.05);">
+      <span style="color:#22c55e;font-weight:bold;font-size:12px;">+$${item.profit.toFixed(2)}</span>
       <span style="color:#94a3b8;font-size:10px;">${item.dateStr}</span>
-      <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${item.name} (${item.symbol})</span><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:${item.color};color:#fff;font-size:11px;"><i class="${item.cls}"></i></span></span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${item.name} (${item.symbol})</span><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${item.color};color:#fff;font-size:11px;"><i class="${item.cls}"></i></span></span>
     </div>`;
   });
   hList.innerHTML=htmlStr;
-}
+};
 
 if(qB){
   qB.onclick=function(e){
@@ -588,7 +608,7 @@ if(qB){
       const dateStr=now.toLocaleDateString('en-GB')+' - '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
       const tradeObj={name:rc.name,symbol:rc.symbol,cls:rc.cls,color:rc.color,profit:p,dateStr:dateStr,timestamp:now.getTime()};
       allTradesArray.unshift(tradeObj);
-      renderHistory();
+      window.renderHistory();
       
       updateDoc(doc(db,"users",uUid),{quantCount:cCnt,quantDate:todayNY,todayProfit:tProf,balance:bBal,tradeHistoryArray:allTradesArray}).then(()=>{
         setTimeout(()=>{
@@ -622,7 +642,7 @@ onAuthStateChanged(auth,u=>{
 
       if(data.tradeHistoryArray&&Array.isArray(data.tradeHistoryArray)){
         allTradesArray=data.tradeHistoryArray;
-        renderHistory();
+        window.renderHistory();
       }
 
       const b=document.getElementById('status-badge'),v=document.getElementById('vip1-badge'),l=window.currentActiveLang||localStorage.getItem('zenix_lang')||'fa',t=LD[l]||LD.fa;
