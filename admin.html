@@ -109,6 +109,10 @@
                 <div class="stat-info"><span>درخواست‌های معلق</span><h3 id="st-req">0</h3></div>
             </div>
             <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-arrow-down"></i></div>
+                <div class="stat-info"><span>واریزهای معلق</span><h3 id="st-d-req">0</h3></div>
+            </div>
+            <div class="stat-card">
                 <div class="stat-icon" style="background:rgba(239,68,68,.15);color:#ef4444"><i class="fas fa-money-bill-transfer"></i></div>
                 <div class="stat-info"><span>برداشت‌های معلق</span><h3 id="st-w-req">0</h3></div>
             </div>
@@ -119,6 +123,7 @@
             <button class="tab-btn active" onclick="switchTab('t-active', this)"><i class="fas fa-user-check"></i> کاربران فعال</button>
             <button class="tab-btn" onclick="switchTab('t-pending', this)"><i class="fas fa-user-clock"></i> در انتظار احراز</button>
             <button class="tab-btn" onclick="switchTab('t-banned', this)"><i class="fas fa-user-slash"></i> لغو شده</button>
+            <button class="tab-btn" onclick="switchTab('t-deposit', this)"><i class="fas fa-arrow-down"></i> واریزی‌ها <span class="tab-badge zero" id="d-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-withdraw', this)"><i class="fas fa-money-bill-transfer"></i> برداشت‌ها <span class="tab-badge zero" id="w-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-reqs', this)"><i class="fas fa-bell"></i> درخواست‌ها <span class="tab-badge zero" id="req-badge">0</span></button>
             <button class="tab-btn" onclick="switchTab('t-messages', this)"><i class="fas fa-paper-plane"></i> ارسال پیام</button>
@@ -203,7 +208,30 @@
             </div>
         </div>
 
-        <!-- Tab 4: Withdrawals Requests -->
+        <!-- Tab 4: Deposits Requests -->
+        <div id="t-deposit" class="tab-content">
+            <div class="panel-box">
+                <div class="panel-header"><div class="panel-title"><i class="fas fa-arrow-down"></i> مدیریت درخواست‌های واریز وجه</div></div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شناسه کاربر</th>
+                                <th>نام کاربر</th>
+                                <th>مبلغ ($)</th>
+                                <th>شبکه</th>
+                                <th>هش تراکنش (TxID)</th>
+                                <th>تاریخ ثبت</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-deposit"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 5: Withdrawals Requests -->
         <div id="t-withdraw" class="tab-content">
             <div class="panel-box">
                 <div class="panel-header"><div class="panel-title"><i class="fas fa-wallet"></i> مدیریت درخواست‌های برداشت وجه</div></div>
@@ -224,7 +252,7 @@
             </div>
         </div>
 
-        <!-- Tab 5: Requests Box -->
+        <!-- Tab 6: Requests Box -->
         <div id="t-reqs" class="tab-content">
             <div class="panel-box">
                 <div class="panel-header"><div class="panel-title"><i class="fas fa-inbox"></i> صندوق درخواست‌ها</div></div>
@@ -232,7 +260,7 @@
             </div>
         </div>
 
-        <!-- Tab 6: Messaging Center -->
+        <!-- Tab 7: Messaging Center -->
         <div id="t-messages" class="tab-content">
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:20px;">
                 <!-- Broadcast Form -->
@@ -312,7 +340,7 @@
     <script type="module">
         import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import{getFirestore,collection,getDocs,doc,updateDoc,addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import{getFirestore,collection,getDocs,doc,updateDoc,addDoc,increment,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         
         const db=getFirestore(initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"}));
         const auth=getAuth();
@@ -404,9 +432,9 @@
         async function loadData(){
             try {
                 const snap=await getDocs(collection(db,"users"));
-                let tbAct=document.getElementById('tb-act'), tbPend=document.getElementById('tb-pend'), tbBan=document.getElementById('tb-ban'), tbW=document.getElementById('tb-withdraw');
-                tbAct.innerHTML=""; tbPend.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML="";
-                uMap={}; let totU=0, totB=0, totR=0, totW=0, reqList=[], withdrawList=[];
+                let tbAct=document.getElementById('tb-act'), tbPend=document.getElementById('tb-pend'), tbBan=document.getElementById('tb-ban'), tbW=document.getElementById('tb-withdraw'), tbD=document.getElementById('tb-deposit');
+                tbAct.innerHTML=""; tbPend.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML=""; if(tbD) tbD.innerHTML="";
+                uMap={}; let totU=0, totB=0, totR=0, totW=0, totD=0, reqList=[], withdrawList=[], depositList=[];
                 let cAct=0, cPend=0, cBan=0;
 
                 snap.forEach(d=>{
@@ -420,6 +448,11 @@
 
                     let isBanned=(u.status==='cancelled'||u.status==='banned'||u.isBanned===true);
                     let hasPend=(u.pendingEmail||u.newEmail||u.selfieImage||u.adminApprovalStatus==='pending');
+
+                    if(u.pendingDeposit && u.pendingDeposit.status === 'pending'){
+                        totD++;
+                        depositList.push({ uid, u, idCode, nameStr, data: u.pendingDeposit });
+                    }
 
                     if(u.pendingWithdrawal && u.pendingWithdrawal.status === 'pending'){
                         totW++;
@@ -464,18 +497,23 @@
                 document.getElementById('st-users').innerText=totU;
                 document.getElementById('st-bal').innerText='$'+totB.toLocaleString('en-US',{minimumFractionDigits:2});
                 document.getElementById('st-req').innerText=totR;
+                document.getElementById('st-d-req').innerText=totD;
                 document.getElementById('st-w-req').innerText=totW;
                 
                 let badge=document.getElementById('req-badge');
-                badge.innerText=totR; badge.className=totR>0?'tab-badge':'tab-badge zero';
+                if(badge){ badge.innerText=totR; badge.className=totR>0?'tab-badge':'tab-badge zero'; }
+
+                let dBadge=document.getElementById('d-badge');
+                if(dBadge){ dBadge.innerText=totD; dBadge.className=totD>0?'tab-badge':'tab-badge zero'; }
 
                 let wBadge=document.getElementById('w-badge');
-                wBadge.innerText=totW; wBadge.className=totW>0?'tab-badge':'tab-badge zero';
+                if(wBadge){ wBadge.innerText=totW; wBadge.className=totW>0?'tab-badge':'tab-badge zero'; }
 
                 if(cAct===0) tbAct.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربر فعالی یافت نشد</td></tr>`;
                 if(cPend===0) tbPend.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربر معلقی یافت نشد</td></tr>`;
                 if(cBan===0) tbBan.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">هیچ کاربر لغو شده‌ای وجود ندارد</td></tr>`;
 
+                renderDeposits(depositList);
                 renderWithdrawals(withdrawList);
                 renderReqs(reqList);
             } catch(err) {
@@ -503,6 +541,68 @@
                 </div>
             `;
             document.getElementById('m-details').classList.add('show');
+        };
+
+        function renderDeposits(list){
+            let box=document.getElementById('tb-deposit');
+            if(!box) return;
+            if(list.length===0){box.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست واریزی وجود ندارد.</td></tr>`;return;}
+            let html='';
+            list.forEach(i=>{
+                let amt = Number(i.data.amount||0);
+                let net = i.data.network || 'TRC20';
+                let tx = i.data.txHash || '-';
+                let dt = formatDate(i.data.createdAt);
+                html+=`<tr>
+                    <td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td>
+                    <td><b>${i.nameStr}</b></td>
+                    <td style="color:#22c55e;font-weight:bold">$${amt.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+                    <td><span style="background:rgba(56,189,248,0.15);color:#38bdf8;padding:2px 6px;border-radius:4px;font-weight:600;">${net}</span></td>
+                    <td dir="ltr" style="text-align:right;font-family:monospace;max-width:160px;overflow:hidden;text-overflow:ellipsis;" title="${tx}">${tx}</td>
+                    <td>${dt}</td>
+                    <td>
+                        <button class="btn-action btn-approve" onclick="handleDeposit('${i.uid}', true, ${amt})"><i class="fas fa-check"></i> تایید و شارژ</button>
+                        <button class="btn-action btn-reject" onclick="handleDeposit('${i.uid}', false, ${amt})"><i class="fas fa-times"></i> رد</button>
+                    </td>
+                </tr>`;
+            });
+            box.innerHTML=html;
+        }
+
+        window.handleDeposit=async(uid, approve, amount)=>{
+            let u = uMap[uid];
+            if(approve){
+                if(!confirm(`تایید واریز و شارژ حساب به مبلغ $${amount.toFixed(2)}؟`)) return;
+                await updateDoc(doc(db,"users",uid), {
+                    balance: increment(amount),
+                    depositAmount: increment(amount),
+                    pendingDeposit: null
+                });
+                await addDoc(collection(db, `users/${uid}/notifications`), {
+                    title: 'تایید واریزی',
+                    message: `درخواست واریز شما به مبلغ $${amount.toFixed(2)} با موفقیت تایید شد و حساب شما شارژ گردید.`,
+                    text: `درخواست واریز شما به مبلغ $${amount.toFixed(2)} با موفقیت تایید شد و حساب شما شارژ گردید.`,
+                    createdAt: serverTimestamp(),
+                    timestamp: serverTimestamp(),
+                    read: false,
+                    isRead: false
+                });
+                showToast('واریزی تایید و حساب کاربر شارژ شد.');
+            } else {
+                if(!confirm(`رد درخواست واریز به مبلغ $${amount.toFixed(2)}؟`)) return;
+                await updateDoc(doc(db,"users",uid), { pendingDeposit: null });
+                await addDoc(collection(db, `users/${uid}/notifications`), {
+                    title: 'رد درخواست واریزی',
+                    message: `درخواست واریز شما به مبلغ $${amount.toFixed(2)} توسط مدیریت رد شد. در صورت وجود هرگونه ابهام با پشتیبانی تماس بگیرید.`,
+                    text: `درخواست واریز شما به مبلغ $${amount.toFixed(2)} توسط مدیریت رد شد. در صورت وجود هرگونه ابهام با پشتیبانی تماس بگیرید.`,
+                    createdAt: serverTimestamp(),
+                    timestamp: serverTimestamp(),
+                    read: false,
+                    isRead: false
+                });
+                showToast('درخواست واریز رد شد.');
+            }
+            loadData();
         };
 
         function renderWithdrawals(list){
