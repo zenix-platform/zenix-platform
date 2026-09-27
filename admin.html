@@ -218,7 +218,8 @@
                             <tr>
                                 <th>شناسه کاربر</th>
                                 <th>نام کاربر</th>
-                                <th>مبلغ ($)</th>
+                                <th>مبلغ درخواستی ($)</th>
+                                <th>مبلغ نهایی (+۲.۵٪)</th>
                                 <th>شبکه</th>
                                 <th>هش تراکنش (TxID)</th>
                                 <th>تاریخ ثبت</th>
@@ -278,7 +279,7 @@
                     <form id="f-single-msg">
                         <input type="hidden" id="target-uid-hidden" required>
                         
-                        <!-- Selected User Display Card (Appears at top when user is selected) -->
+                        <!-- Selected User Display Card -->
                         <div id="selected-user-card" style="display:none; background:rgba(56,189,248,.12); border:1px solid rgba(56,189,248,.35); border-radius:10px; padding:10px 14px; margin-bottom:12px; align-items:center; justify-content:space-between;">
                             <div>
                                 <span style="font-size:10px; color:#38bdf8; display:block; font-weight:600;"><i class="fas fa-user-check"></i> کاربر گیرنده انتخاب‌شده:</span>
@@ -546,16 +547,18 @@
         function renderDeposits(list){
             let box=document.getElementById('tb-deposit');
             if(!box) return;
-            if(list.length===0){box.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست واریزی وجود ندارد.</td></tr>`;return;}
+            if(list.length===0){box.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست واریزی وجود ندارد.</td></tr>`;return;}
             let html='';
             list.forEach(i=>{
-                let amt = Number(i.data.amount||0);
+                let amt = Number(i.data.amount||0); // مبلغ نهایی (با 2.5 درصد)
+                let rawAmt = Number(i.data.rawAmount || (amt / 1.025)); // مبلغ درخواستی کاربر (بدون 2.5 درصد)
                 let net = i.data.network || 'TRC20';
                 let tx = i.data.txHash || '-';
                 let dt = formatDate(i.data.createdAt);
                 html+=`<tr>
                     <td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td>
                     <td><b>${i.nameStr}</b></td>
+                    <td style="color:#cbd5e1;font-weight:600">$${rawAmt.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
                     <td style="color:#22c55e;font-weight:bold">$${amt.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
                     <td><span style="background:rgba(56,189,248,0.15);color:#38bdf8;padding:2px 6px;border-radius:4px;font-weight:600;">${net}</span></td>
                     <td dir="ltr" style="text-align:right;font-family:monospace;max-width:160px;overflow:hidden;text-overflow:ellipsis;" title="${tx}">${tx}</td>
@@ -707,7 +710,6 @@
             try {
                 let count = 0;
                 for(let uid of userKeys){
-                    // Write to root notifications collection (supporting both read/isRead and message/text fields)
                     await addDoc(collection(db, "notifications"), {
                         userId: uid,
                         title: title,
@@ -718,7 +720,6 @@
                         read: false,
                         isRead: false
                     });
-                    // Also write to user subcollection if used by client dashboard bell
                     await addDoc(collection(db, `users/${uid}/notifications`), {
                         title: title,
                         message: message,
@@ -748,7 +749,6 @@
             if(!uid){ showToast('لطفاً یک کاربر را انتخاب کنید.', 'error'); return; }
 
             try {
-                // Save to root notifications collection and subcollection with all field variations (read/isRead, message/text)
                 await addDoc(collection(db, "notifications"), {
                     userId: uid,
                     title: title,
