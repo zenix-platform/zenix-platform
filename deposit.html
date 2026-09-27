@@ -120,6 +120,12 @@ footer{text-align:center;padding:10px;font-size:11px;color:#64748b;border-top:1p
 </div>
 
 <button type="button" id="inquiry-btn" onclick="checkAutoDeposit()" disabled style="width:100%;background:#475569;color:#94a3b8;border:none;padding:12px;border-radius:8px;font-weight:bold;cursor:not-allowed;font-size:13px;transition:0.3s;"><i class="fas fa-sync-alt"></i> <span data-i18n="inquiryBtn">استعلام و واریزی</span></button>
+
+<!-- تایمر زمان‌سنج واریز معلق -->
+<div id="timer-box" style="display:none; align-items:center; justify-content:center; gap:8px; margin-top:12px; padding:10px; background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3); border-radius:8px; color:#f59e0b; font-size:12px; font-weight:bold;">
+    <i class="fas fa-hourglass-half fa-spin"></i>
+    <span id="timer-text">زمان انتظار: 00:00</span>
+</div>
 </div>
 
 <!-- راهنمای امنیتی در پایین صفحه -->
@@ -192,6 +198,7 @@ const wallets={
   BEP20:"0x9eA4B9aCa9B7505E63BA436d3240718A21574dc4"
 };
 window.currentNetwork='TRC20';
+window.isDepositPending = false;
 let allMessages = [];
 let currentUserId = null;
 
@@ -226,13 +233,23 @@ function calculateDeposit(){
 }
 
 function checkInputs(){
+  const inquiryBtn = document.getElementById('inquiry-btn');
+  if(window.isDepositPending) {
+    if(inquiryBtn) {
+      inquiryBtn.disabled = true;
+      inquiryBtn.style.background = '#475569';
+      inquiryBtn.style.color = '#94a3b8';
+      inquiryBtn.style.cursor = 'not-allowed';
+    }
+    return;
+  }
+
   const calcVal = parseFloat(document.getElementById('calc-input').value) || 0;
   const txVal = document.getElementById('tx-hash-input').value.trim();
   
   const copyBtn = document.getElementById('copy-btn');
   const walletInput = document.getElementById('wallet-address');
   const copyWarning = document.getElementById('copy-warning');
-  const inquiryBtn = document.getElementById('inquiry-btn');
 
   if(calcVal > 0){
     walletInput.value = wallets[window.currentNetwork];
@@ -319,9 +336,35 @@ document.onclick=()=>{[nM,lMenu].forEach(m=>m.classList.remove('show'));};docume
 <script async type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import{getFirestore,doc,updateDoc,collection,getDocs}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import{getFirestore,doc,updateDoc,collection,getDocs,onSnapshot}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const app=initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f",measurementId:"G-LXSGYB8WKM"}),auth=getAuth(app),db=getFirestore(app);
+
+let timerInterval = null;
+
+function startTimer(createdAtStr) {
+    clearInterval(timerInterval);
+    const startTime = new Date(createdAtStr).getTime();
+    const timerBox = document.getElementById('timer-box');
+    const timerText = document.getElementById('timer-text');
+    if(timerBox) timerBox.style.display = 'flex';
+
+    function update() {
+        const now = new Date().getTime();
+        const diff = Math.max(0, Math.floor((now - startTime) / 1000));
+        const mins = String(Math.floor(diff / 60)).padStart(2, '0');
+        const secs = String(diff % 60).padStart(2, '0');
+        if(timerText) timerText.textContent = `زمان انتظار: ${mins}:${secs}`;
+    }
+    update();
+    timerInterval = setInterval(update, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    const timerBox = document.getElementById('timer-box');
+    if(timerBox) timerBox.style.display = 'none';
+}
 
 function showMsg(text,isErr){
   const box=document.getElementById('status-box');
@@ -466,6 +509,33 @@ onAuthStateChanged(auth, async u=>{
   allMessages = await fetchUserMessages(u.uid);
   let unread = allMessages.filter(m => !m.read).length, b = document.getElementById('bell-badge');
   if (b && unread > 0) { b.textContent = unread; b.classList.add('show'); }
+
+  // شنونده زنده تغییرات سند کاربر
+  onSnapshot(doc(db, "users", u.uid), (snap) => {
+    if(snap.exists()){
+      let data = snap.data();
+      const inquiryBtn = document.getElementById('inquiry-btn');
+      if(data.pendingDeposit && data.pendingDeposit.status === 'pending'){
+        window.isDepositPending = true;
+        if(inquiryBtn) {
+          inquiryBtn.disabled = true;
+          inquiryBtn.style.background = '#475569';
+          inquiryBtn.style.color = '#94a3b8';
+          inquiryBtn.style.cursor = 'not-allowed';
+          inquiryBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>در انتظار تایید مدیریت...</span>`;
+        }
+        startTimer(data.pendingDeposit.createdAt);
+        showMsg("⏳ درخواست واریز شما ثبت شده و در انتظار بررسی مدیریت می‌باشد.", false);
+      } else {
+        window.isDepositPending = false;
+        stopTimer();
+        if(inquiryBtn) {
+          inquiryBtn.innerHTML = `<i class="fas fa-sync-alt"></i> <span data-i18n="inquiryBtn">استعلام و واریزی</span>`;
+        }
+        checkInputs();
+      }
+    }
+  });
 });
 
 const lBtn=document.getElementById('logout-btn');
