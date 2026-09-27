@@ -28,64 +28,160 @@ const ld = {
     m1: 'صفحه اصلی', m2: 'کوانتیفیکیشن', m3: 'واریز', m4: 'برداشت', m5: 'تراکنش', m6: 'پروفایل', m7: 'پشتیبانی',
     m_about: 'درباره پلتفرم', m8: 'خروج', tMkt: 'بازار ارزهای دیجیتال (۳ ارز برتر از ۵۰ ارز رصد شده)',
     tLive: 'زنده', tNode: 'سرور فعال (US-East)', phoneErr: 'وارد کردن شماره تلفن الزامی است.',
-    modalTitle: 'صندوق پیام‌های مدیریت', noMsg: 'هیچ پیام جدیدی از طرف مدیریت وجود ندارد.'
+    modalTitle: 'صندوق پیام‌های مدیریت', noMsg: 'هیچ پیام جدیدی از طرف مدیریت وجود ندارد.',
+    backMsg: 'بازگشت به لیست پیام‌ها', newBadge: 'جدید', helpTitle: 'راهنمای صفحه داشبورد',
+    helpBtnTitle: 'راهنمای صفحه داشبورد',
+    hpT1: 'کاربرد این صفحه (داشبورد) چیست؟', hpD1: 'داشبورد مرکز کنترل و خانه اصلی حساب کاربری شماست. از این صفحه می‌توانید کل دارایی‌ها، وضعیت حساب و وضعیت تیم خود را بررسی کنید و به تمام بخش‌های اصلی پلتفرم دسترسی سریع داشته باشید.',
+    hpT2: 'کارت موجودی و زیرمجموعه‌ها', hpD2: 'در این قسمت می‌توانید مجموع کل دارایی‌های دلاری و تعداد اعضای تیم زیرمجموعه خود را به صورت لحظه‌ای مشاهده کنید.',
+    hpT3: 'بخش‌های دسترسی سریع', hpD3: 'دکمه‌های میانبر (کوانتیفیکیشن، واریز، برداشت، تیم، تراکنش‌ها و پروفایل) برای ورود آنی به بخش‌های مختلف پلتفرم تعبیه شده‌اند.',
+    hpT4: 'بازار زنده ارزهای دیجیتال', hpD4: 'نمایش لحظه‌ای تغییرات قیمت و درصد سود برترین ارزهای دیجیتال برای رصد بازار جهانی در یک نگاه.',
+    abTitle: 'درباره پلتفرم Zenix (هدف، ماهیت و ساختار)',
+    abDesc: 'پلتفرم Zenix یک اکوسیستم مالی نوین و هوشمند در حوزه ارزهای دیجیتال و پردازش‌های معاملاتی است که با هدف ایجاد بستری امن، خودکار و سودآور برای کاربران طراحی شده است.',
+    abL1T: 'هدف اصلی:', abL1D: 'اتوماسیون فرآیندهای معاملاتی از طریق سیستم‌های هوش مصنوعی و الگوریتم‌های کوانتیفیکیشن (Quantification)، به‌طوری‌که کاربران بدون نیاز به تخصص پیچیده در ترید، بتوانند از نوسانات بازار جهانی سود کسب کنند.',
+    abL2T: 'امنیت و زیرساخت:', abL2D: 'متکی بر پروتکل‌های رمزنگاری پیشرفته، اتصال به گره‌های پردازشی ابری پرسرعت و مدیریت یکپارچه دارایی‌ها در بستر پایگاه داده ابری امن (Firebase).',
+    abL3T: 'ساختار چندسطحی (Referral & Team):', abL3D: 'ایجاد یک شبکه پویای معرفی دوستان تا کاربران بتوانند از فعالیت زیرمجموعه‌های خود در چند سطح مختلف پاداش و درآمد پایدار دریافت کنند.',
+    abL4T: 'احساس واقع‌گرایی:', abL4D: 'وجود بازار لحظه‌ای رمزارزها، شاخص‌های زنده حجم معاملات، نرخ گاز شبکه و اطلاعیه‌های سیستم به کاربر این اطمینان را می‌دهد که با یک پلتفرم بین‌المللی و زنده سروکار دارد.'
   },
   en: {
-    wel: 'Welcome', sub: 'User Panel', st: 'Verified', s1: 'Balance', s2: 'Referrals',
-    c1: 'Quantification', d1: 'Smart trading', c2: 'Deposit', d2: 'Fund account', c3: 'Withdraw', d3: 'Withdraw assets',
-    c4: 'Team', d4: 'Referrals', c5: 'Transactions', d5: 'History', c6: 'Profile', d6: 'Settings',
+    wel: 'Welcome', sub: 'User Control Panel', st: 'Verified', s1: 'Balance', s2: 'Referrals',
+    c1: 'Quantification', d1: 'Smart Trading', c2: 'Deposit', d2: 'Fund Account', c3: 'Withdraw', d3: 'Withdraw Assets',
+    c4: 'Team', d4: 'Referrals', c5: 'Transactions', d5: 'Financial History', c6: 'Profile', d6: 'Security Settings',
     m1: 'Home', m2: 'Quantification', m3: 'Deposit', m4: 'Withdraw', m5: 'Transactions', m6: 'Profile', m7: 'Support',
-    m_about: 'About Platform', m8: 'Logout', tMkt: 'Crypto Market (Top 3 out of 50 Monitored)',
+    m_about: 'About Platform', m8: 'Logout', tMkt: 'Crypto Market (Top 3 of 50 Monitored)',
     tLive: 'LIVE', tNode: 'Node Active (US-East)', phoneErr: 'Phone number is required.',
-    modalTitle: 'Admin Messages', noMsg: 'No new messages from admin.'
+    modalTitle: 'Admin Messages', noMsg: 'No new messages from admin.',
+    backMsg: 'Back to Messages List', newBadge: 'NEW', helpTitle: 'Dashboard Guide',
+    helpBtnTitle: 'Dashboard Page Guide',
+    hpT1: 'What is the purpose of this page?', hpD1: 'The dashboard is your main control center. From here you can check total assets, account status, team status, and quickly access all key platform sections.',
+    hpT2: 'Balance & Referral Cards', hpD2: 'Here you can view your total USD assets and the number of referral team members in real time.',
+    hpT3: 'Quick Access Shortcuts', hpD3: 'Shortcut buttons (Quantification, Deposit, Withdraw, Team, Transactions, Profile) for instant access.',
+    hpT4: 'Live Crypto Market', hpD4: 'Real-time price changes and profit percentage of top cryptocurrencies for instant global market tracking.',
+    abTitle: 'About Zenix Platform (Goal, Nature & Structure)',
+    abDesc: 'Zenix Platform is an innovative financial ecosystem in cryptocurrency and trading processing designed for a secure, automated, and profitable user experience.',
+    abL1T: 'Main Goal:', abL1D: 'Automating trading processes via AI systems and quantification algorithms, enabling users to profit from market fluctuations without complex trading expertise.',
+    abL2T: 'Security & Infrastructure:', abL2D: 'Backed by advanced encryption protocols, high-speed cloud processing nodes, and secure Firebase database storage.',
+    abL3T: 'Multi-level Structure (Referral & Team):', abL3D: 'Creating a dynamic referral network so users receive multi-level rewards and sustainable passive income from team activity.',
+    abL4T: 'Realism & Live Data:', abL4D: 'Live crypto ticker, volume indicators, network gas fees, and system notices ensure users interact with an active global platform.'
   },
   ar: {
     wel: 'أهلاً بك', sub: 'لوحة التحكم', st: 'موثق', s1: 'الرصيد', s2: 'الإحالات',
     c1: 'الكمية', d1: 'التداول الذكي', c2: 'إيداع', d2: 'شحن الرصيد', c3: 'سحب', d3: 'سحب الأصول',
-    c4: 'الفريق', d4: 'الإحالات', c5: 'المعاملات', d5: 'السجل', c6: 'الملف', d6: 'الإعدادات',
+    c4: 'الفريق', d4: 'الإحالات', c5: 'المعاملات', d5: 'السجل المالي', c6: 'الملف', d6: 'إعدادات الأمان',
     m1: 'الرئيسية', m2: 'الكمية', m3: 'إيداع', m4: 'سحب', m5: 'المعاملات', m6: 'الملف الشخصي', m7: 'الدعم',
-    m_about: 'عن المنصة', m8: 'خروج', tMkt: 'سوق العملات', tLive: 'مباشر', tNode: 'خادم نشط',
-    phoneErr: 'رقم الهاتف مطلوب.', modalTitle: 'رسائل الإدارة', noMsg: 'لا توجد رسائل جديدة من الإدارة.'
+    m_about: 'عن المنصة', m8: 'خروج', tMkt: 'سوق العملات الرقمية (أفضل ٣ من ٥٠)', tLive: 'مباشر', tNode: 'خادم نشط (US-East)',
+    phoneErr: 'رقم الهاتف مطلوب.', modalTitle: 'رسائل الإدارة', noMsg: 'لا توجد رسائل جديدة من الإدارة.',
+    backMsg: 'العودة إلى قائمة الرسائل', newBadge: 'جديد', helpTitle: 'دليل لوحة التحكم',
+    helpBtnTitle: 'دليل صفحة لوحة التحكم',
+    hpT1: 'ما هو هدف هذه الصفحة؟', hpD1: 'لوحة التحكم هي مركز إدارة حسابك الرئيسي. يمكنك من هنا متابعة رصيدك وحالة حسابك وفريقك والوصول السريع لجميع أقسام المنصة.',
+    hpT2: 'بطاقة الرصيد والإحالات', hpD2: 'يمكنك هنا مشاهدة إجمالي أصولك بالدولار وعدد أعضاء فريقك بشكل مباشر.',
+    hpT3: 'اختصارات الوصول السريع', hpD3: 'أزرار سريعة للانتقال الفوري إلى التداول والإيداع والسحب والفريق والمعاملات والملف الشخصي.',
+    hpT4: 'سوق العملات المباشر', hpD4: 'عرض لحظي لتغيرات أسعار وأرباح أهم العملات الرقمية لمتابعة السوق العالمي.',
+    abTitle: 'عن منصة Zenix (الهدف والطبيعة والهيكل)',
+    abDesc: 'منصة Zenix هي بيئة مالية مبتكرة وذكية في مجال العملات الرقمية صُممت لتقديم تجربة آمنة وآلية ومربحة للمستخدمين.',
+    abL1T: 'الهدف الرئيسي:', abL1D: 'أتمتة عمليات التداول عبر الذكاء الاصطناعي وخوارزميات الكمية لتمكين المستخدمين من تحقيق أرباح دون الحاجة لخبرة تداول معقدة.',
+    abL2T: 'الأمان والبنية التحتية:', abL2D: 'تعتمد على بروتوكولات تشفير متقدمة وعقد معالجة سحابية سريعة وقاعدة بيانات Firebase آمنة.',
+    abL3T: 'الهيكل متعدد المستويات:', abL3D: 'إنشاء شبكة إحالة ديناميكية لتمكين المستخدمين من الحصول على مكافآت مستمرة من نشاط فريقهم.',
+    abL4T: 'بيانات حية وواقعية:', abL4D: 'مؤشرات أسعار وحجم تداول ورسوم شبكة حية تضمن التفاعل مع منصة عالمية حقيقية.'
   },
   tr: {
-    wel: 'Hoş Geldiniz', sub: 'Kullanıcı Paneli', st: 'Doğrulanmış', s1: 'Bakiye', s2: 'Referans',
-    c1: 'Kantifikasyon', d1: 'Akıllı ticaret', c2: 'Para Yatırma', d2: 'Bakiye yükle', c3: 'Çek', d3: 'Varlık çek',
-    c4: 'Takım', d4: 'Referanslar', c5: 'İşlemler', c6: 'Profil', d6: 'Ayarlar',
-    m1: 'Ana Sayfa', m2: 'Kantifikasyon', m3: 'Para Yatırma', m4: 'Çek', m5: 'İşlem', m6: 'Profil', m7: 'Destek',
-    m_about: 'Platform Hakkında', m8: 'Çıkış', tMkt: 'Kripto Piyasası', tLive: 'CANLI', tNode: 'Aktif Sunucu',
-    phoneErr: 'Telefon numarası gereklidir.', modalTitle: 'Yönetici Mesajları', noMsg: 'Yöneticiden yeni mesaj yok.'
+    wel: 'Hoş Geldiniz', sub: 'Kullanıcı Paneli', st: 'Doğrulanmış', s1: 'Bakiye', s2: 'Referanslar',
+    c1: 'Kantifikasyon', d1: 'Akıllı Ticaret', c2: 'Para Yatırma', d2: 'Bakiye Yükle', c3: 'Çekim', d3: 'Varlık Çek',
+    c4: 'Takım', d4: 'Referanslar', c5: 'İşlemler', d5: 'Finansal Geçmiş', c6: 'Profil', d6: 'Güvenlik Ayarları',
+    m1: 'Ana Sayfa', m2: 'Kantifikasyon', m3: 'Para Yatırma', m4: 'Çekim', m5: 'İşlemler', m6: 'Profil', m7: 'Destek',
+    m_about: 'Platform Hakkında', m8: 'Çıkış', tMkt: 'Kripto Piyasası (Top 3 / 50)', tLive: 'CANLI', tNode: 'Sunucu Aktif (US-East)',
+    phoneErr: 'Telefon numarası gereklidir.', modalTitle: 'Yönetici Mesajları', noMsg: 'Yöneticiden yeni mesaj yok.',
+    backMsg: 'Mesaj Listesine Dön', newBadge: 'YENİ', helpTitle: 'Dashboard Kılavuzu',
+    helpBtnTitle: 'Dashboard Sayfası Kılavuzu',
+    hpT1: 'Bu sayfanın amacı nedir?', hpD1: 'Dashboard, hesabınızın ana kontrol merkezidir. Buradan toplam varlıklarınızı, hesap durumunuzu kontrol edebilir ve tüm platform bölümlerine hızlıca erişebilirsiniz.',
+    hpT2: 'Bakiye ve Referans Kartları', hpD2: 'Burada toplam USD varlığınızı ve referans ekibinizin üye sayısını canlı olarak görebilirsiniz.',
+    hpT3: 'Hızlı Erişim Kısayolları', hpD3: 'Farklı bölümlere anında geçiş yapmak için kısayol butonları.',
+    hpT4: 'Canlı Kripto Piyasası', hpD4: 'Küresel piyasayı takip etmek için en popüler kripto paraların anlık fiyat değişimleri.',
+    abTitle: 'Zenix Platformu Hakkında (Amaç, Yapı ve Detaylar)',
+    abDesc: 'Zenix Platformu, kripto para ticaretinde güvenli, otomatik ve kazançlı bir deneyim sunmak için tasarlanmış yenilikçi bir finansal ekosistemdir.',
+    abL1T: 'Ana Amaç:', abL1D: 'Yapay zeka ve nicel ticaret algoritmaları ile işlem süreçlerini otomatikleştirmek, karmaşık analiz bilgisine gerek kalmadan kazanç sağlamak.',
+    abL2T: 'Güvenlik ve Altyapı:', abL2D: 'Gelişmiş şifreleme protokolleri, hızlı bulut işleme düğümleri ve güvenli Firebase veritabanı altyapısı.',
+    abL3T: 'Çok Seviyeli Ekip Yapısı:', abL3D: 'Kullanıcıların alt ekiplerinin faaliyetlerinden sürekli ödül ve pasif gelir elde edebileceği dinamik davet ağı.',
+    abL4T: 'Gerçek Zamanlı Veriler:', abL4D: 'Canlı kripto fiyatları, işlem hacmi göstergeleri ve sistem bildirimleri ile şeffaf platform tecrübesi.'
   },
   ru: {
-    wel: 'Добро пожаловать', sub: 'Панель', st: 'Проверено', s1: 'Баланс', s2: 'Рефералы',
-    c1: 'Квантификация', d1: 'Умная торговля', c2: 'Депозит', d2: 'Пополнение', c3: 'Вывод', d3: 'Вывод',
-    c4: 'Команда', d4: 'Рефералы', c5: 'Транзакции', d5: 'История', c6: 'Профиль', d6: 'Настройки',
-    m1: 'Главная', m2: 'Квантификация', m3: 'Депозит', m4: 'Вывод', m5: 'Транзакция', m6: 'Профиль', m7: 'Поддержка',
-    m_about: 'О платформе', m8: 'Выйти', tMkt: 'Крипто Рынок', tLive: 'LIVE', tNode: 'Сервер активен',
-    phoneErr: 'Номер телефона обязателен.', modalTitle: 'Сообщения админа', noMsg: 'Нет новых сообщений от администратора.'
+    wel: 'Добро пожаловать', sub: 'Панель управления', st: 'Проверено', s1: 'Баланс', s2: 'Рефералы',
+    c1: 'Квантификация', d1: 'Умный трейдинг', c2: 'Депозит', d2: 'Пополнение', c3: 'Вывод', d3: 'Вывод средств',
+    c4: 'Команда', d4: 'Рефералы', c5: 'Транзакции', d5: 'Финансовая история', c6: 'Профиль', d6: 'Настройки безопасности',
+    m1: 'Главная', m2: 'Квантификация', m3: 'Депозит', m4: 'Вывод', m5: 'Транзакции', m6: 'Профиль', m7: 'Поддержка',
+    m_about: 'О платформе', m8: 'Выйти', tMkt: 'Крипто Рынок (Топ 3 из 50)', tLive: 'LIVE', tNode: 'Сервер активен (US-East)',
+    phoneErr: 'Номер телефона обязателен.', modalTitle: 'Сообщения админа', noMsg: 'Нет новых сообщений от администратора.',
+    backMsg: 'Назад к списку сообщений', newBadge: 'НОВОЕ', helpTitle: 'Руководство по панели',
+    helpBtnTitle: 'Справка по панели управления',
+    hpT1: 'Каково назначение этой страницы?', hpD1: 'Панель управления — ваш главный центр контроля. Здесь вы можете проверить баланс, статус счета, статистику команды и быстро перейти во все разделы.',
+    hpT2: 'Карточки баланса и рефералов', hpD2: 'Здесь отображаются ваш общий баланс в USD и количество участников вашей команды в реальном времени.',
+    hpT3: 'Быстрый доступ', hpD3: 'Кнопки быстрого перехода в основные разделы платформы.',
+    hpT4: 'Живой рынок криптовалют', hpD4: 'Отслеживание цен и процентов изменения топовых криптовалют в реальном времени.',
+    abTitle: 'О платформе Zenix (Цель, суть и структура)',
+    abDesc: 'Платформа Zenix — это инновационная финансовая экосистема в сфере криптовалют, созданная для безопасной, автоматизированной и прибыльной торговли.',
+    abL1T: 'Главная цель:', abL1D: 'Автоматизация торговли с помощью ИИ и квантитативных алгоритмов, позволяющая получать прибыль без сложных навыков трейдинга.',
+    abL2T: 'Безопасность и инфраструктура:', abL2D: 'Продвинутые протоколы шифрования, высокоскоростные облачные узлы и надежное хранилище Firebase.',
+    abL3T: 'Многоуровневая структура:', abL3D: 'Динамичная реферальная сеть для получения стабильного дохода от активности вашей команды на нескольких уровнях.',
+    abL4T: 'Реалистичность и данные:', abL4D: 'Живые котировки, индикаторы объема и уведомления гарантируют работу с современной международной платформой.'
   },
   es: {
-    wel: 'Bienvenido', sub: 'Panel', st: 'Verificado', s1: 'Saldo', s2: 'Referidos',
-    c1: 'Cuantificación', d1: 'Trading inteligente', c2: 'Depósito', d2: 'Fondear', c3: 'Retirar', d3: 'Retirar',
-    c4: 'Equipo', d4: 'Referidos', c5: 'Transacciones', d5: 'Historial', c6: 'Perfil', d6: 'Ajustes',
-    m1: 'Inicio', m2: 'Cuantificación', m3: 'Depósito', m4: 'Retirar', m5: 'Transacción', m6: 'Perfil', m7: 'Soporte',
-    m_about: 'Acerca de', m8: 'Salir', tMkt: 'Mercado Cripto', tLive: 'EN VIVO', tNode: 'Servidor Activo',
-    phoneErr: 'El número de teléfono es obligatorio.', modalTitle: 'Mensajes del Admin', noMsg: 'No hay mensajes nuevos del admin.'
+    wel: 'Bienvenido', sub: 'Panel de Usuario', st: 'Verificado', s1: 'Saldo', s2: 'Referidos',
+    c1: 'Cuantificación', d1: 'Trading Inteligente', c2: 'Depósito', d2: 'Fondear Cuenta', c3: 'Retiro', d3: 'Retirar Activos',
+    c4: 'Equipo', d4: 'Referidos', c5: 'Transacciones', d5: 'Historial Financiero', c6: 'Perfil', d6: 'Configuración de Seguridad',
+    m1: 'Inicio', m2: 'Cuantificación', m3: 'Depósito', m4: 'Retiro', m5: 'Transacciones', m6: 'Perfil', m7: 'Soporte',
+    m_about: 'Acerca de', m8: 'Cerrar Sesión', tMkt: 'Mercado Cripto (Top 3 de 50)', tLive: 'EN VIVO', tNode: 'Servidor Activo (US-East)',
+    phoneErr: 'El número de teléfono es obligatorio.', modalTitle: 'Mensajes del Admin', noMsg: 'No hay mensajes nuevos del admin.',
+    backMsg: 'Volver a la Lista de Mensajes', newBadge: 'NUEVO', helpTitle: 'Guía del Panel',
+    helpBtnTitle: 'Guía de la página de inicio',
+    hpT1: '¿Cuál es el propósito de esta página?', hpD1: 'El panel es su centro de control principal. Desde aquí puede consultar sus activos totales, estado de cuenta, equipo y acceder rápidamente a todas las secciones.',
+    hpT2: 'Tarjetas de Saldo y Referidos', hpD2: 'Aquí puede ver sus activos totales en USD y el número de miembros de su equipo en tiempo real.',
+    hpT3: 'Accesos Rápidos', hpD3: 'Botones de acceso directo a Cuantificación, Depósito, Retiro, Equipo, Transacciones y Perfil.',
+    hpT4: 'Mercado Cripto en Vivo', hpD4: 'Cambios de precio y porcentaje de ganancias en tiempo real de las principales criptomonedas.',
+    abTitle: 'Acerca de la Plataforma Zenix (Objetivo y Estructura)',
+    abDesc: 'La Plataforma Zenix es un ecosistema financiero innovador diseñado para ofrecer una experiencia de trading segura, automatizada y rentable.',
+    abL1T: 'Objetivo Principal:', abL1D: 'Automatizar los procesos de trading mediante IA y algoritmos de cuantificación, permitiendo obtener ganancias sin necesidad de experiencia previa.',
+    abL2T: 'Seguridad e Infraestructura:', abL2D: 'Respaldado por protocolos de encriptación avanzados, nodos en la nube de alta velocidad y almacenamiento seguro en Firebase.',
+    abL3T: 'Estructura Multinivel:', abL3D: 'Red de referidos dinámica para recibir comisiones e ingresos pasivos continuos por la actividad del equipo.',
+    abL4T: 'Datos en Tiempo Real:', abL4D: 'Precios en vivo, volumen de operaciones y alertas del sistema que garantizan transparencia constante.'
   },
   fr: {
-    wel: 'Bienvenue', sub: 'Tableau', st: 'Vérifié', s1: 'Solde', s2: 'Filleuls',
-    c1: 'Quantification', d1: 'Trading intelligent', c2: 'Dépôt', d2: 'Alimenter', c3: 'Retirer', d3: 'Retirer',
-    c4: 'Équipe', d4: 'Filleuls', c5: 'Transactions', d5: 'Historique', c6: 'Profil', d6: 'Paramètres',
-    m1: 'Accueil', m2: 'Quantification', m3: 'Dépôt', m4: 'Retirer', m5: 'Transaction', m6: 'Profil', m7: 'Support',
-    m_about: 'À propos', m8: 'Sortie', tMkt: 'Marché Crypto', tLive: 'EN DIRECT', tNode: 'Serveur Actif',
-    phoneErr: 'Le numéro de téléphone est obligatoire.', modalTitle: 'Messages Admin', noMsg: 'Aucun nouveau message de l’administrateur.'
+    wel: 'Bienvenue', sub: 'Tableau de Bord', st: 'Vérifié', s1: 'Solde', s2: 'Filleuls',
+    c1: 'Quantification', d1: 'Trading Intelligent', c2: 'Dépôt', d2: 'Alimenter Compte', c3: 'Retrait', d3: 'Retirer Actifs',
+    c4: 'Équipe', d4: 'Filleuls', c5: 'Transactions', d5: 'Historique Financier', c6: 'Profil', d6: 'Paramètres de Sécurité',
+    m1: 'Accueil', m2: 'Quantification', m3: 'Dépôt', m4: 'Retrait', m5: 'Transactions', m6: 'Profil', m7: 'Support',
+    m_about: 'À propos', m8: 'Déconnexion', tMkt: 'Marché Crypto (Top 3 sur 50)', tLive: 'EN DIRECT', tNode: 'Serveur Actif (US-East)',
+    phoneErr: 'Le numéro de téléphone est obligatoire.', modalTitle: 'Messages Admin', noMsg: 'Aucun nouveau message de l’administrateur.',
+    backMsg: 'Retour à la Liste des Messages', newBadge: 'NOUVEAU', helpTitle: 'Guide du Tableau de Bord',
+    helpBtnTitle: 'Guide de la page d’accueil',
+    hpT1: 'Quel est le rôle de cette page ?', hpD1: 'Le tableau de bord est le centre de contrôle principal de votre compte. Vous pouvez y consulter vos avoirs, votre statut et accéder rapidement à toutes les fonctionnalités.',
+    hpT2: 'Cartes Solde & Filleuls', hpD2: 'Consultez en temps réel le total de vos avoirs en USD et le nombre de membres de votre équipe.',
+    hpT3: 'Raccourcis d’Accès Rapide', hpD3: 'Boutons d’accès direct vers la quantification, les dépôts, retraits, l’équipe, l’historique et le profil.',
+    hpT4: 'Marché Crypto en Direct', hpD4: 'Suivi en temps réel des variations de prix et des taux de profit des principales cryptomonnaies.',
+    abTitle: 'À propos de Zenix (Objectif, Nature & Structure)',
+    abDesc: 'La plateforme Zenix est un écosystème financier moderne conçu pour offrir une expérience de trading automatisée, sécurisée et profitable.',
+    abL1T: 'Objectif Principal :', abL1D: 'Automatiser le trading grâce à l’IA et à la quantification pour générer des profits sans compétences complexes.',
+    abL2T: 'Sécurité & Infrastructure :', abL2D: 'Basé sur des protocoles de cryptage avancés, des nœuds cloud rapides et une base de données Firebase sécurisée.',
+    abL3T: 'Structure Multiniveau :', abL3D: 'Réseau de parrainage dynamique permettant de percevoir des commissions régulières basées sur l’activité de votre équipe.',
+    abL4T: 'Données en Temps Réel :', abL4D: 'Cours en direct, indicateurs de volume et notifications assurant une transparence totale.'
   },
   de: {
-    wel: 'Willkommen', sub: 'Dashboard', st: 'Verifiziert', s1: 'Guthaben', s2: 'Empfehlungen',
-    c1: 'Quantifizierung', d1: 'Intelligenter Handel', c2: 'Einzahlen', d2: 'Konto aufladen', c3: 'Abheben', d3: 'Abheben',
-    c4: 'Team', d4: 'Empfehlungen', c5: 'Transaktionen', d5: 'Historie', c6: 'Profil', d6: 'Einstellungen',
-    m1: 'Startseite', m2: 'Quantifizierung', m3: 'Einzahlen', m4: 'Abheben', m5: 'Transaktion', m6: 'Profil', m7: 'Support',
-    m_about: 'Über uns', m8: 'Abmelden', tMkt: 'Krypto-Markt', tLive: 'LIVE', tNode: 'Server Aktiv',
-    phoneErr: 'Telefonnummer ist erforderlich.', modalTitle: 'Admin-Nachrichten', noMsg: 'Keine neuen Nachrichten vom Admin.'
+    wel: 'Willkommen', sub: 'Benutzer-Dashboard', st: 'Verifiziert', s1: 'Guthaben', s2: 'Empfehlungen',
+    c1: 'Quantifizierung', d1: 'Intelligenter Handel', c2: 'Einzahlung', d2: 'Konto Aufladen', c3: 'Auszahlung', d3: 'Guthaben Abheben',
+    c4: 'Team', d4: 'Empfehlungen', c5: 'Transaktionen', d5: 'Finanzhistorie', c6: 'Profil', d6: 'Sicherheitseinstellungen',
+    m1: 'Startseite', m2: 'Quantifizierung', m3: 'Einzahlung', m4: 'Auszahlung', m5: 'Transaktionen', m6: 'Profil', m7: 'Support',
+    m_about: 'Über Uns', m8: 'Abmelden', tMkt: 'Krypto-Markt (Top 3 von 50)', tLive: 'LIVE', tNode: 'Server Aktiv (US-East)',
+    phoneErr: 'Telefonnummer ist erforderlich.', modalTitle: 'Admin-Nachrichten', noMsg: 'Keine neuen Nachrichten vom Admin.',
+    backMsg: 'Zurück zur Nachrichtenliste', newBadge: 'NEU', helpTitle: 'Dashboard-Anleitung',
+    helpBtnTitle: 'Dashboard-Anleitung anzeigen',
+    hpT1: 'Was ist der Zweck dieser Seite?', hpD1: 'Das Dashboard ist Ihre zentrale Steuerung. Hier können Sie Ihr Gesamtguthaben, Ihren Kontostatus und Ihr Team einsehen sowie schnell auf alle Funktionen zugreifen.',
+    hpT2: 'Guthaben- und Empfehlungskarten', hpD2: 'Hier sehen Sie Ihr USD-Gesamtguthaben und die Anzahl Ihrer Teammitglieder in Echtzeit.',
+    hpT3: 'Schnellzugriff-Verknüpfungen', hpD3: 'Direkte Buttons für Quantifizierung, Einzahlung, Auszahlung, Team, Transaktionen und Profil.',
+    hpT4: 'Live Krypto-Markt', hpD4: 'Echtzeit-Preisänderungen und Gewinnprozente der führenden Kryptowährungen im Überblick.',
+    abTitle: 'Über die Zenix Platform (Ziel, Natur & Struktur)',
+    abDesc: 'Zenix ist ein modernes Finanz-Ökosystem für Kryptowährungen, das für sicheres, automatisiertes und profitables Trading entwickelt wurde.',
+    abL1T: 'Hauptziel:', abL1D: 'Automatisierung von Handelsprozessen durch KI und Quantifizierungs-Algorithmen für Erträge ohne komplexes Fachwissen.',
+    abL2T: 'Sicherheit & Infrastruktur:', abL2D: 'Unterstützt durch fortgeschrittene Verschlüsselung, schnelle Cloud-Knoten und sichere Firebase-Datenbanken.',
+    abL3T: 'Mehrstufige Teamstruktur:', abL3D: 'Dynamisches Empfehlungsnetzwerk für nachhaltige Belohnungen und passives Einkommen durch Teamaktivitäten.',
+    abL4T: 'Echtzeit-Transparenz:', abL4D: 'Live-Kurse, Handelsvolumen-Indikatoren und Systemnachrichten für eine aktive globale Plattform.'
   }
 };
 
@@ -103,7 +199,6 @@ async function fetchUserMessages(uid) {
       };
     });
 
-    // مرتب‌سازی پیام‌ها از جدیدترین به قدیمی‌ترین
     messages.sort((a, b) => {
       const getTimeMs = (timeVal) => {
         if (!timeVal) return 0;
@@ -135,7 +230,7 @@ window.openMessageModal = async () => {
 };
 
 function renderMessageList() {
-  let c = document.getElementById('modal-msg-container'), html = '<div style="display:flex;flex-direction:column;gap:10px;">';
+  let c = document.getElementById('modal-msg-container'), t = ld[currLang] || ld.fa, html = '<div style="display:flex;flex-direction:column;gap:10px;">';
   allMessages.forEach((m, idx) => {
     let dTime = '';
     if (m.time) {
@@ -146,7 +241,7 @@ function renderMessageList() {
     html += `<div class="msg-body-box" style="cursor:pointer;border-right:${unread ? '3px solid #38bdf8' : '1px solid rgba(255,255,255,.08)'};" onclick="window.readAdminMessage(${idx})">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div class="msg-title-text" style="${unread ? 'color:#fff;font-weight:800;' : ''}"><i class="fas fa-envelope${unread ? '' : '-open'}-text" style="color:#38bdf8;margin-left:5px;"></i> ${m.subject}</div>
-        ${unread ? '<span style="font-size:9px;background:#38bdf8;color:#0f172a;padding:2px 6px;border-radius:4px;font-weight:700;">جدید</span>' : ''}
+        ${unread ? `<span style="font-size:9px;background:#38bdf8;color:#0f172a;padding:2px 6px;border-radius:4px;font-weight:700;">${t.newBadge}</span>` : ''}
       </div>
       <div class="msg-desc-text" style="margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${m.body}</div>
       <div style="font-size:10px;color:#64748b;margin-top:6px;text-align:left" dir="ltr">${dTime}</div>
@@ -170,7 +265,7 @@ window.readAdminMessage = async idx => {
     let d = typeof m.time.toDate === 'function' ? m.time.toDate() : new Date(m.time);
     dTime = isNaN(d.getTime()) ? String(m.time) : d.toUTCString();
   }
-  c.innerHTML = `<button onclick="window.openMessageModal()" style="background:none;border:none;color:#38bdf8;cursor:pointer;font-size:12px;margin-bottom:12px;display:flex;align-items:center;gap:5px;padding:0;"><i class="fas fa-arrow-right"></i> بازگشت به لیست پیام‌ها</button>
+  c.innerHTML = `<button onclick="window.openMessageModal()" style="background:none;border:none;color:#38bdf8;cursor:pointer;font-size:12px;margin-bottom:12px;display:flex;align-items:center;gap:5px;padding:0;"><i class="fas fa-arrow-right"></i> ${t.backMsg}</button>
   <div class="msg-body-box" style="padding:16px;">
     <div class="msg-title-text" style="font-size:15px;margin-bottom:8px;"><i class="fas fa-envelope-open-text" style="color:#38bdf8;"></i> ${m.subject}</div>
     <div class="msg-desc-text" style="font-size:13px;line-height:1.8;color:#f8fafc;white-space:pre-wrap;">${m.body}</div>
@@ -178,20 +273,14 @@ window.readAdminMessage = async idx => {
   </div>`;
 };
 
-// اصلاح کامل توابع بستن مدال‌ها و دکمه ضربدر پیام‌ها
 window.closeMessageModal = () => {
   document.getElementById('m-msg')?.classList.remove('show');
   document.getElementById('m-message')?.classList.remove('show');
 };
 window.closeMsgModal = window.closeMessageModal;
 
-window.closeHelpModal = () => {
-  document.getElementById('m-help')?.classList.remove('show');
-};
-
-window.closeAboutModal = () => {
-  document.getElementById('m-about')?.classList.remove('show');
-};
+window.closeHelpModal = () => document.getElementById('m-help')?.classList.remove('show');
+window.closeAboutModal = () => document.getElementById('m-about')?.classList.remove('show');
 
 window.openHelpModal = () => document.getElementById('m-help')?.classList.add('show');
 window.openAboutModal = () => document.getElementById('m-about')?.classList.add('show');
@@ -211,7 +300,6 @@ onAuthStateChanged(auth, async u => {
       uName = data.fullName || data.fullname || data.name || "";
       setLang(currLang);
 
-      // استخراج و نمایش موجودی
       let rawBalance = data.balance ?? data.depositAmount ?? data.wallet ?? data.amount ?? 0;
       let numericBalance = parseFloat(rawBalance);
       if (isNaN(numericBalance)) numericBalance = 0;
@@ -219,7 +307,6 @@ onAuthStateChanged(auth, async u => {
       let elBal = document.getElementById('val-balance');
       if (elBal) elBal.textContent = `$${numericBalance.toFixed(2)}`;
 
-      // محاسبه زیرمجموعه‌ها
       let totalRef = 0;
       let refCode = data.referralCode;
 
@@ -252,12 +339,10 @@ onAuthStateChanged(auth, async u => {
       let elRef = document.getElementById('val-ref'); 
       if (elRef) elRef.textContent = totalRef;
 
-      // دریافت پیام‌ها
       allMessages = await fetchUserMessages(u.uid);
       let unread = allMessages.filter(m => !m.read).length, b = document.getElementById('bell-badge');
       if (b && unread > 0) { b.textContent = unread; b.classList.add('show'); }
 
-      // بررسی شماره تلفن
       let phone = data.phone || data.phoneNumber;
       if (!phone) {
         localStorage.setItem('profile_error', (ld[currLang] || ld.fa).phoneErr);
@@ -323,6 +408,40 @@ function setLang(l) {
   
   let elAbout = document.getElementById('m_about');
   if (elAbout) elAbout.textContent = t.m_about;
+
+  let helpBtn = document.getElementById('help-btn');
+  if (helpBtn) helpBtn.setAttribute('title', t.helpBtnTitle || '');
+
+  let elHelpTitle = document.getElementById('t-help-title');
+  if (elHelpTitle) elHelpTitle.textContent = t.helpTitle;
+
+  for (let i = 1; i <= 4; i++) {
+    let ht = document.getElementById('t-hp-t' + i);
+    let hd = document.getElementById('t-hp-d' + i);
+    if (ht) {
+      const icons = ['fa-home', 'fa-wallet', 'fa-th-large', 'fa-chart-line'];
+      const colors = ['#38bdf8', '#38bdf8', '#a855f7', '#22c55e'];
+      ht.innerHTML = `<i class="fas ${icons[i-1]}" style="color:${colors[i-1]}"></i> ` + (t['hpT' + i] || '');
+    }
+    if (hd) hd.textContent = t['hpD' + i] || '';
+  }
+
+  // ترجمه بخش‌های "درباره پلتفرم" (روی صفحه و در مدال)
+  ['t-ab-title', 't-about-title'].forEach(id => {
+    let el = document.getElementById(id); if (el) el.textContent = t.abTitle;
+  });
+  ['t-ab-desc', 't-ab-m-desc'].forEach(id => {
+    let el = document.getElementById(id); if (el) el.textContent = t.abDesc;
+  });
+
+  for (let i = 1; i <= 4; i++) {
+    ['t-ab-l' + i + 't', 't-ab-m-l' + i + 't'].forEach(id => {
+      let el = document.getElementById(id); if (el) el.textContent = t['abL' + i + 'T'];
+    });
+    ['t-ab-l' + i + 'd', 't-ab-m-l' + i + 'd'].forEach(id => {
+      let el = document.getElementById(id); if (el) el.textContent = t['abL' + i + 'D'];
+    });
+  }
 
   for (let i = 1; i <= 6; i++) { 
     let c = document.getElementById('c' + i);
@@ -400,10 +519,7 @@ const cryptoPool = [
 
 function renderTop3() {
   let c = document.getElementById('crypto-ticker-list'); if (!c) return;
-  
-  // انتخاب ۳ ارز معروف اصلی: بیت‌کوین (BTC)، اتریوم (ETH) و سولانا (SOL)
   const famousCoins = cryptoPool.filter(coin => ['btc', 'eth', 'sol'].includes(coin.id));
-  
   c.innerHTML = '';
   famousCoins.forEach(coin => {
     let up = coin.change >= 0, pCls = up ? 'price-up' : 'price-down';
