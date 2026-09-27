@@ -320,11 +320,20 @@ function getNYDateStr(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Americ
 let todayNY=getNYDateStr(),cCnt=0,allTradesArray=[];
 
 function formatTradeDate(item){
-  if(item.timestamp){
-    const d=new Date(item.timestamp);
+  if (!item) return '';
+  let d = null;
+  if (item.timestamp) {
+    d = typeof item.timestamp.toDate === 'function' ? item.timestamp.toDate() : new Date(item.timestamp);
+  } else if (item.time) {
+    d = typeof item.time.toDate === 'function' ? item.time.toDate() : new Date(item.time);
+  } else if (item.date) {
+    d = typeof item.date.toDate === 'function' ? item.date.toDate() : new Date(item.date);
+  }
+
+  if (d && !isNaN(d.getTime())) {
     return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} - ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
   }
-  return item.dateStr||'';
+  return item.dateStr || item.date || item.time || '';
 }
 
 function uC(){
@@ -357,24 +366,38 @@ window.checkClickState=function(){
 window.renderHistory=function(){
   const l=window.currentActiveLang||'fa',t=LD[l]||LD.fa;
   const btn=document.getElementById('view-all-history-btn'),btnTxt=document.getElementById('history-btn-text'),btnIcon=document.getElementById('history-btn-icon');
-  if(!allTradesArray||allTradesArray.length===0){
+  
+  if(!allTradesArray || !Array.isArray(allTradesArray) || allTradesArray.length===0){
     hList.innerHTML=`<div style="font-size:12px;color:#94a3b8;text-align:center;" data-i18n="noHistory">${t.noHistory}</div>`;
     if(btn)btn.style.display='none';
     return;
   }
+
   if(btn){
-    btn.style.display=allTradesArray.length>1?'flex':'none';
+    btn.style.display = allTradesArray.length > 4 ? 'flex' : 'none';
     if(btnTxt)btnTxt.innerText=window.showAllHistory?(t.showLess||'بستن تاریخچه'):(t.showFullHistory||'مشاهده کامل تاریخچه');
     if(btnIcon)btnIcon.className=window.showAllHistory?'fas fa-chevron-up':'fas fa-list-ul';
   }
-  const tradesToDisplay=window.showAllHistory?allTradesArray:allTradesArray.slice(0,4);
+
+  const tradesToDisplay = window.showAllHistory ? allTradesArray : allTradesArray.slice(0, 4);
   let htmlStr='';
+
   tradesToDisplay.forEach(item=>{
-    const formattedDate=formatTradeDate(item);
+    if(!item) return;
+    const rawProf = item.profit ?? item.amount ?? item.profitAmount ?? 0;
+    const numProf = parseFloat(rawProf);
+    const profStr = isNaN(numProf) ? '0.00' : numProf.toFixed(2);
+    
+    const formattedDate = formatTradeDate(item);
+    const coinName = item.name || item.coinName || item.currency || 'Crypto';
+    const coinSym = item.symbol || item.coinSymbol || '';
+    const coinColor = item.color || '#38bdf8';
+    const coinIcon = item.cls || 'fas fa-coins';
+
     htmlStr+=`<div style="background:rgba(255,255,255,0.03);padding:10px 12px;border-radius:8px;font-size:11px;display:flex;justify-content:space-between;margin-bottom:4px;align-items:center;border:1px solid rgba(255,255,255,0.05);">
-      <span style="color:#22c55e;font-weight:bold;font-size:12px;">+$${item.profit.toFixed(2)}</span>
+      <span style="color:#22c55e;font-weight:bold;font-size:12px;">+$${profStr}</span>
       <span style="color:#94a3b8;font-size:10px;font-family:monospace;">${formattedDate}</span>
-      <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${item.name} (${item.symbol})</span><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${item.color};color:#fff;font-size:11px;"><i class="${item.cls}"></i></span></span>
+      <span style="display:flex;align-items:center;gap:6px;"><span style="color:#f8fafc;font-weight:600;">${coinName} ${coinSym ? `(${coinSym})` : ''}</span><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${coinColor};color:#fff;font-size:11px;"><i class="${coinIcon}"></i></span></span>
     </div>`;
   });
   hList.innerHTML=htmlStr;
@@ -444,7 +467,13 @@ onAuthStateChanged(auth, async u=>{
       else{cCnt=0;tProf=0;}
       if(tpEl)tpEl.innerText='$'+tProf.toFixed(2);
       if(tbEl)tbEl.innerText='$'+bBal.toFixed(2);
-      if(data.tradeHistoryArray&&Array.isArray(data.tradeHistoryArray)){allTradesArray=data.tradeHistoryArray;window.renderHistory();}
+      
+      const rawHistory = data.tradeHistoryArray || data.quantHistory || data.trades || data.history || [];
+      if(Array.isArray(rawHistory)){
+        allTradesArray=rawHistory;
+        window.renderHistory();
+      }
+
       const b=document.getElementById('status-badge'),v=document.getElementById('vip1-badge'),l=window.currentActiveLang||localStorage.getItem('zenix_lang')||'fa',t=LD[l]||LD.fa;
       if(bBal>=20){
         window.isBotActive=true;window.checkClickState();
