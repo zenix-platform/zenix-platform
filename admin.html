@@ -21,7 +21,7 @@
         .c{max-width:1450px;width:100%;margin:20px auto;padding:0 16px;flex:1}
         
         /* Stats Grid */
-        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
         .stat-card{background:linear-gradient(135deg,rgba(15,23,42,.9),rgba(30,41,59,.6));border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
         .stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
         .stat-info span{font-size:11px;color:#94a3b8;display:block;margin-bottom:2px}
@@ -103,6 +103,10 @@
             <div class="stat-card">
                 <div class="stat-icon" style="background:rgba(34,197,94,.15);color:#22c55e"><i class="fas fa-wallet"></i></div>
                 <div class="stat-info"><span>موجودی کل</span><h3 id="st-bal">$0.00</h3></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:rgba(168,85,247,.15);color:#a855f7"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-info"><span>سود ادمین</span><h3 id="st-admin-profit">$0.00</h3></div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" style="background:rgba(245,158,11,.15);color:#f59e0b"><i class="fas fa-clock"></i></div>
@@ -219,7 +223,8 @@
                                 <th>شناسه کاربر</th>
                                 <th>نام کاربر</th>
                                 <th>مبلغ درخواستی ($)</th>
-                                <th>مبلغ نهایی (+۲.۵٪)</th>
+                                <th>مبلغ نهایی (+۲.۵٪ کارمزد)</th>
+                                <th>سود ادمین (۲.۵٪)</th>
                                 <th>شبکه</th>
                                 <th>هش تراکنش (TxID)</th>
                                 <th>تاریخ ثبت</th>
@@ -341,7 +346,7 @@
     <script type="module">
         import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import{getFirestore,collection,getDocs,doc,updateDoc,addDoc,increment,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import{getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,increment,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         
         const db=getFirestore(initializeApp({apiKey:"AIzaSyAqIksPfjCCQZNQDVx3MEdDyJyNMaTvtlk",authDomain:"zenix-platform.firebaseapp.com",projectId:"zenix-platform",storageBucket:"zenix-platform.firebasestorage.app",messagingSenderId:"594936010622",appId:"1:594936010622:web:9f4159c80111245062052f"}));
         const auth=getAuth();
@@ -432,6 +437,15 @@
 
         async function loadData(){
             try {
+                // دریافت مجموع سود ادمین از دیتابیس
+                let adminProfitTotal = 0;
+                try {
+                    let adminDocSnap = await getDoc(doc(db, "system", "adminStats"));
+                    if(adminDocSnap.exists()){
+                        adminProfitTotal = Number(adminDocSnap.data().totalAdminProfit || 0);
+                    }
+                } catch(e){ console.error(e); }
+
                 const snap=await getDocs(collection(db,"users"));
                 let tbAct=document.getElementById('tb-act'), tbPend=document.getElementById('tb-pend'), tbBan=document.getElementById('tb-ban'), tbW=document.getElementById('tb-withdraw'), tbD=document.getElementById('tb-deposit');
                 tbAct.innerHTML=""; tbPend.innerHTML=""; tbBan.innerHTML=""; tbW.innerHTML=""; if(tbD) tbD.innerHTML="";
@@ -497,6 +511,7 @@
 
                 document.getElementById('st-users').innerText=totU;
                 document.getElementById('st-bal').innerText='$'+totB.toLocaleString('en-US',{minimumFractionDigits:2});
+                document.getElementById('st-admin-profit').innerText='$'+adminProfitTotal.toLocaleString('en-US',{minimumFractionDigits:2});
                 document.getElementById('st-req').innerText=totR;
                 document.getElementById('st-d-req').innerText=totD;
                 document.getElementById('st-w-req').innerText=totW;
@@ -547,11 +562,12 @@
         function renderDeposits(list){
             let box=document.getElementById('tb-deposit');
             if(!box) return;
-            if(list.length===0){box.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست واریزی وجود ندارد.</td></tr>`;return;}
+            if(list.length===0){box.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:20px;color:#94a3b8">هیچ درخواست واریزی وجود ندارد.</td></tr>`;return;}
             let html='';
             list.forEach(i=>{
-                let amt = Number(i.data.amount||0); // مبلغ با احتساب کارمزد ۲.۵٪
-                let rawAmt = Number(i.data.rawAmount || (amt / 1.025)); // مبلغ اولیه درخواستی کاربر
+                let amtWithFee = Number(i.data.amount||0); // مبلغ نهایی (با احتساب 2.5 درصد)
+                let rawAmt = Number(i.data.rawAmount || (amtWithFee / 1.025)); // مبلغ درخواستی کاربر
+                let adminProfitFee = amtWithFee - rawAmt; // سود ادمین (۲.۵ درصد)
                 let net = i.data.network || 'TRC20';
                 let tx = i.data.txHash || '-';
                 let dt = formatDate(i.data.createdAt);
@@ -559,28 +575,41 @@
                     <td><span class="badge-id" onclick="openDetails('${i.uid}')">${i.idCode}</span></td>
                     <td><b>${i.nameStr}</b></td>
                     <td style="color:#38bdf8;font-weight:bold">$${rawAmt.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
-                    <td style="color:#22c55e;font-weight:bold">$${amt.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+                    <td style="color:#cbd5e1;font-weight:600">$${amtWithFee.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+                    <td style="color:#a855f7;font-weight:bold">+$${adminProfitFee.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
                     <td><span style="background:rgba(56,189,248,0.15);color:#38bdf8;padding:2px 6px;border-radius:4px;font-weight:600;">${net}</span></td>
-                    <td dir="ltr" style="text-align:right;font-family:monospace;max-width:160px;overflow:hidden;text-overflow:ellipsis;" title="${tx}">${tx}</td>
+                    <td dir="ltr" style="text-align:right;font-family:monospace;max-width:140px;overflow:hidden;text-overflow:ellipsis;" title="${tx}">${tx}</td>
                     <td>${dt}</td>
                     <td>
-                        <button class="btn-action btn-approve" onclick="handleDeposit('${i.uid}', true, ${rawAmt})"><i class="fas fa-check"></i> تایید و شارژ</button>
-                        <button class="btn-action btn-reject" onclick="handleDeposit('${i.uid}', false, ${rawAmt})"><i class="fas fa-times"></i> رد</button>
+                        <button class="btn-action btn-approve" onclick="handleDeposit('${i.uid}', true, ${rawAmt}, ${adminProfitFee})"><i class="fas fa-check"></i> تایید و شارژ</button>
+                        <button class="btn-action btn-reject" onclick="handleDeposit('${i.uid}', false, ${rawAmt}, 0)"><i class="fas fa-times"></i> رد</button>
                     </td>
                 </tr>`;
             });
             box.innerHTML=html;
         }
 
-        window.handleDeposit=async(uid, approve, rawAmount)=>{
+        window.handleDeposit=async(uid, approve, rawAmount, adminProfitFee)=>{
             let u = uMap[uid];
             if(approve){
-                if(!confirm(`تایید واریز و شارژ حساب به مبلغ درخواستی $${rawAmount.toFixed(2)}؟`)) return;
+                if(!confirm(`تایید واریز و شارژ حساب به مبلغ درخواستی $${rawAmount.toFixed(2)} (سود ادمین: $${adminProfitFee.toFixed(2)})؟`)) return;
+                
+                // آپدیت موجودی کاربر
                 await updateDoc(doc(db,"users",uid), {
                     balance: increment(rawAmount),
                     depositAmount: increment(rawAmount),
                     pendingDeposit: null
                 });
+
+                // ذخیره و افزایش سود کل ادمین در دیتابیس
+                const adminRef = doc(db, "system", "adminStats");
+                let adminSnap = await getDoc(adminRef);
+                if(adminSnap.exists()){
+                    await updateDoc(adminRef, { totalAdminProfit: increment(adminProfitFee) });
+                } else {
+                    await setDoc(adminRef, { totalAdminProfit: adminProfitFee });
+                }
+
                 await addDoc(collection(db, `users/${uid}/notifications`), {
                     title: 'تایید واریزی',
                     message: `درخواست واریز شما به مبلغ $${rawAmount.toFixed(2)} با موفقیت تایید شد و حساب شما شارژ گردید.`,
@@ -590,7 +619,7 @@
                     read: false,
                     isRead: false
                 });
-                showToast(`واریزی تایید شد و مبلغ $${rawAmount.toFixed(2)} به موجودی کاربر اضافه گردید.`);
+                showToast(`واریزی تایید شد. مبلغ $${rawAmount.toFixed(2)} به کاربر اضافه شد و سود ادمین ثبت گردید.`);
             } else {
                 if(!confirm(`رد درخواست واریز به مبلغ $${rawAmount.toFixed(2)}؟`)) return;
                 await updateDoc(doc(db,"users",uid), { pendingDeposit: null });
